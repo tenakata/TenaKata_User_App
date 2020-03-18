@@ -22,6 +22,7 @@ import com.tenakata.Activity.ActivityViewDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.Dialog.DialogRemindPayment;
+import com.tenakata.Dialog.ReviewFilterDialog;
 import com.tenakata.Dialog.showPayDialog;
 import com.tenakata.Models.CashSalesCreditModel;
 import com.tenakata.Models.ModelSuccess;
@@ -77,6 +78,29 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
                 );
             }
         });
+
+        if (FragmentCashFlow.viewFilter!=null) {
+            FragmentCashFlow.viewFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "filter", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (FragmentCashFlow.viewSort!=null) {
+            FragmentCashFlow.viewSort.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
+                        @Override
+                        public void onFilterApplyClick(String type) {
+                            Toast.makeText(context, "this is sort new", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
 
     }
 

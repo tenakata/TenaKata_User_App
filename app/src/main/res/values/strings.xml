@@ -65,8 +65,6 @@
     <string name="txt_loans">LOANS</string>
     <string name="txt_order_stock">ORDER STOCK</string>
     <string name="txt_reports">REPORTS</string>
-<<<<<<< HEAD
-=======
     <string name="txt_creatempin">CREATE MPIN</string>
 
     <string name="training">Training</string>
@@ -81,6 +79,5 @@
     <string name="edit">Edit</string>
     <string name="totalitems">Total Items: </string>
     <string name="total">Total</string>
->>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 </resources>
 

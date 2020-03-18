@@ -1759,8 +1759,6 @@ public class Authentication {
         App.getInstance().getRequestQueue().add(request);
     }
 
-<<<<<<< HEAD
-=======
     public static void object(final Context context, final String url,
                               final BaseCallBacks callBacks,
                               final JSONObject jsonObject) {
@@ -1840,5 +1838,4 @@ public class Authentication {
     }
 
 
->>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 }

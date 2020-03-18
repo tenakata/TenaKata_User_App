@@ -28,13 +28,18 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
     private Context context;
     private FragmentCashFlowBinding binding;
     private CashFlowPagerAdapter adapter;
+    public static TextView viewSort,viewFilter,viewSort1,viewFilter1;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         context = getActivity();
-        binding.toolbarBackView.setOnClickListener(this);
+        viewSort = binding.viewSort;
+        viewFilter = binding.viewFilter;
+
+        viewSort1 = binding.viewSort1;
+        viewFilter1 = binding.viewFilter1;
         setViewPage();
     }
 
@@ -50,7 +55,6 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbarBackView:
-                //finish();
                 break;
 
             default:
@@ -69,6 +73,20 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 binding.viewpager.setCurrentItem(tab.getPosition());
+                if (tab.getPosition()==0){
+                    binding.viewFilter1.setVisibility(View.GONE);
+                    binding.viewSort1.setVisibility(View.GONE);
+
+                    binding.viewFilter.setVisibility(View.VISIBLE);
+                    binding.viewSort.setVisibility(View.VISIBLE);
+
+                }else if (tab.getPosition()==1){
+                    binding.viewFilter1.setVisibility(View.VISIBLE);
+                    binding.viewSort1.setVisibility(View.VISIBLE);
+
+                    binding.viewFilter.setVisibility(View.GONE);
+                    binding.viewSort.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -83,7 +101,6 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
         });
         changeTabsFont();
     }
-
     private void changeTabsFont() {
         ViewGroup vg = (ViewGroup) binding.tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
@@ -99,6 +116,4 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
             }
         }
     }
-
-
 }

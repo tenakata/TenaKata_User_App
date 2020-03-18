@@ -20,7 +20,9 @@ import com.tenakata.Activity.ActivityAddDailySales;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.Dialog.DialogRemindPayment;
+import com.tenakata.Dialog.ReviewFilterDialog;
 import com.tenakata.Dialog.showPayDialog;
+
 import android.widget.Toast;
 
 import com.quentindommerc.superlistview.OnMoreListener;
@@ -57,48 +59,93 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     private int currentPage = 1;
     private String per_page = "10";
     private List<CashSalesCreditModel.ResultBean> list = new ArrayList<>();
+    private boolean isSorting;
+    private String sorting_type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding= DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.fragment_cash_sales, container, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.fragment_cash_sales, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        context=getActivity();
+        context = getActivity();
 
         binding.listItem.setRefreshListener(this);
 
+        if (FragmentCashFlow.viewFilter1 != null) {
+            FragmentCashFlow.viewFilter1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "filter", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (FragmentCashFlow.viewSort1 != null) {
+            FragmentCashFlow.viewSort1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
+                        @Override
+                        public void onFilterApplyClick(String type) {
+                            isSorting = true;
+                            sorting_type= type;
+                            currentPage = 1;
+                            hitApi(true,isSorting,type);
+                        }
+                    });
+                }
+            });
+        }
 
         binding.viewAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ActivityAddDailySales.class)
-                        .putExtra("sales_purchases","sales")
-                );
+                        .putExtra("sales_purchases", "sales"));
             }
         });
     }
 
 
-    private void hitApi(boolean isEnable) {
+    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type) {
         final JSONObject jsonObject = new JSONObject();
         try {
+
+
             jsonObject.put("page", currentPage);
             jsonObject.put("Perpage", per_page);
             jsonObject.put("payment_type", "cash");
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("sales_purchases", "sales");
+            if (isSorting && sorting_type!=null){
+                jsonObject.put("sorting_type", sorting_type);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_SALES),
-                this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+
+        if (isSorting){
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SORTING),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }else {
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_SALES),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }
+
+
+    }
+
+    @Override
+    public void onTaskError(String errorMsg) {
+        super.onTaskError(errorMsg);
+        dismissLoader();
     }
 
     @Override
@@ -116,21 +163,21 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
         if (model.getResult().size() > 0) {
             list.addAll(model.getResult());
         }
-            if (adapter == null) {
-                adapter = new HomeSalesBaseAdapter(context, list,this,"cashSale");
-                binding.listItem.setAdapter(adapter);
-            } else {
-                adapter.refresh(list);
+        if (adapter == null) {
+            adapter = new HomeSalesBaseAdapter(context, list, this, "cashSale");
+            binding.listItem.setAdapter(adapter);
+        } else {
+            adapter.refresh(list);
+        }
+        if (list != null && list.size() > 9) {
+            binding.listItem.setupMoreListener(this, 0);
+            if (binding.listItem.isLoadingMore()) {
+                binding.listItem.setLoadingMore(false);
             }
-            if (list != null && list.size() > 9) {
-                binding.listItem.setupMoreListener(this, 0);
-                if (binding.listItem.isLoadingMore()) {
-                    binding.listItem.setLoadingMore(false);
-                }
-            } else {
-                currentPage = 1;
-                binding.listItem.removeMoreListener();
-            }
+        } else {
+            currentPage = 1;
+            binding.listItem.removeMoreListener();
+        }
     }
 
     @Override
@@ -158,7 +205,12 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     @Override
     public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
         currentPage = currentPage + 1;
-        hitApi(false);
+        if (isSorting){
+            hitApi(false,true,sorting_type);
+        }else {
+            hitApi(false,false,null);
+        }
+
     }
 
     @Override
@@ -166,7 +218,8 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
         currentPage = 1;
         binding.listItem.removeMoreListener();
         if (list.size() > 0) list.clear();
-        hitApi(false);
+        isSorting = false;
+        hitApi(false,isSorting,null);
     }
 
     @Override
@@ -178,9 +231,9 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     @Override
     public void onResume() {
         super.onResume();
-        hitApi(true);
+        isSorting = false;
+        hitApi(true,isSorting,null);
     }
-
 
     @Override
     public void onPayClick(String id, String totalAmount) {
@@ -191,14 +244,15 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     public void onRemindClick(String id, String totalAmount) {
 
     }
+
     @Override
-    public void onViewDetailsClick(int position,String  id, String name, String receiptpath,String amount,String list) {
-        Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
-        Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
-        intent.putExtra("id",id);
-        intent.putExtra("position",String.valueOf(position));
-        intent.putExtra("sales_purchases","sales");
-        intent.putExtra("payment_type","cash");
+    public void onViewDetailsClick(int position, String id, String name, String receiptpath, String amount, String list) {
+        Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getActivity(), ActivityViewDetails.class);
+        intent.putExtra("id", id);
+        intent.putExtra("position", String.valueOf(position));
+        intent.putExtra("sales_purchases", "sales");
+        intent.putExtra("payment_type", "cash");
 
         startActivity(intent);
     }

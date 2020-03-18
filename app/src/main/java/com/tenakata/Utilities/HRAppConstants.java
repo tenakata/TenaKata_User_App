@@ -32,6 +32,7 @@ public interface HRAppConstants {
     String URL_LOGIN_WITH_MPIN ="book/mp_pin";
     String URL_LOGOUT ="book/logout";
     String URL_CASH_CREDIT_SALES ="book/sale_purchases_list";
+    String URL_SORTING ="book/sorting";
     String URL_CASH_CREDIT_Purchase ="book/credit_sale_purchases_list";
     String URL_ADD_SALE_CASH_PURCHASE_CASH ="book/dailysale_purchases";
     String URL_ADD_SALE_CREDIT_PURCHASE_CASH ="book/credit_sale_purchases";

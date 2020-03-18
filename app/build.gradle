@@ -46,10 +46,7 @@ dependencies {
     implementation project(':countrycodepicker')
     implementation project(':sidemenu')
     implementation project(':superlistview')
-<<<<<<< HEAD
-=======
     implementation project(':fullscreenvideoview')
->>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.hadiidbouk:ChartProgressBar-Android:2.0.6'

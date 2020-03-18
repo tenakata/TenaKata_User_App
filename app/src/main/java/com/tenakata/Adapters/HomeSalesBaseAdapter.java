@@ -78,6 +78,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
         holder.binding.viewDate.setText("Captured: "+HRValidationHelper.optional(list.get(position).getDate()));
         holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(list.get(position).getAmount()));
         holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
+        holder.binding.viewTitle.setText(HRValidationHelper.optional(list.get(position).getItem_list()));
 
         if (type!=null && !type.equals("") && (type.equalsIgnoreCase("cashSale")||
                 type.equalsIgnoreCase("cashPurchase"))){
