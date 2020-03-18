@@ -38,4 +38,8 @@ public interface HRAppConstants {
     String URL_HOME ="book/home";
     String URL_REMIND="book/remind";
     String URL_PAY_AMOUNT ="book/confirm_payment";
+
+    String URL_SALEVIEWDETAIL="book/credit_view_details";
+    String URL_PURCHASEVIEWDETAIL="book/purchase_view_details";
+    String URL_CREATE_MPIN ="book/set_mp_pin";
 }

@@ -14,9 +14,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.quentindommerc.superlistview.OnMoreListener;
+import com.tenakata.Activity.ActivityAddDailySales;
+import android.widget.Toast;
 
 import com.quentindommerc.superlistview.OnMoreListener;
 import com.tenakata.Activity.ActivityAddDailySales;
+import com.tenakata.Activity.ActivityViewDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.Models.CashSalesCreditModel;
@@ -27,7 +31,6 @@ import com.tenakata.Utilities.HRPrefManager;
 import com.tenakata.Utilities.HRPriceFormater;
 import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.Utilities.HRValidationHelper;
-import com.tenakata.databinding.FragmentCashPurchaseBinding;
 import com.tenakata.databinding.FragmentCreditPurchaseBinding;
 
 import org.json.JSONException;
@@ -182,9 +185,13 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
 
     }
 
-
     @Override
-    public void onViewDetailsClick(int id) {
-
+    public void onViewDetailsClick(int position,String id, String name, String receiptpath , String amount,String list) {
+        Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
+        intent.putExtra("id",id);
+        intent.putExtra("sales_purchases","purchases");
+        intent.putExtra("payment_type","credit");
+        startActivity(intent);
+        Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
     }
 }

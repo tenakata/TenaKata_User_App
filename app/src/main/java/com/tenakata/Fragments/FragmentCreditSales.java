@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.quentindommerc.superlistview.OnMoreListener;
 import com.tenakata.Activity.ActivityAddDailySales;
+import com.tenakata.Activity.ActivityViewDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.Dialog.DialogRemindPayment;
@@ -194,9 +195,18 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     }
 
     @Override
-    public void onViewDetailsClick(int id) {
+    public void onViewDetailsClick(int position,String id,String name,String receiptpath,String amount,String list) {
 
+
+          Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
+        Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
+        intent.putExtra("id",id);
+        intent.putExtra("position",String.valueOf(position));
+        intent.putExtra("sales_purchases","sales");
+        intent.putExtra("payment_type","credit");
+        startActivity(intent);
     }
+
 
     @Override
     public void onAmountPaidByUser(String id, String amount, String mode, String narration) {

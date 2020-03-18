@@ -65,5 +65,22 @@
     <string name="txt_loans">LOANS</string>
     <string name="txt_order_stock">ORDER STOCK</string>
     <string name="txt_reports">REPORTS</string>
+<<<<<<< HEAD
+=======
+    <string name="txt_creatempin">CREATE MPIN</string>
+
+    <string name="training">Training</string>
+    <string name="pleaserate">Please Rate</string>
+    <string name="pleaseratevideo">Please Rate Video</string>
+    <string name="videodescription">sadhbajs  sakjdf ckjskfs gbs dbgdlj bvs lv sdjfv ldsjv jdsf vj dsjbvjd jvbsdjh vjsd bh jh vj vj vj j vj vjh jhljhgljh gljh glj hglj hglj hgljh lj hljhgljh glj hglj hglj hgljh gl jhglj hglj hgl jh gljhglj h
+    jh jh gj hljh gljh ljh ljhbl bhljbljh bljhbljh bljhblj bljhb ljh bljhbljhb ljhb jh bljhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+    b nb mnb mnbv mnb vmnbvmnbv mn bmnbvmnbvmnbv mnb vn vmn bvn vmnbv mnb vnb vmn bvmnbvmnbvmn bvmnvn bvm nb vmnb vmnbv mnb nmbvmnb vmnbvmnbvmnbvmnbvmnvmnbvmnb vmnvmn vmnb vmnb
+    ,jh bjh bjbj blj bljblj bljhbj</string>
+    <string name="howtoimprove">How to improve Sales.</string>
+    <string name="next">next</string>
+    <string name="edit">Edit</string>
+    <string name="totalitems">Total Items: </string>
+    <string name="total">Total</string>
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 </resources>
 

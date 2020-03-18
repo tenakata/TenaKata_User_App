@@ -16,6 +16,10 @@ public class HomeModel {
     private ResultBean result;
     private double total_average;
     private String name;
+<<<<<<< HEAD
+=======
+    private String amount;
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 
     public String getStatus() {
         return status;
@@ -57,6 +61,13 @@ public class HomeModel {
         this.name = name;
     }
 
+<<<<<<< HEAD
+=======
+    public String getAmount() {
+        return amount;
+    }
+
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
     public static class ResultBean {
         /**
          * cash_amount : 270286.89

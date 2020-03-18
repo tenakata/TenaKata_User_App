@@ -8,6 +8,10 @@ import com.tenakata.Models.HomeModel;
 import com.tenakata.Models.LoginModel;
 import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Models.PayAmountModel;
+<<<<<<< HEAD
+=======
+import com.tenakata.Models.ViewDetailsModel;
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 import com.tenakata.Utilities.HRAppConstants;
 import com.tenakata.Utilities.HRUrlFactory;
 
@@ -52,6 +56,14 @@ public class ResponseParser {
                 case HRAppConstants.URL_HOME:
                     return App.getInstance().getGson().fromJson(response, HomeModel.class);
 
+<<<<<<< HEAD
+=======
+                case HRAppConstants.URL_PURCHASEVIEWDETAIL:
+                    return App.getInstance().getGson().fromJson(response, ViewDetailsModel.class);
+                case HRAppConstants.URL_SALEVIEWDETAIL:
+                    return App.getInstance().getGson().fromJson(response, ViewDetailsModel.class);
+
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
                 default:
                     return null;
             }

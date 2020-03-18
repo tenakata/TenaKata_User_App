@@ -8,6 +8,8 @@ import com.tenakata.Activity.ActivityForgotPassword;
 import com.tenakata.Activity.ActivityLogin;
 import com.tenakata.Activity.ActivityLoginWithMpin;
 import com.tenakata.Activity.ActivityOTPVerification;
+
+import com.tenakata.Activity.ActivityTrainingDetails;
 import com.tenakata.Activity.ActivityTutorials;
 import com.tenakata.Activity.ActivityDashboard;
 import com.tenakata.Activity.ActivityVerifyMobileNumber;
@@ -18,6 +20,12 @@ public class IntentHelper {
 
     public static Intent getTutorials(Context context) {
         return new Intent(context, ActivityTutorials.class)
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    }
+
+
+    public static Intent getTrainingVideo(Context context) {
+        return new Intent(context, ActivityTrainingDetails.class)
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     }
 
@@ -75,5 +83,4 @@ public class IntentHelper {
             e.printStackTrace();
         }
     }
-
 }

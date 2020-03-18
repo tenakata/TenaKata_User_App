@@ -38,7 +38,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         if(drawerItemView==null){
             drawerItemView = LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.view_drawer_item, parent, false);
+                    .inflate(R.layout.view_drawer_item, parent, false);
             holder = new DrawerViewHolder();
             holder.textView = drawerItemView.findViewById(R.id.drawerItemTV);
             holder.view = drawerItemView.findViewById(R.id.view);

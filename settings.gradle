@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 include ':app',':permission',':pinentry',':countrycodepicker',':sidemenu',':iosdialog',':superlistview'
+=======
+include ':app',':permission',':pinentry',':countrycodepicker',':sidemenu',':iosdialog',':superlistview',':fullscreenvideoview'
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 rootProject.name='TenaKata app'

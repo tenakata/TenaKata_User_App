@@ -1759,4 +1759,86 @@ public class Authentication {
         App.getInstance().getRequestQueue().add(request);
     }
 
+<<<<<<< HEAD
+=======
+    public static void object(final Context context, final String url,
+                              final BaseCallBacks callBacks,
+                              final JSONObject jsonObject) {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                print(url, String.valueOf(response), jsonObject.toString(), HRUrlFactory.getDefaultHeaders().toString());
+                try {
+                    JSONObject resObj = new JSONObject(String.valueOf(response));
+                    if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseOK
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseSignUp
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseUserUpdated
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kUpdateDevice) {
+                        Object r = ResponseParser.parse(url, response.toString());
+                        if (r != null) {
+                            if (r instanceof Boolean) {
+                                callBacks.onTaskSuccess((boolean) r);
+                            } else {
+                                callBacks.onTaskSuccess(r);
+                            }
+                        } else {
+                            callBacks.onTaskSuccess("");
+                        }
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseUpdate) {
+                        callBacks.onAppNeedUpdate(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseForceUpdate) {
+                        callBacks.onAppNeedForceUpdate(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseNotAccess) {
+                        callBacks.onAppNeedLogin();
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseContactExist) {
+                        callBacks.onTaskError(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseSessionExpire) {
+                        callBacks.onSessionExpire(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else {
+                        if (resObj.has(HRAppConstants.kResponseMsg)) {
+                            callBacks.onTaskError(resObj.getString(HRAppConstants.kResponseMsg));
+                        } else {
+                            callBacks.onTaskError(null);
+                        }
+                    }
+                } catch (JSONException e) {
+                    callBacks.onTaskError(e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                print(url, error.getMessage(), jsonObject.toString(), HRUrlFactory.getDefaultHeaders().toString());
+                if (callBacks != null)
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        callBacks.onTaskError(App.getInstance().getString(R.string.txt_connection_error));
+                    } else if (error instanceof AuthFailureError) {
+                        callBacks.onTaskError(App.getInstance().getString(R.string.txt_went_wrong));
+                    } else if (error instanceof ServerError) {
+                        callBacks.onTaskError(App.getInstance().getString(R.string.text_server_error));
+                    } else if (error instanceof NetworkError) {
+                        callBacks.onTaskError(App.getInstance().getString(R.string.txt_connection_error));
+                    } else if (error instanceof ParseError) {
+                        callBacks.onTaskError(App.getInstance().getString(R.string.txt_parsing_error));
+                    }
+            }
+        }) {
+            public Map<String, String> getHeaders() {
+                return HRUrlFactory.getAppHeaders();
+            }
+        };
+
+
+        Volley.newRequestQueue(context).getCache().clear();
+        Volley.newRequestQueue(context).add(jsonRequest);
+    }
+
+
+>>>>>>> e164d108f317e3766cbed78c30d90c5e8c2f64b4
 }

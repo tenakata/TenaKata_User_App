@@ -183,7 +183,13 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                 break;
 
             case 7:
-                Toast.makeText(context, "Under Development", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent=new Intent(getApplicationContext(),ActivityCreateMpin.class);
+                        startActivity(intent);
+                    }
+                }, 225);
                 break;
 
             case 8:
@@ -196,6 +202,10 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                 break;
 
             case 10:
+                Toast.makeText(context, "Under Development", Toast.LENGTH_SHORT).show();
+                break;
+
+            case 11:
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

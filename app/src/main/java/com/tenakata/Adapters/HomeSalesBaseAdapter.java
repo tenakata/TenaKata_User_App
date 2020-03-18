@@ -1,6 +1,10 @@
 package com.tenakata.Adapters;
 
 import android.content.Context;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,8 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
     private List<CashSalesCreditModel.ResultBean> list;
     private RowClick callBack;
     private String type;
+
+    private String receiptpath;
 
     public HomeSalesBaseAdapter(Context context, List<CashSalesCreditModel.ResultBean> list,RowClick callBack,String type) {
         this.list = list;
@@ -53,7 +59,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
 
         if (convertView == null) {
             HomeCashSalesAdapterBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext())
@@ -99,6 +105,23 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
             }
         });
 
+
+        holder.binding.viewDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("yoooo","yoooo");
+                if (list.get(position).getAttach_recepit()!=null){
+                    Uri uri=Uri.parse(list.get(position).getAttach_recepit());
+                     receiptpath=uri.toString();
+                }
+
+
+                callBack.onViewDetailsClick(position,list.get(position).getId(),list.get(position).getName(),
+                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list()
+                        );
+            }
+        });
+
         return holder.view;
     }
 
@@ -115,7 +138,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
     public interface RowClick {
         void onPayClick(String id,String totalAmount);
         void onRemindClick(String id,String totalAmount);
-        void onViewDetailsClick(int id);
+        void onViewDetailsClick(int position,String id, String name, String receiptpath,String amount,String list);
     }
 
     private class ViewHolder {
