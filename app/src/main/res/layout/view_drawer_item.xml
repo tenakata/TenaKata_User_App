@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center_vertical">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/drawerItemTV"
+        android:fontFamily="@font/pt_sans_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorWhite"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_150"
+        android:background="@color/colorWhite"/>
+
+
+
+</LinearLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/dp_4"
+    android:paddingBottom="@dimen/dp_2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="@dimen/sp_13"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sales"
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="@dimen/sp_13"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv1" />
+
+    <TextView
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="@dimen/sp_13"
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Purchase"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv2" />
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tv1"
+        app:layout_constraintEnd_toEndOf="@+id/tv1"
+        app:layout_constraintStart_toStartOf="@+id/tv1"
+        app:srcCompat="@drawable/home_icon" />
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tv2"
+        app:layout_constraintEnd_toEndOf="@+id/tv2"
+        app:layout_constraintStart_toStartOf="@+id/tv2"
+        app:srcCompat="@drawable/offer_sel"/>
+
+    <ImageView
+        android:id="@+id/img3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tv3"
+        app:layout_constraintEnd_toEndOf="@+id/tv3"
+        app:layout_constraintStart_toStartOf="@+id/tv3"
+        app:srcCompat="@drawable/shopping_cart_sel" />
+    
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
