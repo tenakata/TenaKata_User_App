@@ -21,7 +21,9 @@ import com.tenakata.Activity.ActivityAddDailySales;
 import com.tenakata.Activity.ActivityViewDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
+import com.tenakata.Dialog.showPayDialog;
 import com.tenakata.Models.CashSalesCreditModel;
+import com.tenakata.Models.PayAmountModel;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
 import com.tenakata.Utilities.HRAppConstants;
@@ -41,7 +43,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentCreditPurchase extends BaseFragment implements OnMoreListener,
-        SwipeRefreshLayout.OnRefreshListener, HomeSalesBaseAdapter.RowClick{
+        SwipeRefreshLayout.OnRefreshListener, HomeSalesBaseAdapter.RowClick, showPayDialog.onAmountPaid {
     private FragmentCreditPurchaseBinding binding;
     private Context context;
     private int currentPage = 1;
@@ -95,33 +97,40 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
 
     @Override
     public void onTaskSuccess(Object responseObj) {
+
         dismissLoader();
-        if (!(responseObj instanceof CashSalesCreditModel)) {
-            return;
-        }
-        CashSalesCreditModel model = (CashSalesCreditModel) responseObj;
+        if ((responseObj instanceof CashSalesCreditModel)) {
+            CashSalesCreditModel model = (CashSalesCreditModel) responseObj;
+            binding.viewTotalSale.setText("KES".concat(" ").concat(HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_amount()))));
 
-        binding.viewTotalSale.setText("KES".concat(" ").concat(HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_amount()))));
-
-        if (list.size() > 0) list.clear();
-        if (model.getResult().size() > 0) {
-            list.addAll(model.getResult());
-        }
-        if (adapter == null) {
-            adapter = new HomeSalesBaseAdapter(context, list,this,"purchaseCredit");
-            binding.listItem.setAdapter(adapter);
-        } else {
-            adapter.refresh(list);
-        }
-        if (list != null && list.size() > 9) {
-            binding.listItem.setupMoreListener(this, 0);
-            if (binding.listItem.isLoadingMore()) {
-                binding.listItem.setLoadingMore(false);
+            if (list.size() > 0) list.clear();
+            if (model.getResult().size() > 0) {
+                list.addAll(model.getResult());
             }
-        } else {
-            currentPage = 1;
-            binding.listItem.removeMoreListener();
+            if (adapter == null) {
+                adapter = new HomeSalesBaseAdapter(context, list, this, "purchaseCredit");
+                binding.listItem.setAdapter(adapter);
+            } else {
+                adapter.refresh(list);
+            }
+            if (list != null && list.size() > 9) {
+                binding.listItem.setupMoreListener(this, 0);
+                if (binding.listItem.isLoadingMore()) {
+                    binding.listItem.setLoadingMore(false);
+                }
+            } else {
+                currentPage = 1;
+                binding.listItem.removeMoreListener();
+            }
         }
+          else if (responseObj instanceof PayAmountModel){
+
+            onRefresh();
+            dismissLoader();
+        }
+
+
+
     }
 
     @Override
@@ -175,7 +184,7 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
 
     @Override
     public void onPayClick(String id, String totalAmount) {
-
+        new showPayDialog(context,id,totalAmount,this);
     }
 
     @Override
@@ -187,9 +196,31 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     public void onViewDetailsClick(int position,String id, String name, String receiptpath , String amount,String list) {
         Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id",id);
-        intent.putExtra("sales_purchases","purchases");
+        intent.putExtra("sales_purchases","purchase");
         intent.putExtra("payment_type","credit");
         startActivity(intent);
         Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onAmountPaidByUser(String id, String amount, String mode, String narration) {
+        hitPayApi(id,amount,mode,narration);
+    }
+
+    private void hitPayApi(String id, String amount, String mode, String narration) {
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("transaction_id", id);
+            jsonObject.put("amount_paid", amount);
+            jsonObject.put("payment_option", mode);
+            jsonObject.put("sales_purchases", "purchase");
+            jsonObject.put("naration", narration);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Authentication.objectApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PAY_AMOUNT),
+                this, jsonObject, HRUrlFactory.getAppHeaders(), true);
     }
 }

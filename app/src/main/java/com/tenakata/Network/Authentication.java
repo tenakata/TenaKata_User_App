@@ -135,8 +135,13 @@ public class Authentication {
 
     public static void print(String url, String response, String params, String headers) {
         if (BuildConfig.DEBUG) {
-            Log.i(url, response.concat("\n\n").concat("params: ").concat(params)
-                    .concat("\n\n").concat("headers: ").concat(headers).concat("\n\n"));
+            if (null== response){
+                Log.i("null response","null response");
+            }else {
+                Log.i(url, response.concat("\n\n").concat("params: ").concat(params)
+                        .concat("\n\n").concat("headers: ").concat(headers).concat("\n\n"));
+            }
+
         }
     }
 

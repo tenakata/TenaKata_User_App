@@ -236,13 +236,14 @@
                     android:background="@drawable/round_corner_edittext"
                     android:ems="10"
                     android:fontFamily="@font/montserrat_medium"
-                    android:gravity="top"
-                    android:inputType="textPersonName"
-
+                    android:gravity="left"
+                    android:inputType="textMultiLine"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingRight="10dp"
                     android:paddingBottom="10dp"
+                    android:singleLine="false"
+
                     android:textColor="@color/colorBlue"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintEnd_toEndOf="parent"

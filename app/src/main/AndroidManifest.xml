@@ -23,6 +23,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:icon">
+        <activity android:name=".Activity.testActivity"></activity>
         <activity android:name=".Activity.ActivityViewDetails" />
         <activity android:name=".Activity.ActivityTrainingDetails" />
         <activity android:name=".Activity.ActivityMpinRetype" />

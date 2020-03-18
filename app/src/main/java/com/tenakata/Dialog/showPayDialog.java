@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tenakata.R;
+import com.tenakata.Utilities.HRPriceFormater;
 import com.tenakata.Utilities.HRValidationHelper;
 
 
@@ -55,7 +56,7 @@ public class showPayDialog implements View.OnClickListener {
 
         TextView btnCancel = dialog.findViewById(R.id.viewBtnCancel);
         TextView totalAmount = dialog.findViewById(R.id.textView5);
-        totalAmount.setText(HRValidationHelper.optional(amount));
+        totalAmount.setText(HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(amount))));
 
         final TextView enterAmount = dialog.findViewById(R.id.viewAmount);
         final TextView viewNarration = dialog.findViewById(R.id.viewNarration);

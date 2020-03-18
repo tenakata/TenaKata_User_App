@@ -191,7 +191,7 @@ public class FragmentCashPurchase extends BaseFragment implements OnMoreListener
 
         Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id",id);
-        intent.putExtra("sales_purchases","purchases");
+        intent.putExtra("sales_purchases","purchase");
         intent.putExtra("payment_type","cash");
         Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
         startActivity(intent);
