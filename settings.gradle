@@ -1,0 +1,2 @@
+include ':app',':permission',':pinentry',':countrycodepicker',':sidemenu',':iosdialog',':superlistview'
+rootProject.name='TenaKata app'

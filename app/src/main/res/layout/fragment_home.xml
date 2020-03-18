@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.FragmentHome">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/colorBlue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/radioButtonSale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pt_sans_regular"
+                android:text="@string/sales"
+                android:checked="true"
+                android:padding="@dimen/dp_10"
+                android:button="@drawable/check_box_selector_home"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_13" />
+
+            <RadioButton
+                android:id="@+id/radioButtonPurchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_14"
+                android:layout_marginLeft="@dimen/dp_14"
+                android:fontFamily="@font/pt_sans_regular"
+                android:text="@string/purchase"
+                android:padding="@dimen/dp_10"
+                android:button="@drawable/check_box_selector_home"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_13" />
+
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <me.relex.circleindicator.CircleIndicator2
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            app:ci_drawable="@drawable/home_dot_selected"
+            app:ci_drawable_unselected="@drawable/home_dot_unselected"
+            app:layout_constraintBottom_toTopOf="@+id/startBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/pt_sans_bold"
+            android:text="Transactions"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barchart" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/indicator">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:cardCornerRadius="@dimen/dp_3"
+                app:cardElevation="@dimen/dp_4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/viewAveragePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="KES 0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_11"
+                    app:layout_constraintEnd_toEndOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="@+id/textView"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/pieChart"
+                    app:layout_constraintStart_toStartOf="@+id/pieChart"
+                    app:layout_constraintTop_toBottomOf="@+id/viewAveragePrice" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Average Sale"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_11"
+                    app:layout_constraintEnd_toEndOf="@+id/pieChart"
+                    app:layout_constraintStart_toStartOf="@+id/pieChart"
+                    app:layout_constraintTop_toTopOf="@+id/pieChart" />
+
+                <TextView
+                    android:id="@+id/viewCashPurchase2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="0%"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_11"
+                    app:layout_constraintEnd_toEndOf="@+id/viewAveragePrice"
+                    app:layout_constraintStart_toStartOf="@+id/viewAveragePrice"
+                    app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+                <TextView
+                    android:id="@+id/viewActivity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/pt_sans_bold"
+                    android:gravity="left"
+                    android:text="Purchase Activity."
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/pieChart"
+                    app:layout_constraintTop_toTopOf="@+id/pieChart" />
+
+                <TextView
+                    android:id="@+id/viewActivityText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:gravity="left"
+                    android:text="A breakdown of monthly\nsale captured"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toEndOf="@+id/viewActivity"
+                    app:layout_constraintStart_toStartOf="@+id/viewActivity"
+                    app:layout_constraintTop_toBottomOf="@+id/viewActivity" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_green_ractangle"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/viewActivityText"
+                    app:layout_constraintTop_toBottomOf="@+id/viewActivityText" />
+
+                <TextView
+                    android:id="@+id/viewCashSales"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:text="Cash sales KES 0"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                    app:layout_constraintEnd_toEndOf="@+id/viewActivityText"
+                    app:layout_constraintStart_toEndOf="@+id/textView15"
+                    app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_orange_ractangle"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                <TextView
+                    android:id="@+id/viewCashPurchase"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:text="Cash Purchase KES 0"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView21"
+                    app:layout_constraintEnd_toEndOf="@+id/viewCashSales"
+                    app:layout_constraintStart_toEndOf="@+id/textView21"
+                    app:layout_constraintTop_toTopOf="@+id/textView21" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

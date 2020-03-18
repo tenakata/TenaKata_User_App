@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_80"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/view11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/viewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Image A000234"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toEndOf="@+id/imageView11"
+            app:layout_constraintTop_toTopOf="@+id/imageView11" />
+
+        <TextView
+            android:id="@+id/viewShopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text=""
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/viewTitle"
+            app:layout_constraintTop_toBottomOf="@+id/viewTitle" />
+
+        <TextView
+            android:id="@+id/viewPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="dcsdc"
+            android:textColor="#c40000"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewTitle" />
+
+        <TextView
+            android:id="@+id/viewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="eferferf"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPrice" />
+
+        <TextView
+            android:id="@+id/viewPayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/a_pay_button_drawable"
+            android:fontFamily="@font/montserrat_regular"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_6"
+            android:text="   Pay  "
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="@+id/viewShopName"
+            app:layout_constraintTop_toBottomOf="@+id/viewShopName" />
+
+        <TextView
+            android:id="@+id/viewRemindBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/a_bg_remind_btn"
+            android:fontFamily="@font/montserrat_regular"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_6"
+            android:text="Remind"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPayBtn"
+            app:layout_constraintStart_toEndOf="@+id/viewPayBtn"
+            app:layout_constraintTop_toTopOf="@+id/viewPayBtn" />
+
+        <TextView
+            android:id="@+id/viewDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/next_icon"
+            android:drawableRight="@drawable/next_icon"
+            android:drawablePadding="@dimen/dp_5"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="View Details"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+            app:layout_constraintEnd_toEndOf="@+id/viewDate"
+            app:layout_constraintTop_toBottomOf="@+id/viewShopName" />
+
+        <View
+            android:id="@+id/view11"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorGray"
+            app:layout_constraintEnd_toEndOf="@+id/viewDetails"
+            app:layout_constraintStart_toStartOf="@+id/imageView11"
+            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

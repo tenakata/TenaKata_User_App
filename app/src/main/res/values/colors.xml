@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#003F5A</color>
+    <color name="colorPrimaryDark">#003F5A</color>
+    <color name="colorAccent">#003F5A</color>
+
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGreen">#8DB800</color>
+    <color name="colorBlue">#003F5A</color>
+    <color name="colorBlueLight">#76EAFF</color>
+    <color name="colorLoginBtn">#003D59</color>
+    <color name="colorYellow">#FCA931</color>
+    <color name="colorRefer">#9F9EA7</color>
+
+    <color name="color_gray_line">#e7e7e7</color>
+    <color name="color_button_background">#F2F2F2</color>
+    <color name="colorHint">#cccccc</color>
+    <color name="colorGray">#C0C0C0</color>
+    <color name="colorRedLight">#CB5D6A</color>
+
+    <color name="grey_extra_light">#EEEEEE</color>
+    <color name="grey_normal">#BDBDBD</color>
+    <color name="grey_black">#212121</color>
+    <color name="yellow_color">#FFE800</color>
+    <color name="coloOrange">#FF6E00</color>
+    <color name="colorPayBtn">#F23B42</color>
+    <color name="colorRemindBtn">#F5A71E</color>
+    <color name="colorCancelBtn">#F8F8F8</color>
+
+    <color name="red_transparent">#F3D4CB</color>
+</resources>

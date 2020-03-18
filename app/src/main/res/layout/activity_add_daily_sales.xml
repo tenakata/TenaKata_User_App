@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlue">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarOthers">
+
+                <TextView
+                    android:id="@+id/viewDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/calendar_icon"
+                    android:drawableRight="@drawable/calendar_icon"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Select Date"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_6"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutadd_enteramount"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="@+id/viewDate"
+                    app:layout_constraintStart_toStartOf="@+id/viewDate"
+                    app:layout_constraintTop_toBottomOf="@+id/view9">
+
+                    <EditText
+                        android:id="@+id/identeramount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:hint="Enter Amount"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/sp_14" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/viewCapturImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawableEnd="@drawable/camera_icon"
+                    android:drawableRight="@drawable/camera_icon"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Captured (attach receipt credit sale)"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_4"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintTop_toBottomOf="@+id/viewItemList" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RadioButton
+                            android:id="@+id/radioButtonCash"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="30dp"
+                            android:backgroundTint="@color/colorBlue"
+                            android:checked="true"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Cash"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/sp_14" />
+
+                        <RadioButton
+                            android:id="@+id/radioButtonCredit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Credit"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/sp_14" />
+                    </RadioGroup>
+                </LinearLayout>
+
+
+                <com.rilixtech.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:gravity="center_vertical"
+                    app:ccp_arrowSize="16dp"
+                    app:ccp_countryPreference="US"
+                    app:ccp_enablePhoneAutoFormatter="false"
+                    app:ccp_hideNameCode="false"
+                    app:ccp_showFlag="false"
+                    app:ccp_textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutadd_enteramount" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingLeft="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintStart_toEndOf="@+id/ccp"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutadd_enteramount">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/viewMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/pt_sans_regular"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/dp_5"
+                        android:paddingBottom="@dimen/dp_5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout2"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="60dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:hint="ID no."
+                    app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintTop_toBottomOf="@+id/view5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/viewIDNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:inputType="text"
+                        android:textSize="@dimen/sp_14" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout3"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:hint="Name"
+                    app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/viewName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:inputType="text"
+                        android:textSize="@dimen/sp_14" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_narration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Item List"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+
+                <EditText
+                    android:id="@+id/viewItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/round_corner_edittext"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:gravity="top"
+                    android:inputType="textPersonName"
+
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_narration" />
+
+                <Button
+                    android:id="@+id/viewSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_login_button"
+                    android:fontFamily="@font/pt_sans_bold"
+                    android:text="Save"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/viewCapturImage"
+                    app:layout_constraintStart_toStartOf="@+id/viewCapturImage"
+                    app:layout_constraintTop_toBottomOf="@+id/view10" />
+
+                <View
+                    android:id="@+id/view9"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_2"
+                    android:background="@color/color_gray_line"
+                    app:layout_constraintEnd_toEndOf="@+id/viewDate"
+                    app:layout_constraintStart_toStartOf="@+id/viewDate"
+                    app:layout_constraintTop_toBottomOf="@+id/viewDate" />
+
+                <View
+                    android:id="@+id/view10"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_2"
+                    android:background="@color/color_gray_line"
+                    app:layout_constraintEnd_toEndOf="@+id/viewCapturImage"
+                    app:layout_constraintStart_toStartOf="@+id/viewCapturImage"
+                    app:layout_constraintTop_toBottomOf="@+id/viewCapturImage" />
+
+
+                <View
+                    android:id="@+id/view5"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"
+                    app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBlue"
+                android:paddingStart="0dp"
+                android:paddingLeft="0dp"
+                android:paddingEnd="16dp"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/toolbarBackView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_icon" />
+
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:layout_marginLeft="@dimen/dp_15"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Add Daily Sale"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.21"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

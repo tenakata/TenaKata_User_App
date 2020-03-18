@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:layoutDirection="locale"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tapretry1"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/montserrat_medium"
+        android:gravity="center"
+        android:text="@string/no_internet_connection"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tapretry1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:fontFamily="@font/montserrat_regular"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:text="@string/net_error"
+        android:textColor="#000"
+        android:textSize="14sp" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textView47"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tapretry1"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:fontFamily="@font/montserrat_medium"
+        android:gravity="center"
+        android:text="@string/settings"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/retry"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_below="@+id/textView47"
+        android:layout_alignStart="@+id/tapretry1"
+        android:layout_alignEnd="@+id/tapretry1"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:background="@drawable/bg_login_button"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/retry"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
+
+</RelativeLayout>

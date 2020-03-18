@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "40459540575",
+    "firebase_url": "https://tenakata-5968a.firebaseio.com",
+    "project_id": "tenakata-5968a",
+    "storage_bucket": "tenakata-5968a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40459540575:android:ca8fa5c9e31860ec3e63ea",
+        "android_client_info": {
+          "package_name": "com.tenakata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40459540575-9t2jk8920qj1m7tqbtlvqeval7m4uu5o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenakata",
+            "certificate_hash": "84059c57f6d303529ed2e54b3425151d58ea1735"
+          }
+        },
+        {
+          "client_id": "40459540575-p26i4sdoum9brvdppmr7qqqmbdurmjfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7nlCHOiMsTcdOcp6MhT8HxOxz-DjZ5RE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40459540575-p26i4sdoum9brvdppmr7qqqmbdurmjfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
