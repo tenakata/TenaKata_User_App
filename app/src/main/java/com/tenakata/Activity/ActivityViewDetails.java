@@ -25,6 +25,8 @@ import com.tenakata.Dialog.DialogRemindPayment;
 import com.tenakata.Dialog.showPayDialog;
 import com.tenakata.Models.CashSalesCreditModel;
 import com.tenakata.Models.HomeModel;
+import com.tenakata.Models.ModelSuccess;
+import com.tenakata.Models.PayAmountModel;
 import com.tenakata.Models.ViewDetailsModel;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
@@ -40,52 +42,69 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityViewDetails extends BaseActivity {
+public class ActivityViewDetails extends BaseActivity implements showPayDialog.onAmountPaid, DialogRemindPayment.ReminderCallBack {
     ActivityCreditViewDetailsBinding binding;
+    static String dueamount;
+    static String payingamount;
     int position;
     Context context;
     private List<ViewDetailsModel.ResultBean> list = new ArrayList<>();
-    private RowClick callBack;
     private Intent intent;
 
 
     @Override
     public void onClick(int viewId, View view) {
-        switch (viewId) {
-            case R.id.viewPayBtn:
-                finish();
-                break;
-            case R.id.viewRemindBtn : finish();
-                    break;
-        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding= DataBindingUtil.setContentView(this,R.layout.activity_credit_view_details);
+
         context=this;
         intent=getIntent();
+        binding.viewRemindBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showRemindDialog(intent.getStringExtra("id"),binding.tvAmount.getText().toString());
+            }
+        });
+        binding.viewPayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPayDialog(intent.getStringExtra("id"),binding.tvAmount.getText().toString());
+            }
+        });
+
 
         try {
             apiHit();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if (intent.getStringExtra("payment_type").equals("cash")){
+            binding.viewPayBtn.setVisibility(View.GONE);
+            binding.viewRemindBtn.setVisibility(View.GONE);
+        }
+
+        if (intent.getStringExtra("sales_purchases").equals("purchase") && intent.getStringExtra("payment_type").equals("credit")){
+            binding.viewRemindBtn.setVisibility(View.GONE);
+        }
     }
 
 
+    public void showPayDialog(String id,String totalAmount) {
+        new showPayDialog(context,id,totalAmount,this);
+    }
 
+    public void showRemindDialog(String id,String totalAmount) {
+        new DialogRemindPayment(context,totalAmount,this,id);
 
-    public void onPayClick(String id,String totalAmount) {
-        new showPayDialog(this,id,totalAmount, (showPayDialog.onAmountPaid) this);
     }
 
 
-    public void onRemindClick(String id,String totalAmount) {
-        new DialogRemindPayment(context,totalAmount, (DialogRemindPayment.ReminderCallBack) this,id);
-
-    }
 
     public void hitRemindApi(String Id, String message) {
         final JSONObject jsonObject = new JSONObject();
@@ -107,24 +126,23 @@ public class ActivityViewDetails extends BaseActivity {
     private void apiHit() throws JSONException {
 
         JSONObject jsonObject=new JSONObject();
-       // jsonObject.put("id",intent.getStringExtra("id"));
         jsonObject.put("id",intent.getStringExtra("id"));
         jsonObject.put("sales_purchases",intent.getStringExtra("sales_purchases"));
         jsonObject.put("payment_type",intent.getStringExtra("payment_type"));
 
-        if (intent.getStringExtra("payment_type").equals("cash")){
-            binding.viewPayBtn.setVisibility(View.GONE);
-            binding.viewRemindBtn.setVisibility(View.GONE);
-        }
 
-        if (intent.getStringExtra("sales_purchases").equals("purchases")){
+
+
+        if (intent.getStringExtra("sales_purchases").equals("purchase")){
             Log.e("yoooooo",intent.getStringExtra("id"));
             Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PURCHASEVIEWDETAIL),this,jsonObject);
         }
-        if (intent.getStringExtra("sales_purchases").equals("sales")){
-            Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SALEVIEWDETAIL),this,jsonObject);
+        if (intent.getStringExtra("sales_purchases").equals("sales")) {
+            Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SALEVIEWDETAIL), this, jsonObject);
 
         }
+
+
 
        }
 
@@ -165,10 +183,25 @@ public class ActivityViewDetails extends BaseActivity {
                         .apply(new RequestOptions()
                                 .transform(new RoundedCorners(20)).placeholder(R.drawable.offer_sel))
                         .into(binding.imageView11);
-                binding.tvAmount.setText(model.getResult().get(0).getAmount());
+                String amount =(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(model.getResult().get(0).getAmount())));
+                binding.tvAmount.setText(amount);
                 binding.tvItemList.setText(model.getResult().get(0).getItem_list());
                 binding.tvCreditviewdetailsHead.setText(model.getResult().get(0).getName());
         }
+            else
+            if (responseObj instanceof PayAmountModel){
+                double a=Double.parseDouble(payingamount);
+                   double b=Double.parseDouble(binding.tvAmount.getText().toString());
+                   double c=b-a;
+                   String currentamount=(HRPriceFormater.roundDecimalByTwoDigits(c));
+                   binding.tvAmount.setText(currentamount);
+                super.onTaskSuccess(responseObj);
+            }
+
+            else if (responseObj instanceof ModelSuccess){
+                Toast.makeText(this,"Reminded Successsfully",Toast.LENGTH_LONG).show();
+                dismissLoader();
+            }
 
 
     }
@@ -181,12 +214,35 @@ public class ActivityViewDetails extends BaseActivity {
 
     }
 
-    public interface RowClick {
-        void onPayClick(String id,String totalAmount);
-        void onRemindClick(String id,String totalAmount);
-        void onViewDetailsClick(int position,String id, String name, String receiptpath,String amount,String list);
+    @Override
+    public void onAmountPaidByUser(String id, String amount, String mode, String narration) {
+        hitPayApi(id,amount,mode,narration);
+
+    }
+
+    private void hitPayApi(String id, String amount, String mode, String narration){
+
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("transaction_id", id);
+            jsonObject.put("amount_paid", amount);
+            payingamount=amount;
+            jsonObject.put("payment_option", mode);
+            jsonObject.put("sales_purchases", intent.getStringExtra("sales_purchases"));
+            jsonObject.put("naration", narration);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Authentication.objectApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PAY_AMOUNT),
+                this, jsonObject, HRUrlFactory.getAppHeaders(), true);
     }
 
 
+    @Override
+    public void onRemind(String Id, String message) {
+        hitRemindApi(Id,message);
 
+    }
 }

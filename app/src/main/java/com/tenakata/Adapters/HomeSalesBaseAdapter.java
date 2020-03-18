@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.tenakata.Models.CashSalesCreditModel;
 import com.tenakata.R;
+import com.tenakata.Utilities.HRPriceFormater;
 import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.databinding.HomeCashSalesAdapterBinding;
 
@@ -76,7 +77,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
                         .transform(new RoundedCorners(20)).placeholder(R.drawable.offer_sel))
                 .into(holder.binding.imageView11);
         holder.binding.viewDate.setText("Captured: "+HRValidationHelper.optional(list.get(position).getDate()));
-        holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(list.get(position).getAmount()));
+        holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(list.get(position).getAmount()))));
         holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
         holder.binding.viewTitle.setText(HRValidationHelper.optional(list.get(position).getItem_list()));
 

@@ -16,17 +16,19 @@
             android:background="@drawable/round_corner"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <ImageView
                 android:id="@+id/imageView11"
-                android:src="@drawable/collect_icon"
                 android:layout_width="@dimen/dp_70"
                 android:layout_height="@dimen/dp_80"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:scaleType="centerCrop"
+                android:src="@drawable/collect_icon"
                 app:layout_constraintBottom_toTopOf="@+id/view11"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +58,9 @@
                 android:id="@+id/viewPayBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:layout_marginTop="20dp"
+
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/a_pay_button_drawable"
                 android:fontFamily="@font/montserrat_regular"
                 android:paddingLeft="@dimen/dp_10"
@@ -67,6 +71,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/viewRemindBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view16" />
 
@@ -88,18 +93,21 @@
                 android:id="@+id/viewRemindBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="100dp"
                 android:background="@drawable/a_bg_remind_btn"
                 android:fontFamily="@font/montserrat_regular"
+                android:gravity=""
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_6"
+
                 android:paddingRight="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_6"
                 android:text="Remind"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/sp_14"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/viewPayBtn"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/viewPayBtn"
                 app:layout_constraintTop_toTopOf="@+id/viewPayBtn" />
 
             <View
@@ -149,9 +157,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="@string/total"
                 android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/montserrat_bold"
                 app:layout_constraintStart_toStartOf="@+id/view17"
                 app:layout_constraintTop_toBottomOf="@+id/view17" />
 
@@ -159,9 +167,9 @@
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_16"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="TextView"
+                android:textSize="@dimen/sp_16"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_total"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_total"
@@ -172,10 +180,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginStart="20dp"
-                android:textSize="@dimen/sp_16"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:text="TextView"
+                android:textSize="@dimen/sp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_totalitems"
                 app:layout_constraintTop_toBottomOf="@+id/tv_totalitems" />

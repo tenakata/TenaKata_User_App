@@ -245,6 +245,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
 
     }
 
+
     @Override
     public void onViewDetailsClick(int position, String id, String name, String receiptpath, String amount, String list) {
         Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
