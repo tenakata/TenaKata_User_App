@@ -1,12 +1,12 @@
 package com.tenakata.Models;
 
-public class LoginModel {
+public class ProfileModel {
 
 
     /**
      * status : 200
-     * message : Login Successfully !!
-     * result : {"id":"1","name":"ankit tiwari","phone":"7836048635","country_code":"91","role":"user","token":"Ug6N4YOfibcwRIm80Sdp"}
+     * message : Profile list!!
+     * result : {"id":"1","name":"ankit t","email":"ankit.t@gmail.com","role":"user","image":"http://res.cloudinary.com/tecorb-technologies/image/upload/v1584698184/a8sntp0nghtwrmvgejnp.jpg","public_id":"a8sntp0nghtwrmvgejnp","updated_at":"2020-03-20 09:03:56"}
      */
 
     private String status;
@@ -40,21 +40,21 @@ public class LoginModel {
     public static class ResultBean {
         /**
          * id : 1
-         * name : ankit tiwari
-         * phone : 7836048635
-         * country_code : 91
+         * name : ankit t
+         * email : ankit.t@gmail.com
          * role : user
-         * token : Ug6N4YOfibcwRIm80Sdp
+         * image : http://res.cloudinary.com/tecorb-technologies/image/upload/v1584698184/a8sntp0nghtwrmvgejnp.jpg
+         * public_id : a8sntp0nghtwrmvgejnp
+         * updated_at : 2020-03-20 09:03:56
          */
 
         private String id;
         private String name;
-        private String phone;
-        private String country_code;
-        private String role;
-        private String token;
-        private String image;
         private String email;
+        private String role;
+        private String image;
+        private String public_id;
+        private String updated_at;
 
         public String getId() {
             return id;
@@ -72,20 +72,12 @@ public class LoginModel {
             this.name = name;
         }
 
-        public String getPhone() {
-            return phone;
+        public String getEmail() {
+            return email;
         }
 
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public String getCountry_code() {
-            return country_code;
-        }
-
-        public void setCountry_code(String country_code) {
-            this.country_code = country_code;
+        public void setEmail(String email) {
+            this.email = email;
         }
 
         public String getRole() {
@@ -96,14 +88,6 @@ public class LoginModel {
             this.role = role;
         }
 
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
-
         public String getImage() {
             return image;
         }
@@ -112,12 +96,20 @@ public class LoginModel {
             this.image = image;
         }
 
-        public String getEmail() {
-            return email;
+        public String getPublic_id() {
+            return public_id;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setPublic_id(String public_id) {
+            this.public_id = public_id;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
         }
     }
 }

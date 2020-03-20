@@ -43,4 +43,8 @@ public interface HRAppConstants {
     String URL_SALEVIEWDETAIL="book/credit_view_details";
     String URL_PURCHASEVIEWDETAIL="book/purchase_view_details";
     String URL_CREATE_MPIN ="book/set_mp_pin";
+    String URL_PROFILE="book/profile";
+    String URL_TRAINING="book/training";
+    String URL_TRAINING_VIEW="book/training_viewDetails";
+    String URL_TRAINING_RATING="book/training_rating";
 }

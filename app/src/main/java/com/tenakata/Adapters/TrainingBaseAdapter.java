@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import androidx.databinding.DataBindingUtil;
+
+import com.tenakata.Models.TrainingListModel;
 import com.tenakata.R;
 import com.tenakata.databinding.TrainingBaseAdapetrBinding;
 import java.util.List;
@@ -13,10 +15,10 @@ import java.util.List;
 public class TrainingBaseAdapter extends BaseAdapter {
 
     private Context context;
-    private List<String> list;
+    private List<TrainingListModel.ResultBean> list;
     private RowClick callBack;
 
-    public TrainingBaseAdapter(Context context, List<String> list, RowClick callBack) {
+    public TrainingBaseAdapter(Context context, List<TrainingListModel.ResultBean> list, RowClick callBack) {
         this.list = list;
         this.context = context;
         this.callBack = callBack;
@@ -49,6 +51,7 @@ public class TrainingBaseAdapter extends BaseAdapter {
             TrainingBaseAdapetrBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext())
                     , R.layout.training_base_adapetr, parent, false);
             holder = new ViewHolder(itemBinding);
+            holder.binding.tvSubTitle.setText(list.get(position).getTitle());
             holder.view.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -56,14 +59,14 @@ public class TrainingBaseAdapter extends BaseAdapter {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callBack.onRowClick(0);
+                callBack.onRowClick(position,list.get(position).getUser_id());
             }
         });
         return holder.view;
     }
 
     public interface RowClick {
-        void onRowClick(int id);
+        void onRowClick(int position,String id);
 
     }
 

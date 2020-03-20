@@ -23,6 +23,7 @@ import com.tenakata.Activity.ActivityAddDailySales;
 import com.tenakata.Activity.ActivityViewDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Base.BaseFragment;
+import com.tenakata.Dialog.ReviewFilterDialog;
 import com.tenakata.Dialog.showPayDialog;
 import com.tenakata.Models.CashSalesCreditModel;
 import com.tenakata.Models.PayAmountModel;
@@ -38,6 +39,7 @@ import com.tenakata.databinding.FragmentCreditPurchaseBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.PushbackReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,8 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     private String per_page = "10";
     private HomeSalesBaseAdapter adapter;
     private List<CashSalesCreditModel.ResultBean> list = new ArrayList<>();
+    private boolean isSorting;
+    private String sorting_type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,20 +71,45 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         context=getActivity();
 
         binding.listItem.setRefreshListener(this);
+        if (FragmentPurchaseFlow.viewFilter1!=null)
+        {
+            FragmentPurchaseFlow.viewFilter1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "filter credit sale", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
+        if (FragmentPurchaseFlow.viewSort1!=null) {
+            FragmentPurchaseFlow.viewSort1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
+                        @Override
+                        public void onFilterApplyClick(String type) {
+                            isSorting = true;
+                            sorting_type= type;
+                            currentPage = 1;
+                            hitApi(true,isSorting,type);
+                        }
+                    });
+                }
+            });
+        }
 
         binding.viewAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ActivityAddDailySales.class)
-                        .putExtra("sales_purchases","purchase")
+                        .putExtra("sales_purchases","purchase").putExtra("title","Add new Credit Purchase").putExtra("defaultradiobutton","credit")
                 );
             }
         });
 
     }
 
-    private void hitApi() {
+    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("page", currentPage);
@@ -88,6 +117,9 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
             jsonObject.put("payment_type", "credit");
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("sales_purchases", "purchase");
+            if (isSorting && sorting_type!=null){
+                jsonObject.put("sorting_type", sorting_type);
+            }
 
 
         } catch (JSONException e) {
@@ -157,10 +189,17 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         }
     }
 
+
+
     @Override
     public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
         currentPage = currentPage + 1;
-        hitApi();
+        if (isSorting){
+            hitApi(false,true,sorting_type);
+        }else {
+            hitApi(false,false,null);
+        }
+
     }
 
     @Override
@@ -168,7 +207,8 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         currentPage = 1;
         binding.listItem.removeMoreListener();
         if (list.size() > 0) list.clear();
-        hitApi();
+        isSorting = false;
+        hitApi(false,isSorting,null);
     }
 
     @Override
@@ -180,7 +220,8 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     @Override
     public void onResume() {
         super.onResume();
-        hitApi();
+        isSorting = false;
+        hitApi(true,isSorting,null);
     }
 
 
@@ -224,5 +265,10 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         }
         Authentication.objectApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PAY_AMOUNT),
                 this, jsonObject, HRUrlFactory.getAppHeaders(), true);
+    }
+    @Override
+    public void onTaskError(String errorMsg) {
+        super.onTaskError(errorMsg);
+        dismissLoader();
     }
 }

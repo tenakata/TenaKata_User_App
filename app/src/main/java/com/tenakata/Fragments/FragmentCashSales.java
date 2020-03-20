@@ -77,8 +77,8 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
 
         binding.listItem.setRefreshListener(this);
 
-        if (FragmentCashFlow.viewFilter1 != null) {
-            FragmentCashFlow.viewFilter1.setOnClickListener(new View.OnClickListener() {
+        if (FragmentCashFlow.viewFilter != null) {
+            FragmentCashFlow.viewFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "filter", Toast.LENGTH_SHORT).show();
@@ -86,8 +86,8 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             });
         }
 
-        if (FragmentCashFlow.viewSort1 != null) {
-            FragmentCashFlow.viewSort1.setOnClickListener(new View.OnClickListener() {
+        if (FragmentCashFlow.viewSort != null) {
+            FragmentCashFlow.viewSort.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
@@ -107,7 +107,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ActivityAddDailySales.class)
-                        .putExtra("sales_purchases", "sales"));
+                        .putExtra("sales_purchases", "sales").putExtra("title","Add Daily Sales").putExtra("defaultradiobutton","cash"));
             }
         });
     }
@@ -166,7 +166,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
         if (adapter == null) {
             adapter = new HomeSalesBaseAdapter(context, list, this, "cashSale");
             binding.listItem.setAdapter(adapter);
-        } else {
+        } else { ;
             adapter.refresh(list);
         }
         if (list != null && list.size() > 9) {

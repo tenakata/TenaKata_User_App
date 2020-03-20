@@ -1,5 +1,6 @@
 package com.tenakata.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -25,6 +27,7 @@ import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import com.tenakata.Adapters.DrawerAdapter;
+import com.tenakata.Adapters.HomeViewPagerAdapter;
 import com.tenakata.Base.BaseActivity;
 import com.tenakata.CallBacks.BaseCallBacks;
 import com.tenakata.Dialog.ProgressDialog;
@@ -43,6 +46,7 @@ import com.tenakata.Utilities.HRPrefManager;
 import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.databinding.ActivityDashboardBinding;
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.yarolegovich.slidingrootnav.SlideGravity;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
@@ -56,7 +60,9 @@ import java.util.HashMap;
 import static com.tenakata.Dialog.ProgressDialog.progressDialog;
 
 public class ActivityDashboard extends BaseActivity implements AdapterView.OnItemClickListener,
-        View.OnClickListener , BaseCallBacks {
+        View.OnClickListener , BaseCallBacks , FragmentHome.CallBackAgain {
+
+    public static String profilepicpath = null;
     private Context context;
     private ActivityDashboardBinding binding;
     private SlidingRootNav drawerLayout;
@@ -76,7 +82,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
 
 
         initDrawer(binding.includedToolbar.toolbarDashboard,binding.includedToolbar.toolbarMenuView);
-        getSupportFragmentManager().beginTransaction().add(R.id.dashboardFrame,new FragmentHome()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.dashboardFrame,new FragmentHome(this)).commit();
 
         binding.includedFooter.img1.setOnClickListener(this);
         binding.includedFooter.img2.setOnClickListener(this);
@@ -149,7 +155,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadFragment(new FragmentHome());
+                        loadFragment(new FragmentHome(this));
                     }
                 }, 225);
                 break;
@@ -238,7 +244,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
             case R.id.tv1:
                 if (isHome) {
                     try {
-                        loadFragment(new FragmentHome());
+                        loadFragment(new FragmentHome(this));
                         binding.includedFooter.tv1.setTextColor(getResources().getColor(R.color.colorBlue));
                         binding.includedFooter.tv2.setTextColor(getResources().getColor(R.color.grey_normal));
                         binding.includedFooter.tv3.setTextColor(getResources().getColor(R.color.grey_normal));
@@ -261,7 +267,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
             case R.id.tv2:
                     if (isSale) {
                         try {
-                            loadFragment(new FragmentCashFlow());
+                            loadFragment(new FragmentCashFlow(this));
                             binding.includedFooter.tv1.setTextColor(getResources().getColor(R.color.grey_normal));
                             binding.includedFooter.tv2.setTextColor(getResources().getColor(R.color.colorBlue));
                             binding.includedFooter.tv3.setTextColor(getResources().getColor(R.color.grey_normal));
@@ -287,7 +293,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                     if (isPurchage) {
 
                         try {
-                            loadFragment(new FragmentPurchaseFlow());
+                            loadFragment(new FragmentPurchaseFlow(this));
                             binding.includedFooter.tv1.setTextColor(getResources().getColor(R.color.grey_normal));
                             binding.includedFooter.tv2.setTextColor(getResources().getColor(R.color.grey_normal));
                             binding.includedFooter.tv3.setTextColor(getResources().getColor(R.color.colorBlue));
@@ -408,6 +414,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
             finishAffinity();
 
         }
+
     }
 
     @Override
@@ -433,5 +440,78 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onSaleClick() {
+        try {
+            loadFragment(new FragmentCashFlow(this));
+            binding.includedFooter.tv1.setTextColor(getResources().getColor(R.color.grey_normal));
+            binding.includedFooter.tv2.setTextColor(getResources().getColor(R.color.colorBlue));
+            binding.includedFooter.tv3.setTextColor(getResources().getColor(R.color.grey_normal));
+
+            binding.includedFooter.img1.setImageDrawable(getResources().getDrawable(R.drawable.home_icon_unsel));
+            binding.includedFooter.img2.setImageDrawable(getResources().getDrawable(R.drawable.offer_sel));
+            binding.includedFooter.img3.setImageDrawable(getResources().getDrawable(R.drawable.shopping_cart_unsel));
+            binding.includedToolbar.toolbarDashboard.setVisibility(View.GONE);
+
+            isHome = true;
+            isSale = false;
+            isPurchage = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onPurchaseClick() {
+        try {
+            loadFragment(new FragmentPurchaseFlow(this));
+            binding.includedFooter.tv1.setTextColor(getResources().getColor(R.color.grey_normal));
+            binding.includedFooter.tv2.setTextColor(getResources().getColor(R.color.grey_normal));
+            binding.includedFooter.tv3.setTextColor(getResources().getColor(R.color.colorBlue));
+
+
+            binding.includedFooter.img1.setImageDrawable(getResources().getDrawable(R.drawable.home_icon_unsel));
+            binding.includedFooter.img2.setImageDrawable(getResources().getDrawable(R.drawable.offer_unsel));
+            binding.includedFooter.img3.setImageDrawable(getResources().getDrawable(R.drawable.shopping_cart_sel));
+
+            binding.includedToolbar.toolbarDashboard.setVisibility(View.GONE);
+
+            isHome = true;
+            isSale = true;
+            isPurchage = false;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                try {
+
+                    profilepicpath = result.getUri().getEncodedPath();
+
+
+
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void getRealPathFromURI(Uri uri) {
     }
 }

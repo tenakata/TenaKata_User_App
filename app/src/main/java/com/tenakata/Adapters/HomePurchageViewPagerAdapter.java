@@ -10,12 +10,10 @@ import com.tenakata.Fragments.FragmentCashPurchase;
 import com.tenakata.Fragments.FragmentCreditPurchase;
 
 public class HomePurchageViewPagerAdapter  extends FragmentPagerAdapter {
-    private Context context;
     int tabs;
 
-    public HomePurchageViewPagerAdapter(FragmentManager fragment, Context context, int tabs) {
+    public HomePurchageViewPagerAdapter(FragmentManager fragment, int tabs) {
         super(fragment);
-        this.context = context;
         this.tabs = tabs;
     }
 
