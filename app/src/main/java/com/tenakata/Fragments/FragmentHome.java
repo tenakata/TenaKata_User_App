@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.tenakata.Activity.ActivityDashboard;
 import com.tenakata.Adapters.HomeViewPagerAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.Dialog.ErrorDialog;
@@ -56,7 +59,7 @@ import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator2;
 
-public class FragmentHome extends BaseFragment {
+public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.Callback {
     private Context context;
     private FragmentHomeBinding binding;
     private LinearLayoutManager horizontalLayoutManager;
@@ -67,6 +70,17 @@ public class FragmentHome extends BaseFragment {
     private ProgressDialog progressDialog;
     private  CircleIndicator2 indicator;
     private HomeViewPagerAdapter adapter;
+    private CallBackAgain callBackAgain;
+
+    public FragmentHome(CallBackAgain callBackAgain) {
+        super();
+        this.callBackAgain=callBackAgain;
+
+    }
+
+    public FragmentHome(Runnable runnable) {
+        super();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,6 +149,7 @@ public class FragmentHome extends BaseFragment {
                             hitApi("sales");
                             binding.radioButtonSale.setChecked(true);
                             binding.radioButtonPurchase.setChecked(false);
+                            //sdkjsjciascbkcksn
 
                         }else {
                             binding.viewActivity.setText("Purchase Activity");
@@ -325,7 +340,7 @@ public class FragmentHome extends BaseFragment {
         }
         if (responseObj instanceof HomeModel) {
             HomeModel model = (HomeModel) responseObj;
-            binding.viewAveragePrice.setText(HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_average())));
+            binding.viewAveragePrice.setText("KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_average())));
             binding.viewCashSales.setText("Cash Sales KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())));
             binding.viewCashPurchase.setText("Cash Purchase KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
 
@@ -336,7 +351,7 @@ public class FragmentHome extends BaseFragment {
             if (adapter == null) {
                 adapter = new HomeViewPagerAdapter(l, context,
                         HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())),
-                        HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
+                        HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())),this);
                 binding.recyclerView.setAdapter(adapter);
             }else {
                  adapter.refresh(l,
@@ -353,4 +368,21 @@ public class FragmentHome extends BaseFragment {
         }
         ErrorDialog.errorDialog(context, getString(R.string.app_name), errorMsg);
     }
+
+    @Override
+    public void onSaleClick() {
+        callBackAgain.onSaleClick();
+    }
+
+    @Override
+    public void onPurchaseClick() {
+callBackAgain.onPurchaseClick();
+
+    }
+
+    public  interface CallBackAgain{
+         void onSaleClick();
+        void onPurchaseClick();
+    }
+
 }

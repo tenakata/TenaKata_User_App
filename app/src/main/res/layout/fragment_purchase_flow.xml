@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragments.FragmentCashFlow">
@@ -57,26 +56,70 @@
 
 
                     <TextView
-                        android:fontFamily="@font/montserrat_medium"
+                        android:visibility="visible"
+                        android:id="@+id/viewSort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sort By"
-                        android:drawableLeft="@drawable/layer_icon"
+                        android:layout_marginEnd="8dp"
                         android:drawableStart="@drawable/layer_icon"
+                        android:drawableLeft="@drawable/layer_icon"
                         android:drawablePadding="@dimen/dp_5"
-                        android:textColor="@color/colorWhite"/>
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Sort By"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewFilter"
+                        app:layout_constraintEnd_toStartOf="@+id/viewFilter"
+                        app:layout_constraintTop_toTopOf="@+id/viewFilter" />
+
+                    <TextView
+                        android:id="@+id/viewSort1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:visibility="gone"
+                        android:drawableStart="@drawable/layer_icon"
+                        android:drawableLeft="@drawable/layer_icon"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Sort By"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewFilter"
+                        app:layout_constraintEnd_toStartOf="@+id/viewFilter1"
+                        app:layout_constraintTop_toTopOf="@+id/viewFilter" />
 
 
                     <TextView
-                        android:fontFamily="@font/montserrat_medium"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:drawableLeft="@drawable/filter_icon"
-                        android:drawableStart="@drawable/filter_icon"
-                        android:drawablePadding="@dimen/dp_5"
+                        android:visibility="visible"
+                        android:id="@+id/viewFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawableStart="@drawable/filter_icon"
+                        android:drawableLeft="@drawable/filter_icon"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="Filter By"
-                        android:textColor="@color/colorWhite"/>
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/viewFilter1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawableStart="@drawable/filter_icon"
+                        android:drawableLeft="@drawable/filter_icon"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:visibility="gone"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Filter By"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
 

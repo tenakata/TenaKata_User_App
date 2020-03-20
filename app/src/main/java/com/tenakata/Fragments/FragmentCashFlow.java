@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.tenakata.Activity.ActivityDashboard;
 import com.tenakata.Adapters.CashFlowPagerAdapter;
+import com.tenakata.Adapters.HomeViewPagerAdapter;
 import com.tenakata.Base.BaseFragment;
 import com.tenakata.CallBacks.BaseCallBacks;
 import com.tenakata.R;
@@ -29,6 +32,12 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
     private FragmentCashFlowBinding binding;
     private CashFlowPagerAdapter adapter;
     public static TextView viewSort,viewFilter,viewSort1,viewFilter1;
+    FragmentHome.CallBackAgain callBackAgain;
+
+    public FragmentCashFlow(FragmentHome.CallBackAgain callBackAgain) {
+       this.callBackAgain=callBackAgain;
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -67,7 +76,6 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.txt_puchases)));
         adapter = new CashFlowPagerAdapter(getChildFragmentManager(), binding.tabLayout.getTabCount());
         binding.viewpager.setAdapter(adapter);
-
         binding.viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -116,4 +124,6 @@ public class FragmentCashFlow extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+
 }

@@ -13,7 +13,7 @@ import com.tenakata.R;
 public class DrawerAdapter extends BaseAdapter {
 
     private int[] titles = {R.string.txt_home,  R.string.txt_Profile, R.string.txt_tranining,
-            R.string.txt_reminder,R.string.txt_loans,R.string.txt_order_stock,R.string.txt_reports, R.string.txt_faq, R.string.txt_contact,
+            R.string.txt_reminder,R.string.txt_loans,R.string.txt_order_stock,R.string.txt_creatempin,R.string.txt_reports, R.string.txt_faq, R.string.txt_contact,
             R.string.txt_logout};
 
     @Override

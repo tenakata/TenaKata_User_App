@@ -79,7 +79,20 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
         holder.binding.viewDate.setText("Captured: "+HRValidationHelper.optional(list.get(position).getDate()));
         holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(list.get(position).getAmount()))));
         holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
-        holder.binding.viewTitle.setText(HRValidationHelper.optional(list.get(position).getItem_list()));
+       // holder.binding.viewTitle.setText(HRValidationHelper.optional(list.get(position).getItem_list()));
+        String string=list.get(position).getItem_list();
+        String []word=string.split("\\s");
+        int length=word.length;
+        int count=0;
+        StringBuffer stringBuffer=new StringBuffer();
+                for (int i=0;i<length;i++){
+                    count++;
+                    stringBuffer.append(word[i]+" ");
+                    if (count>1){
+                        break;
+                    }
+                }
+       holder.binding.viewTitle.setText(stringBuffer);
 
         if (type!=null && !type.equals("") && (type.equalsIgnoreCase("cashSale")||
                 type.equalsIgnoreCase("cashPurchase"))){

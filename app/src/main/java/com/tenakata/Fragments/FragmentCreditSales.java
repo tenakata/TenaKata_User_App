@@ -53,6 +53,8 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     private int currentPage = 1;
     private String per_page = "10";
     private HomeSalesBaseAdapter adapter;
+    private boolean isSorting;
+    private String sorting_type;
     private List<CashSalesCreditModel.ResultBean> list = new ArrayList<>();
 
     @Override
@@ -74,28 +76,31 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ActivityAddDailySales.class)
-                        .putExtra("sales_purchases","sales")
+                        .putExtra("sales_purchases","sales").putExtra("title","Add new Credit Sale").putExtra("defaultradiobutton","credit")
                 );
             }
         });
 
-        if (FragmentCashFlow.viewFilter!=null) {
-            FragmentCashFlow.viewFilter.setOnClickListener(new View.OnClickListener() {
+        if (FragmentCashFlow.viewFilter1!=null) {
+            FragmentCashFlow.viewFilter1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "filter", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "filter credit sale", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
-        if (FragmentCashFlow.viewSort!=null) {
-            FragmentCashFlow.viewSort.setOnClickListener(new View.OnClickListener() {
+        if (FragmentCashFlow.viewSort1!=null) {
+            FragmentCashFlow.viewSort1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
                         @Override
                         public void onFilterApplyClick(String type) {
-                            Toast.makeText(context, "this is sort new", Toast.LENGTH_SHORT).show();
+                            isSorting = true;
+                            sorting_type= type;
+                            currentPage = 1;
+                            hitApi(true,isSorting,type);
                         }
                     });
                 }
@@ -104,7 +109,7 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
 
     }
 
-    private void hitNetworkApi() {
+    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("page", currentPage);
@@ -117,8 +122,21 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_SALES),
-                this, jsonObject, HRUrlFactory.getAppHeaders(), false);
+        if (isSorting){
+            try {
+                jsonObject.put("sorting_type",sorting_type);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SORTING),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }
+        else
+        {
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_SALES),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), false);
+        }
+
     }
 
     @Override
@@ -179,7 +197,13 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     @Override
     public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
         currentPage = currentPage + 1;
-        hitNetworkApi();
+        if (isSorting){
+            hitApi(false,true,sorting_type);
+            hitApi(false,true,sorting_type);
+        }else {
+            hitApi(false,false,null);
+        }
+
     }
 
     @Override
@@ -187,7 +211,8 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
         currentPage = 1;
         binding.listItem.removeMoreListener();
         if (list.size() > 0) list.clear();
-        hitNetworkApi();
+        isSorting = false;
+        hitApi(false,isSorting,null);
     }
 
     @Override
@@ -199,7 +224,8 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     @Override
     public void onResume() {
         super.onResume();
-        hitNetworkApi();
+        isSorting = false;
+        hitApi(true,isSorting,null);
     }
 
     @Override

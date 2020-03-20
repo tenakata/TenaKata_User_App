@@ -200,9 +200,9 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
                     android:hint="Name"
-                    app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/layoutadd_enteramount"
                     app:layout_constraintStart_toStartOf="@+id/layoutadd_enteramount"
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 

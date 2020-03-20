@@ -112,6 +112,8 @@ public class ActivityAddDailySales extends BaseActivity {
 
         if (getIntent()!=null){
             sales_purchases = getIntent().getStringExtra("sales_purchases");
+            binding.textView2.setText(getIntent().getStringExtra("title"));
+
         }
 
         binding.toolbarBackView.setOnClickListener(this);
@@ -127,6 +129,24 @@ public class ActivityAddDailySales extends BaseActivity {
                 countryCode = country.getPhoneCode();
             }
         });
+        if (getIntent().getStringExtra("defaultradiobutton").equals("cash")){
+            binding.radioButtonCash.setChecked(true);
+            binding.textInputLayout.setVisibility(View.GONE);
+            binding.ccp.setVisibility(View.GONE);
+            binding.textInputLayout2.setVisibility(View.GONE);
+            // binding.textInputLayout3.setVisibility(View.GONE);
+            binding.view5.setVisibility(View.GONE);
+        }
+        else
+        {
+            binding.radioButtonCredit.setChecked(true);
+            binding.textInputLayout.setVisibility(View.VISIBLE);
+            binding.ccp.setVisibility(View.VISIBLE);
+            binding.textInputLayout2.setVisibility(View.VISIBLE);
+            // binding.textInputLayout3.setVisibility(View.VISIBLE);
+            binding.view5.setVisibility(View.VISIBLE);
+
+        }
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -140,13 +160,13 @@ public class ActivityAddDailySales extends BaseActivity {
                     binding.textInputLayout.setVisibility(View.VISIBLE);
                     binding.ccp.setVisibility(View.VISIBLE);
                     binding.textInputLayout2.setVisibility(View.VISIBLE);
-                    binding.textInputLayout3.setVisibility(View.VISIBLE);
+                   // binding.textInputLayout3.setVisibility(View.VISIBLE);
                     binding.view5.setVisibility(View.VISIBLE);
                 }else {
                     binding.textInputLayout.setVisibility(View.GONE);
                     binding.ccp.setVisibility(View.GONE);
                     binding.textInputLayout2.setVisibility(View.GONE);
-                    binding.textInputLayout3.setVisibility(View.GONE);
+                   // binding.textInputLayout3.setVisibility(View.GONE);
                     binding.view5.setVisibility(View.GONE);
                 }
             }
@@ -309,15 +329,15 @@ public class ActivityAddDailySales extends BaseActivity {
         if (paymentType.equalsIgnoreCase("cash")) {
 
             String apiUrl = HRAppConstants.URL_ADD_SALE_CASH_PURCHASE_CASH;
-
-            Authentication.multiPartRequest(HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
+        Toast.makeText(this,binding.viewName.getText().toString(),Toast.LENGTH_LONG).show();
+        Authentication.multiPartRequest(HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
                     binding.identeramount.getText().toString(),
                     binding.viewItemList.getText().toString(),
                     "cash",
                     sales_purchases,
                     binding.viewDate.getText().toString(),
                     path, apiUrl,
-                    this, paymentType, "", "", "");
+                    this, paymentType, "", "", binding.viewName.getText().toString());
         }else {
 
             String apiUrl = HRAppConstants.URL_ADD_SALE_CREDIT_PURCHASE_CASH;

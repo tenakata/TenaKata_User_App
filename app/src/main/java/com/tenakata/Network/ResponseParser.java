@@ -8,6 +8,9 @@ import com.tenakata.Models.HomeModel;
 import com.tenakata.Models.LoginModel;
 import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Models.PayAmountModel;
+import com.tenakata.Models.ProfileModel;
+import com.tenakata.Models.TrainingListModel;
+import com.tenakata.Models.TrainingViewModel;
 import com.tenakata.Models.ViewDetailsModel;
 import com.tenakata.Utilities.HRAppConstants;
 import com.tenakata.Utilities.HRUrlFactory;
@@ -30,12 +33,14 @@ public class ResponseParser {
 
                 case HRAppConstants.URL_LOGIN:
                 case HRAppConstants.URL_LOGIN_WITH_MPIN:
+                case HRAppConstants.URL_PROFILE :
                     return App.getInstance().getGson().fromJson(response, LoginModel.class);
 
                 case HRAppConstants.URL_CHECK_USER:
                 case HRAppConstants.URL_FORGOT_PASSWORD:
                 case HRAppConstants.URL_LOGOUT:
                 case HRAppConstants.URL_REMIND:
+                case HRAppConstants.URL_TRAINING_RATING:
                     return App.getInstance().getGson().fromJson(response, ModelSuccess.class);
 
                 case HRAppConstants.URL_CASH_CREDIT_SALES:
@@ -59,6 +64,10 @@ public class ResponseParser {
                 case HRAppConstants.URL_SALEVIEWDETAIL:
                     return App.getInstance().getGson().fromJson(response, ViewDetailsModel.class);
 
+                case HRAppConstants.URL_TRAINING :
+                    return App.getInstance().getGson().fromJson(response, TrainingListModel.class);
+                case HRAppConstants.URL_TRAINING_VIEW :
+                    return App.getInstance().getGson().fromJson(response, TrainingViewModel.class);
                 default:
                     return null;
             }

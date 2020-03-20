@@ -6,20 +6,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.tenakata.Fragments.FragmentCashFlow;
+import com.tenakata.Fragments.FragmentHome;
+import com.tenakata.Fragments.FragmentPurchaseFlow;
 import com.tenakata.R;
 import com.tenakata.Utilities.DimentionSessionManager;
 import com.tenakata.Utilities.HRValidationHelper;
 
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdapter.ViewHolder> {
 
@@ -27,13 +37,14 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
     private Context context;
     private List<String>filterBean;
     private String salePrice,purchasePrice;
-
-    public HomeViewPagerAdapter(List<String> beans, Context context,String salePrice,String purchasePrice) {
+    private Callback callback;
+    public HomeViewPagerAdapter(List<String> beans, Context context, String salePrice, String purchasePrice,Callback callback) {
         this.context = context;
         this.filterBean = beans;
         this.salePrice= salePrice;
         this.purchasePrice = purchasePrice;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.callback=callback;
     }
 
     public void refresh(List<String> beans,String salePrice,String purchasePrice) {
@@ -64,9 +75,24 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
 
         if (position == 0){
             holder.priceTv.setText("KES "+HRValidationHelper.optional(salePrice));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.onSaleClick();
+                }
+            });
         }else {
             holder.priceTv.setText("KES "+HRValidationHelper.optional(purchasePrice));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.onPurchaseClick();
+                }
+            });
         }
+
+
+
 
         holder.sales.setText(HRValidationHelper.optional(filterBean.get(position)));
         if (filterBean.get(position).equalsIgnoreCase("Sales")){
@@ -78,16 +104,27 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
         }
     }
 
+
+
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView sales,viewCircleTextView,priceTv;
+        ImageView next;
 
         public ViewHolder(View itemView) {
             super(itemView);
             sales = itemView.findViewById(R.id.textView16);
             priceTv = itemView.findViewById(R.id.textView17);
+            next= itemView.findViewById(R.id.textView18);
             viewCircleTextView = itemView.findViewById(R.id.viewCircleTextView);
         }
+    }
+
+    public interface Callback {
+        void onSaleClick();
+        void onPurchaseClick();
     }
 
 

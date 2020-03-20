@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.tenakata.Activity.ActivityDashboard;
 import com.tenakata.Adapters.HomePurchageViewPagerAdapter;
 import com.tenakata.R;
 import com.tenakata.Utilities.FontFamily;
@@ -28,6 +29,11 @@ public class FragmentPurchaseFlow extends Fragment implements View.OnClickListen
     private Context context;
     private FragmentPurchaseFlowBinding binding;
     private HomePurchageViewPagerAdapter adapter;
+    public static TextView viewSort,viewFilter,viewSort1,viewFilter1;
+    FragmentHome.CallBackAgain callBackAgain;
+    public FragmentPurchaseFlow(FragmentHome.CallBackAgain callBackAgain) {
+        this.callBackAgain=callBackAgain;
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -35,6 +41,11 @@ public class FragmentPurchaseFlow extends Fragment implements View.OnClickListen
 
         context = getActivity();
         binding.toolbarBackView.setOnClickListener(this);
+        viewSort = binding.viewSort;
+        viewFilter = binding.viewFilter;
+
+        viewSort1 = binding.viewSort1;
+        viewFilter1 = binding.viewFilter1;
         setViewPage();
     }
 
@@ -61,13 +72,27 @@ public class FragmentPurchaseFlow extends Fragment implements View.OnClickListen
     private void setViewPage() {
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.txt_cash_purchase)));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.txt_credit_purchase)));
-        adapter = new HomePurchageViewPagerAdapter(getChildFragmentManager(), context, binding.tabLayout.getTabCount());
+        adapter = new HomePurchageViewPagerAdapter(getChildFragmentManager(), binding.tabLayout.getTabCount());
         binding.viewpager.setAdapter(adapter);
         binding.viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 binding.viewpager.setCurrentItem(tab.getPosition());
+                if (tab.getPosition()==0){
+                    binding.viewFilter1.setVisibility(View.GONE);
+                    binding.viewSort1.setVisibility(View.GONE);
+
+                    binding.viewFilter.setVisibility(View.VISIBLE);
+                    binding.viewSort.setVisibility(View.VISIBLE);
+
+                }else if (tab.getPosition()==1){
+                    binding.viewFilter1.setVisibility(View.VISIBLE);
+                    binding.viewSort1.setVisibility(View.VISIBLE);
+
+                    binding.viewFilter.setVisibility(View.GONE);
+                    binding.viewSort.setVisibility(View.GONE);
+                }
             }
 
             @Override
