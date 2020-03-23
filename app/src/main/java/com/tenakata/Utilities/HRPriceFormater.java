@@ -74,26 +74,28 @@ public class HRPriceFormater {
         return output.format(d);
     }
 
-    public static String changeDateFormatIntoDay(String serverdate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy", Locale.US);
-        SimpleDateFormat output = new SimpleDateFormat("MMM-dd", Locale.US);
-        //  sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+    public static String graphWeekFormater(String date) {
+        if (date==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        SimpleDateFormat output = new SimpleDateFormat("EEEE", Locale.US);
+
         Date d = null;
         try {
-            d = sdf.parse(serverdate);
+            d = sdf.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = output.format(d);
-        return formattedDate;
+        return output.format(d);
     }
 
-    public static String changeDateFormate(String serverdate) {
+    public static String changeMonthFormate(String serverdate) {
         if (serverdate==null){
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy", new Locale("en"));
-        SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy", new Locale("en"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", new Locale("en"));
+        SimpleDateFormat output = new SimpleDateFormat("MMM", new Locale("en"));
         Date d = null;
         try {
             d = sdf.parse(serverdate);

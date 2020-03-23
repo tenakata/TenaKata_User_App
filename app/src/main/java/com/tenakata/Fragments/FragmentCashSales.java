@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     private List<CashSalesCreditModel.ResultBean> list = new ArrayList<>();
     private boolean isSorting;
     private String sorting_type;
+    private boolean isFilter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +83,16 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             FragmentCashFlow.viewFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "filter", Toast.LENGTH_SHORT).show();
+                    new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
+                        @Override
+                        public void onFilterApplyClick(String type) {
+                            isFilter=true;
+                            sorting_type= type;
+                            currentPage = 1;
+                            hitApi(true,false,type,true);
+                        }
+                    },"filter");
+
                 }
             });
         }
@@ -96,9 +107,9 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
                             isSorting = true;
                             sorting_type= type;
                             currentPage = 1;
-                            hitApi(true,isSorting,type);
+                            hitApi(true,true,type,false);
                         }
-                    });
+                    },"sort");
                 }
             });
         }
@@ -113,7 +124,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     }
 
 
-    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type) {
+    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type,boolean isFilter) {
         final JSONObject jsonObject = new JSONObject();
         try {
 
@@ -126,10 +137,19 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             if (isSorting && sorting_type!=null){
                 jsonObject.put("sorting_type", sorting_type);
             }
+            if (isFilter && sorting_type!=null){
+                jsonObject.put("sorting_type", sorting_type);
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if (isFilter){
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_FILTER),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }else
 
         if (isSorting){
             Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SORTING),
@@ -174,6 +194,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             if (binding.listItem.isLoadingMore()) {
                 binding.listItem.setLoadingMore(false);
             }
+            
         } else {
             currentPage = 1;
             binding.listItem.removeMoreListener();
@@ -206,11 +227,16 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
         currentPage = currentPage + 1;
         if (isSorting){
-            hitApi(false,true,sorting_type);
-        }else {
-            hitApi(false,false,null);
-        }
 
+            hitApi(false,true,sorting_type,false);
+        }else if (isFilter){
+
+            hitApi(false,false,sorting_type,true);
+        }
+        else {
+
+            hitApi(false,false,null,false);
+        }
     }
 
     @Override
@@ -219,7 +245,9 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
         binding.listItem.removeMoreListener();
         if (list.size() > 0) list.clear();
         isSorting = false;
-        hitApi(false,isSorting,null);
+        isFilter=false;
+
+        hitApi(true,false,null,false);
     }
 
     @Override
@@ -232,7 +260,10 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     public void onResume() {
         super.onResume();
         isSorting = false;
-        hitApi(true,isSorting,null);
+        isFilter=false;
+
+        hitApi(true,false,null,false);
+
     }
 
     @Override

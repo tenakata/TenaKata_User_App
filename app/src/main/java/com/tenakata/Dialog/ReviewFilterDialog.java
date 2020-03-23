@@ -21,8 +21,10 @@ public class ReviewFilterDialog implements View.OnClickListener {
     private String selectedDay="amount";
     private String selectedCarID;
     private FilterApplyClick filterApplyClick;
+    String filterOrSort;
 
-    public ReviewFilterDialog(Context context,FilterApplyClick callBack) {
+    public ReviewFilterDialog(Context context,FilterApplyClick callBack,String filterOrSort ){
+        this.filterOrSort=filterOrSort;
         this.context = context;
         progressDialog=new ProgressDialog(context);
         this.filterApplyClick=callBack;
@@ -53,6 +55,13 @@ public class ReviewFilterDialog implements View.OnClickListener {
             }
         });
 
+        if (filterOrSort.equals("filter")){
+            selectedDay="15";
+            binding.view30.setText("15");
+            binding.view90.setText("30");
+
+        }
+
         binding.view30.setOnClickListener(this);
         binding.view90.setOnClickListener(this);
         binding.image30.setVisibility(View.VISIBLE);
@@ -81,21 +90,40 @@ public class ReviewFilterDialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (filterOrSort.equals("sort")){
+            switch (v.getId()){
+                case R.id.view30:
+                    binding.image90.setVisibility(View.GONE);
+                    binding.image30.setVisibility(View.VISIBLE);
+                    selectedDay="amount";
 
-        switch (v.getId()){
-            case R.id.view30:
-                binding.image90.setVisibility(View.GONE);
-                binding.image30.setVisibility(View.VISIBLE);
-                selectedDay="amount";
+                    break;
 
-                break;
-
-            case R.id.view90:
-                binding.image90.setVisibility(View.VISIBLE);
-                binding.image30.setVisibility(View.GONE);
-                selectedDay="date";
-                break;
+                case R.id.view90:
+                    binding.image90.setVisibility(View.VISIBLE);
+                    binding.image30.setVisibility(View.GONE);
+                    selectedDay="date";
+                    break;
+            }
         }
+        else if (filterOrSort.equals("filter")){
+            switch (v.getId()){
+                case R.id.view30:
+                    binding.image90.setVisibility(View.GONE);
+                    binding.image30.setVisibility(View.VISIBLE);
+                    selectedDay="15";
+
+                    break;
+
+                case R.id.view90:
+                    binding.image90.setVisibility(View.VISIBLE);
+                    binding.image30.setVisibility(View.GONE);
+                    selectedDay="30";
+                    break;
+            }
+        }
+
+
     }
 
     public interface FilterApplyClick{

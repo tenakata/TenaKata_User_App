@@ -4,11 +4,11 @@ package com.tenakata.Network;
 import com.tenakata.Application.App;
 import com.tenakata.Models.AddSaleCashCreditModel;
 import com.tenakata.Models.CashSalesCreditModel;
+import com.tenakata.Models.GraphModel;
 import com.tenakata.Models.HomeModel;
 import com.tenakata.Models.LoginModel;
 import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Models.PayAmountModel;
-import com.tenakata.Models.ProfileModel;
 import com.tenakata.Models.TrainingListModel;
 import com.tenakata.Models.TrainingViewModel;
 import com.tenakata.Models.ViewDetailsModel;
@@ -45,6 +45,7 @@ public class ResponseParser {
 
                 case HRAppConstants.URL_CASH_CREDIT_SALES:
                 case HRAppConstants.URL_SORTING:
+                case HRAppConstants.URL_FILTER :
                 case HRAppConstants.URL_CASH_CREDIT_Purchase:
                     return App.getInstance().getGson().fromJson(response, CashSalesCreditModel.class);
 
@@ -68,6 +69,8 @@ public class ResponseParser {
                     return App.getInstance().getGson().fromJson(response, TrainingListModel.class);
                 case HRAppConstants.URL_TRAINING_VIEW :
                     return App.getInstance().getGson().fromJson(response, TrainingViewModel.class);
+                case HRAppConstants.URL_GRAPH:
+                    return App.getInstance().getGson().fromJson(response, GraphModel.class);
                 default:
                     return null;
             }

@@ -47,4 +47,6 @@ public interface HRAppConstants {
     String URL_TRAINING="book/training";
     String URL_TRAINING_VIEW="book/training_viewDetails";
     String URL_TRAINING_RATING="book/training_rating";
+    String URL_FILTER="book/filter";
+    String URL_GRAPH="book/graph";
 }

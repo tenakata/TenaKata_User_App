@@ -10,54 +10,90 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".Fragments.FragmentHome">
 
-        <com.github.mikephil.charting.charts.BarChart
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/barchart"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:background="@color/colorBlue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlue"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".Fragments.FragmentHome">
 
-            <RadioButton
-                android:id="@+id/radioButtonSale"
-                android:layout_width="wrap_content"
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barchart1"
+                android:layout_width="0dp"
+                android:layout_height="230dp"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@color/colorBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pt_sans_regular"
-                android:text="@string/sales"
-                android:checked="true"
-                android:padding="@dimen/dp_10"
-                android:button="@drawable/check_box_selector_home"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/sp_13" />
+                android:layout_marginStart="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-                android:id="@+id/radioButtonPurchase"
-                android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/radioButtonSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/check_box_selector_home"
+                    android:checked="true"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/sales"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_13" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonPurchase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_14"
+                    android:layout_marginLeft="@dimen/dp_14"
+                    android:button="@drawable/check_box_selector_home"
+                    android:fontFamily="@font/pt_sans_regular"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/purchase"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_13" />
+
+            </RadioGroup>
+
+            <Spinner
+                android:id="@+id/apinner"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_14"
-                android:layout_marginLeft="@dimen/dp_14"
-                android:fontFamily="@font/pt_sans_regular"
-                android:text="@string/purchase"
-                android:padding="@dimen/dp_10"
-                android:button="@drawable/check_box_selector_home"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/sp_13" />
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_drawable"
+                android:dropDownVerticalOffset="30dp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/sp_5"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/sp_5"
+                android:popupBackground="@color/colorWhite"
+                android:spinnerMode="dropdown"
+                app:layout_constraintBottom_toBottomOf="@+id/radioGroup"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
