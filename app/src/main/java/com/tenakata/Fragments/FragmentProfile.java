@@ -32,6 +32,7 @@ import com.tenakata.Utilities.HRPriceFormater;
 import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.Utilities.IntentHelper;
+import com.tenakata.databinding.ActivityDashboardBinding;
 import com.tenakata.databinding.FragmentProfileBinding;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -42,6 +43,19 @@ public class FragmentProfile extends BaseFragment {
     private FragmentProfileBinding binding;
     String name, mobile, email;
     private Uri image_uris;
+
+    static Callback callback;
+
+    public FragmentProfile(Callback callback) {
+        super();
+        FragmentProfile.callback =callback;
+
+    }
+
+    public FragmentProfile(Runnable runnable) {
+        super();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -186,7 +200,8 @@ public class FragmentProfile extends BaseFragment {
             if (model.getResult().getName()!=null){
                 model.getResult().setName(model.getResult().getName());
                 binding.viewUserName.setText(model.getResult().getName());
-             //   model.getResult().setName(HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
+
+
             }
             else {
                 model.getResult().setName(HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
@@ -216,7 +231,7 @@ public class FragmentProfile extends BaseFragment {
             oldModel.getResult().setRole(oldModel.getResult().getRole());
 */
 
-
+            callback.onChangeName();
 
             startActivity(IntentHelper.getDashboard(context));
         }
@@ -228,7 +243,7 @@ public class FragmentProfile extends BaseFragment {
     public void onTaskError(String errorMsg) {
         super.onTaskError(errorMsg);
         dismissLoader();
-        Toast.makeText(getActivity(), "noo", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Error...", Toast.LENGTH_LONG).show();
     }
 
 
@@ -251,4 +266,9 @@ public class FragmentProfile extends BaseFragment {
         binding.editButtonn.setVisibility(View.VISIBLE);
 
     }
+
+    public interface Callback{
+        void onChangeName();
+    }
+
 }

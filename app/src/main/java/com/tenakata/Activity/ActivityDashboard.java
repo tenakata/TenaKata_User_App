@@ -60,7 +60,9 @@ import java.util.HashMap;
 import static com.tenakata.Dialog.ProgressDialog.progressDialog;
 
 public class ActivityDashboard extends BaseActivity implements AdapterView.OnItemClickListener,
-        View.OnClickListener , BaseCallBacks , FragmentHome.CallBackAgain {
+        View.OnClickListener , BaseCallBacks , FragmentHome.CallBackAgain,FragmentProfile.Callback{
+
+
 
     public static String profilepicpath = null;
     private Context context;
@@ -77,12 +79,14 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_dashboard);
         context = this;
+        new FragmentProfile( this);
 
         binding.includedToolbar.viewUserName.setText("Hello "+HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getName()));
 
 
         initDrawer(binding.includedToolbar.toolbarDashboard,binding.includedToolbar.toolbarMenuView);
         getSupportFragmentManager().beginTransaction().add(R.id.dashboardFrame,new FragmentHome(this)).commit();
+
 
         binding.includedFooter.img1.setOnClickListener(this);
         binding.includedFooter.img2.setOnClickListener(this);
@@ -146,7 +150,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                     @Override
                     public void run() {
                         binding.includedToolbar.viewUserName.setText("Profile");
-                        loadFragment(new FragmentProfile());
+                        loadFragment(new FragmentProfile(this));
                     }
                 }, 225);
                 break;
@@ -512,6 +516,8 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void getRealPathFromURI(Uri uri) {
+    @Override
+    public void onChangeName() {
+        initDrawer(binding.includedToolbar.toolbarDashboard,binding.includedToolbar.toolbarMenuView );
     }
 }

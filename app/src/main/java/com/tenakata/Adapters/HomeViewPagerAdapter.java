@@ -86,7 +86,10 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    callback.onPurchaseClick();
+                    if (callback!=null){
+                        callback.onPurchaseClick();
+                    }
+
                 }
             });
         }
