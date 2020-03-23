@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.tenakata.Activity.ActivityAddDailySales;
@@ -60,6 +63,17 @@ public class FragmentProfile extends BaseFragment {
             binding.tvUserid.setText("ID : " + HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getId()));
             binding.tvMobile.setText(HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getPhone()));
             binding.tvEmail.setText(HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail()));
+            String path=HRPrefManager.getInstance(context).getUserDetail().getResult().getImage();
+
+
+            Glide.with(this)
+                    .load(path)
+                    .apply(new RequestOptions()
+                            .transform(new RoundedCorners(20)).placeholder(R.drawable.user_icon))
+                    .into(binding.profileImage);
+
+
+
             name = binding.viewUserName.getText().toString();
             mobile = binding.tvMobile.getText().toString();
             email = binding.tvEmail.getText().toString();
@@ -101,10 +115,10 @@ public class FragmentProfile extends BaseFragment {
 
     private void editFunctionality(String name, String mobile, String email) {
 
-        /*binding.emailEditText.setHint(email);
+        binding.emailEditText.setHint(email);
         binding.mobileEditText.setHint(mobile);
-        binding.viewUserNameEditText.setHint(name);*/
-        /*binding.view1111.setVisibility(View.VISIBLE);
+        binding.viewUserNameEditText.setHint(name);
+        binding.view1111.setVisibility(View.VISIBLE);
         binding.view11.setVisibility(View.GONE);
         binding.view13.setVisibility(View.GONE);
         binding.view1313.setVisibility(View.VISIBLE);
@@ -114,7 +128,7 @@ public class FragmentProfile extends BaseFragment {
         binding.tvEmail.setVisibility(View.GONE);
         binding.tvMobile.setVisibility(View.GONE);
         binding.viewUserName.setVisibility(View.GONE);
-        */
+
         binding.button3.setVisibility(View.VISIBLE);
         binding.editButtonn.setVisibility(View.GONE);
 
@@ -149,7 +163,49 @@ public class FragmentProfile extends BaseFragment {
             LoginModel model = (LoginModel) responseObj;
             onSaved();
 
-            LoginModel oldModel = new LoginModel();
+
+
+            model.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
+            model.getResult().setCountry_code(HRPrefManager.getInstance(context).getUserDetail().getResult().getCountry_code());
+            model.getResult().setEmail(model.getResult().getEmail());
+            model.getResult().setId(HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
+            if (model.getResult().getImage()!=null){
+                String path=model.getResult().getImage();
+                Glide.with(this)
+                        .load(path)
+                        .apply(new RequestOptions()
+                                .transform(new RoundedCorners(20)).placeholder(R.drawable.user_icon))
+                        .into(binding.profileImage);
+                model.getResult().setImage(model.getResult().getImage());
+           //     model.getResult().setImage(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage());
+            }
+            else {
+                model.getResult().setImage(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage());
+            }
+
+            if (model.getResult().getName()!=null){
+                model.getResult().setName(model.getResult().getName());
+                binding.viewUserName.setText(model.getResult().getName());
+             //   model.getResult().setName(HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
+            }
+            else {
+                model.getResult().setName(HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
+            }
+            if (model.getResult().getEmail()!=null){
+                model.getResult().setEmail(model.getResult().getEmail());
+              //  model.getResult().setEmail(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail());
+                binding.tvEmail.setText(model.getResult().getEmail());
+            }
+            else {
+                model.getResult().setEmail(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail());
+            }
+            model.getResult().setPhone(HRPrefManager.getInstance(context).getUserDetail().getResult().getPhone());
+            model.getResult().setRole(HRPrefManager.getInstance(context).getUserDetail().getResult().getRole());
+            HRPrefManager.getInstance(context).setUserDetail(model);
+
+            /*
+            //  LoginModel oldModel = new LoginModel();
+            // oldModel.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
             oldModel.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
             oldModel.getResult().setCountry_code(oldModel.getResult().getCountry_code());
             oldModel.getResult().setEmail(oldModel.getResult().getEmail());
@@ -158,11 +214,10 @@ public class FragmentProfile extends BaseFragment {
             oldModel.getResult().setName(oldModel.getResult().getName());
             oldModel.getResult().setPhone(oldModel.getResult().getPhone());
             oldModel.getResult().setRole(oldModel.getResult().getRole());
+*/
 
-            binding.tvEmail.setText(model.getResult().getEmail());
-            binding.viewUserName.setText(model.getResult().getName());
-            binding.profileImage.setImageURI(Uri.parse(model.getResult().getImage()));
-            HRPrefManager.getInstance(context).setUserDetail(oldModel);
+
+
             startActivity(IntentHelper.getDashboard(context));
         }
 
@@ -179,9 +234,9 @@ public class FragmentProfile extends BaseFragment {
 
     private void onSaved() {
 
-       /* binding.emailEditText.setHint(email);
+        binding.emailEditText.setHint(email);
         binding.mobileEditText.setHint(mobile);
-        binding.viewUserNameEditText.setHint(name);*/
+        binding.viewUserNameEditText.setHint(name);
         binding.view1111.setVisibility(View.GONE);
         binding.view11.setVisibility(View.VISIBLE);
         binding.view13.setVisibility(View.VISIBLE);

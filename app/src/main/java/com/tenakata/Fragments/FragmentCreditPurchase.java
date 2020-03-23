@@ -56,6 +56,7 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     private List<CashSalesCreditModel.ResultBean> list = new ArrayList<>();
     private boolean isSorting;
     private String sorting_type;
+    private boolean isFilter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,15 +72,24 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         context=getActivity();
 
         binding.listItem.setRefreshListener(this);
-        if (FragmentPurchaseFlow.viewFilter1!=null)
-        {
+
+        if (FragmentPurchaseFlow.viewFilter1!=null) {
             FragmentPurchaseFlow.viewFilter1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "filter credit sale", Toast.LENGTH_SHORT).show();
+                    new ReviewFilterDialog(context, new ReviewFilterDialog.FilterApplyClick() {
+                        @Override
+                        public void onFilterApplyClick(String type) {
+                            isFilter=true;
+                            sorting_type= type;
+                            currentPage = 1;
+                            hitApi(true,false,type,true);
+                        }
+                    },"filter");
                 }
             });
         }
+
 
         if (FragmentPurchaseFlow.viewSort1!=null) {
             FragmentPurchaseFlow.viewSort1.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +101,9 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
                             isSorting = true;
                             sorting_type= type;
                             currentPage = 1;
-                            hitApi(true,isSorting,type);
+                            hitApi(true,true,type,false);
                         }
-                    });
+                    },"sort");
                 }
             });
         }
@@ -109,7 +119,7 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
 
     }
 
-    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type) {
+    private void hitApi(boolean isEnable,boolean isSorting,String sorting_type,boolean isFilter) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("page", currentPage);
@@ -120,14 +130,27 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
             if (isSorting && sorting_type!=null){
                 jsonObject.put("sorting_type", sorting_type);
             }
+            if (isFilter && sorting_type!=null){
+                jsonObject.put("sorting_type", sorting_type);
+            }
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_Purchase),
-                this, jsonObject, HRUrlFactory.getAppHeaders(), false);
-    }
+
+        if (isFilter){
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_FILTER),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }else
+
+        if (isSorting){
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SORTING),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }else {
+            Authentication.searchFilterApi(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CASH_CREDIT_SALES),
+                    this, jsonObject, HRUrlFactory.getAppHeaders(), isEnable);
+        }}
 
     @Override
     public void onTaskSuccess(Object responseObj) {
@@ -189,17 +212,20 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         }
     }
 
-
-
     @Override
     public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
         currentPage = currentPage + 1;
         if (isSorting){
-            hitApi(false,true,sorting_type);
-        }else {
-            hitApi(false,false,null);
-        }
 
+            hitApi(false,true,sorting_type,false);
+        }else if (isFilter){
+
+            hitApi(false,false,sorting_type,true);
+        }
+        else {
+
+            hitApi(false,false,null,false);
+        }
     }
 
     @Override
@@ -208,7 +234,9 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         binding.listItem.removeMoreListener();
         if (list.size() > 0) list.clear();
         isSorting = false;
-        hitApi(false,isSorting,null);
+        isFilter=false;
+
+        hitApi(true,false,null,false);
     }
 
     @Override
@@ -221,7 +249,10 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     public void onResume() {
         super.onResume();
         isSorting = false;
-        hitApi(true,isSorting,null);
+        isFilter=false;
+
+        hitApi(true,false,null,false);
+
     }
 
 

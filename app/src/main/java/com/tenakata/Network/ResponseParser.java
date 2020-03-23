@@ -45,6 +45,7 @@ public class ResponseParser {
 
                 case HRAppConstants.URL_CASH_CREDIT_SALES:
                 case HRAppConstants.URL_SORTING:
+                case HRAppConstants.URL_FILTER :
                 case HRAppConstants.URL_CASH_CREDIT_Purchase:
                     return App.getInstance().getGson().fromJson(response, CashSalesCreditModel.class);
 
