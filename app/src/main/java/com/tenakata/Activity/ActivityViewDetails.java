@@ -60,20 +60,20 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_credit_view_details);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_credit_view_details);
 
-        context=this;
-        intent=getIntent();
+        context = this;
+        intent = getIntent();
         binding.viewRemindBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showRemindDialog(intent.getStringExtra("id"),binding.tvAmount.getText().toString());
+                showRemindDialog(intent.getStringExtra("id"), binding.tvAmount.getText().toString());
             }
         });
         binding.viewPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPayDialog(intent.getStringExtra("id"),binding.tvAmount.getText().toString());
+                showPayDialog(intent.getStringExtra("id"), binding.tvAmount.getText().toString());
             }
         });
 
@@ -84,26 +84,25 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
             e.printStackTrace();
         }
 
-        if (intent.getStringExtra("payment_type").equals("cash")){
+        if (intent.getStringExtra("payment_type").equals("cash")) {
             binding.viewPayBtn.setVisibility(View.GONE);
             binding.viewRemindBtn.setVisibility(View.GONE);
         }
 
-        if (intent.getStringExtra("sales_purchases").equals("purchase") && intent.getStringExtra("payment_type").equals("credit")){
+        if (intent.getStringExtra("sales_purchases").equals("purchase") && intent.getStringExtra("payment_type").equals("credit")) {
             binding.viewRemindBtn.setVisibility(View.GONE);
         }
     }
 
 
-    public void showPayDialog(String id,String totalAmount) {
-        new showPayDialog(context,id,totalAmount,this);
+    public void showPayDialog(String id, String totalAmount) {
+        new showPayDialog(context, id, totalAmount, this);
     }
 
-    public void showRemindDialog(String id,String totalAmount) {
-        new DialogRemindPayment(context,totalAmount,this,id);
+    public void showRemindDialog(String id, String totalAmount) {
+        new DialogRemindPayment(context, totalAmount, this, id);
 
     }
-
 
 
     public void hitRemindApi(String Id, String message) {
@@ -125,17 +124,15 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
 
     private void apiHit() throws JSONException {
 
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("id",intent.getStringExtra("id"));
-        jsonObject.put("sales_purchases",intent.getStringExtra("sales_purchases"));
-        jsonObject.put("payment_type",intent.getStringExtra("payment_type"));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", intent.getStringExtra("id"));
+        jsonObject.put("sales_purchases", intent.getStringExtra("sales_purchases"));
+        jsonObject.put("payment_type", intent.getStringExtra("payment_type"));
 
 
-
-
-        if (intent.getStringExtra("sales_purchases").equals("purchase")){
-            Log.e("yoooooo",intent.getStringExtra("id"));
-            Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PURCHASEVIEWDETAIL),this,jsonObject);
+        if (intent.getStringExtra("sales_purchases").equals("purchase")) {
+            Log.e("yoooooo", intent.getStringExtra("id"));
+            Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_PURCHASEVIEWDETAIL), this, jsonObject);
         }
         if (intent.getStringExtra("sales_purchases").equals("sales")) {
             Authentication.object(this, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_SALEVIEWDETAIL), this, jsonObject);
@@ -143,14 +140,7 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
         }
 
 
-
-       }
-
-
-
-
-
-
+    }
 
 
     @Override
@@ -175,58 +165,50 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
 
     @Override
     public void onTaskSuccess(Object responseObj) {
-            if (responseObj instanceof  ViewDetailsModel){
-                ViewDetailsModel model = (ViewDetailsModel) responseObj;
-                String path=(model.getResult().get(0).getAttach_recepit());
+        if (responseObj instanceof ViewDetailsModel) {
+            ViewDetailsModel model = (ViewDetailsModel) responseObj;
+            if (model.getResult().size() > 0) {
+                String path = (model.getResult().get(0).getAttach_recepit());
                 Glide.with(this)
                         .load(path)
                         .apply(new RequestOptions()
                                 .transform(new RoundedCorners(20)).placeholder(R.drawable.offer_sel))
                         .into(binding.imageView11);
-                String amount =(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(model.getResult().get(0).getAmount())));
+                String amount = (HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(model.getResult().get(0).getAmount())));
                 binding.tvAmount.setText(amount);
                 binding.tvItemList.setText(model.getResult().get(0).getItem_list());
                 binding.tvCreditviewdetailsHead.setText(model.getResult().get(0).getName());
+            }
+        } else if (responseObj instanceof PayAmountModel) {
+            double a = Double.parseDouble(payingamount);
+            double b = Double.parseDouble(binding.tvAmount.getText().toString());
+            double c = b - a;
+            String currentamount = (HRPriceFormater.roundDecimalByTwoDigits(c));
+            binding.tvAmount.setText(currentamount);
+            super.onTaskSuccess(responseObj);
+        } else if (responseObj instanceof ModelSuccess) {
+            Toast.makeText(this, "Reminded Successsfully", Toast.LENGTH_LONG).show();
+            dismissLoader();
         }
-            else
-            if (responseObj instanceof PayAmountModel){
-                double a=Double.parseDouble(payingamount);
-                   double b=Double.parseDouble(binding.tvAmount.getText().toString());
-                   double c=b-a;
-                   String currentamount=(HRPriceFormater.roundDecimalByTwoDigits(c));
-                   binding.tvAmount.setText(currentamount);
-                super.onTaskSuccess(responseObj);
-            }
-
-            else if (responseObj instanceof ModelSuccess){
-                Toast.makeText(this,"Reminded Successsfully",Toast.LENGTH_LONG).show();
-                dismissLoader();
-            }
-
-
     }
-
-
 
     @Override
     public void onTaskError(String errorMsg) {
         super.onTaskError(errorMsg);
-
     }
 
     @Override
     public void onAmountPaidByUser(String id, String amount, String mode, String narration) {
-        hitPayApi(id,amount,mode,narration);
-
+        hitPayApi(id, amount, mode, narration);
     }
 
-    private void hitPayApi(String id, String amount, String mode, String narration){
+    private void hitPayApi(String id, String amount, String mode, String narration) {
 
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("transaction_id", id);
             jsonObject.put("amount_paid", amount);
-            payingamount=amount;
+            payingamount = amount;
             jsonObject.put("payment_option", mode);
             jsonObject.put("sales_purchases", intent.getStringExtra("sales_purchases"));
             jsonObject.put("naration", narration);
@@ -239,10 +221,9 @@ public class ActivityViewDetails extends BaseActivity implements showPayDialog.o
                 this, jsonObject, HRUrlFactory.getAppHeaders(), true);
     }
 
-
     @Override
     public void onRemind(String Id, String message) {
-        hitRemindApi(Id,message);
+        hitRemindApi(Id, message);
 
     }
 }

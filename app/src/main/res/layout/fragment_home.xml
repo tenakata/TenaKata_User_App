@@ -16,14 +16,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/barchart"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280dp"
             android:background="@color/colorBlue"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".Fragments.FragmentHome">
-
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barchart1"
