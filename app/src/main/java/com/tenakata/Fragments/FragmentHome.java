@@ -110,21 +110,17 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         linearSnapHelper.attachToRecyclerView(binding.recyclerView);
         indicator.attachToRecyclerView(binding.recyclerView, linearSnapHelper);
 
-
         binding.radioButtonSale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 binding.viewActivity.setText("Sales Activity");
                 binding.recyclerView.smoothScrollToPosition(0);
             }
         });
 
-
         binding.radioButtonPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 binding.viewActivity.setText("Purchase Activity");
                 binding.recyclerView.smoothScrollToPosition(1);
             }
@@ -184,7 +180,6 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
             }
         });
-
         spinner();
     }
 
@@ -447,13 +442,10 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
     @Override
     public void onPurchaseClick() {
         callBackAgain.onPurchaseClick();
-
     }
 
     public interface CallBackAgain {
         void onSaleClick();
-
         void onPurchaseClick();
     }
-
 }
