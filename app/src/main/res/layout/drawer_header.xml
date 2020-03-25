@@ -11,8 +11,8 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginStart="@dimen/dp_10"
         android:id="@+id/imageView4"
-        android:layout_width="@dimen/dp_90"
-        android:layout_height="@dimen/dp_90"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/profile_icon" />

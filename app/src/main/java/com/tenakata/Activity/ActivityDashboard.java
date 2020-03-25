@@ -17,11 +17,14 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -73,6 +76,8 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
     private boolean isSale = true;
     private boolean isPurchage = true;
     ProgressDialog progressDialog ;
+    private TextView userName;
+    private ImageView userImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,17 +358,39 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
     public void onBackPressed() {
         if (drawerLayout != null) {
             if (isMenuOpened()) closeMenu();
-        } else {
-            super.onBackPressed();
+            else
+                super.onBackPressed();
+
         }
 
     }
 
     private void addDrawerHeader(ListView drawerList){
         View headerView = ((LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_header, null, false);
-        TextView userName = headerView.findViewById(R.id.viewUserName);
+        userName = headerView.findViewById(R.id.viewUserName);
+        userImage = headerView.findViewById(R.id.imageView4);
         userName.setText(HRValidationHelper.optional("Hello "+HRPrefManager.getInstance(context).getUserDetail().getResult().getName()));
+        Glide.with(this)
+                .load(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage())
+                .apply(new RequestOptions()
+                        .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
+                .into(userImage);
+
         drawerList.addHeaderView(headerView);
+    }
+
+
+    private void setHeaderNameIimage(){
+        if (userName!=null)
+        userName.setText(HRValidationHelper.optional("Hello "+HRPrefManager.getInstance(context).getUserDetail().getResult().getName()));
+
+        if (userImage!=null) {
+            Glide.with(this)
+                    .load(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage())
+                    .apply(new RequestOptions()
+                            .transform(new CircleCrop(), new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
+                    .into(userImage);
+        }
     }
 
 
@@ -494,30 +521,10 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                try {
-
-                    profilepicpath = result.getUri().getEncodedPath();
-
-
-
-                } catch (OutOfMemoryError e) {
-                    e.printStackTrace();
-                }
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onChangeName() {
-        initDrawer(binding.includedToolbar.toolbarDashboard,binding.includedToolbar.toolbarMenuView );
+        //initDrawer(binding.includedToolbar.toolbarDashboard,binding.includedToolbar.toolbarMenuView );
+        setHeaderNameIimage();
     }
 }

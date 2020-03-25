@@ -2,6 +2,7 @@ package com.tenakata.Fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.gun0912.tedpermission.PermissionListener;
@@ -38,17 +40,20 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FragmentProfile extends BaseFragment {
     private Context context;
     private FragmentProfileBinding binding;
     String name, mobile, email;
     private Uri image_uris;
+    private String profilepicpath;
 
     static Callback callback;
 
     public FragmentProfile(Callback callback) {
         super();
-        FragmentProfile.callback =callback;
+        FragmentProfile.callback = callback;
 
     }
 
@@ -77,20 +82,22 @@ public class FragmentProfile extends BaseFragment {
             binding.tvUserid.setText("ID : " + HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getId()));
             binding.tvMobile.setText(HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getPhone()));
             binding.tvEmail.setText(HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail()));
-            String path=HRPrefManager.getInstance(context).getUserDetail().getResult().getImage();
-
+            String path = HRPrefManager.getInstance(context).getUserDetail().getResult().getImage();
 
             Glide.with(this)
                     .load(path)
                     .apply(new RequestOptions()
-                            .transform(new RoundedCorners(20)).placeholder(R.drawable.user_icon))
+                            .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
                     .into(binding.profileImage);
-
 
 
             name = binding.viewUserName.getText().toString();
             mobile = binding.tvMobile.getText().toString();
             email = binding.tvEmail.getText().toString();
+
+            binding.viewUserNameEditText.setText(binding.viewUserName.getText().toString());
+            binding.mobileEditText.setText(binding.tvMobile.getText().toString());
+            binding.emailEditText.setText(binding.tvEmail.getText().toString());
 
             binding.editButtonn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,15 +123,61 @@ public class FragmentProfile extends BaseFragment {
     }
 
     private void apiHit() {
-        //Toast.makeText(getActivity(),ActivityDashboard.profilepicpath,Toast.LENGTH_LONG).show();
 
-        Authentication.ProfilemultiPartRequest(ActivityDashboard.profilepicpath,
-                (HRAppConstants.URL_PROFILE), this,
-                binding.mobileEditText.getText().toString(),
-                HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
-                binding.viewUserNameEditText.getText().toString(),
-                binding.emailEditText.getText().toString(), "user");
+        if (isValidate()) {
+            Authentication.ProfilemultiPartRequest(profilepicpath,
+                    (HRAppConstants.URL_PROFILE), this,
+                    binding.mobileEditText.getText().toString(),
+                    HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
+                    binding.viewUserNameEditText.getText().toString(),
+                    binding.emailEditText.getText().toString(), "user");
+        }
 
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                try {
+
+                    profilepicpath = result.getUri().getEncodedPath();
+
+                    Glide.with(this)
+                            .load(profilepicpath)
+                            .apply(new RequestOptions()
+                                    .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
+                            .into(binding.profileImage);
+                    apiHit();
+
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
+                }
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean isValidate() {
+        if (HRValidationHelper.isNull(binding.viewUserNameEditText.getText().toString())) {
+            Toast.makeText(context, "Enter User Name", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (HRValidationHelper.isNull(binding.emailEditText.getText().toString())) {
+            Toast.makeText(context, "Enter Email address", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (!HRValidationHelper.isValidEmail(binding.emailEditText.getText().toString())) {
+            Toast.makeText(context, "Enter Valid Email address", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (HRValidationHelper.isNull(binding.mobileEditText.getText().toString())) {
+            Toast.makeText(context, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void editFunctionality(String name, String mobile, String email) {
@@ -153,14 +206,12 @@ public class FragmentProfile extends BaseFragment {
                 .setPermissionListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        CropImage.activity(image_uris)
-                                //.setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL)
-                                .start(getActivity());
+                        CropImage.activity(image_uris).start(context,FragmentProfile.this);
                     }
 
                     @Override
                     public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                        getActivity().finish();
+
                     }
                 })
                 .setDeniedMessage(getString(R.string.txt_permission_denied_message))
@@ -171,47 +222,40 @@ public class FragmentProfile extends BaseFragment {
     @Override
     public void onTaskSuccess(Object responseObj) {
         dismissLoader();
-
-
         if (responseObj instanceof LoginModel) {
             LoginModel model = (LoginModel) responseObj;
             onSaved();
-
 
 
             model.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
             model.getResult().setCountry_code(HRPrefManager.getInstance(context).getUserDetail().getResult().getCountry_code());
             model.getResult().setEmail(model.getResult().getEmail());
             model.getResult().setId(HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
-            if (model.getResult().getImage()!=null){
-                String path=model.getResult().getImage();
+            if (model.getResult().getImage() != null) {
+                String path = model.getResult().getImage();
                 Glide.with(this)
                         .load(path)
                         .apply(new RequestOptions()
-                                .transform(new RoundedCorners(20)).placeholder(R.drawable.user_icon))
+                                .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
                         .into(binding.profileImage);
                 model.getResult().setImage(model.getResult().getImage());
-           //     model.getResult().setImage(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage());
-            }
-            else {
+            } else {
                 model.getResult().setImage(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage());
             }
 
-            if (model.getResult().getName()!=null){
+            if (model.getResult().getName() != null) {
                 model.getResult().setName(model.getResult().getName());
                 binding.viewUserName.setText(model.getResult().getName());
 
 
-            }
-            else {
+            } else {
                 model.getResult().setName(HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
             }
-            if (model.getResult().getEmail()!=null){
+            if (model.getResult().getEmail() != null) {
                 model.getResult().setEmail(model.getResult().getEmail());
-              //  model.getResult().setEmail(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail());
+                //  model.getResult().setEmail(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail());
                 binding.tvEmail.setText(model.getResult().getEmail());
-            }
-            else {
+            } else {
                 model.getResult().setEmail(HRPrefManager.getInstance(context).getUserDetail().getResult().getEmail());
             }
             model.getResult().setPhone(HRPrefManager.getInstance(context).getUserDetail().getResult().getPhone());
@@ -243,7 +287,6 @@ public class FragmentProfile extends BaseFragment {
     public void onTaskError(String errorMsg) {
         super.onTaskError(errorMsg);
         dismissLoader();
-        Toast.makeText(getActivity(), "Error...", Toast.LENGTH_LONG).show();
     }
 
 
@@ -267,7 +310,7 @@ public class FragmentProfile extends BaseFragment {
 
     }
 
-    public interface Callback{
+    public interface Callback {
         void onChangeName();
     }
 
