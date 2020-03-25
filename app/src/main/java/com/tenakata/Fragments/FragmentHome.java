@@ -374,7 +374,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
-            jsonObject.put("sales_purchases", "purchase");
+            jsonObject.put("sales_purchases", "sales");
             jsonObject.put("filter", type);
         } catch (JSONException e) {
             e.printStackTrace();
