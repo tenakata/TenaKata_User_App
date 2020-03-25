@@ -104,7 +104,7 @@ public class ActivityLoginWithMpin extends AppCompatActivity implements View.OnC
     @Override
     public void onErrorCallBack(String error) {
         if (!isFinishing()) progressDialog.dismiss();
-        ErrorDialog.errorDialog(context, getString(R.string.app_name), error);
+        ErrorDialog.errorDialog(context, getString(R.string.app_name), "Wrong mPin");
     }
 
     @Override

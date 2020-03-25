@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +100,8 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
         binding.radioButtonSale.setChecked(true);
         indicator = view.findViewById(R.id.indicator);
-        getCircularProgressChart();
+
+        getCircularProgressChart("1","1");
         hitApi("sales",type);
         hitGraphApi("sales",type);
         binding.viewActivity.setText("Sales Activity");
@@ -232,10 +234,10 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
     }
 
-    private void getCircularProgressChart() {
+    private void getCircularProgressChart(String cash, String credit) {
         pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(3f, 0));
-        pieEntries.add(new PieEntry(4f, 1));
+        pieEntries.add(new PieEntry(Float.parseFloat(cash), 0));
+        pieEntries.add(new PieEntry(Float.parseFloat(credit), 1));
 
         pieDataSet = new PieDataSet(pieEntries, "");
         pieData = new PieData(pieDataSet);
@@ -272,14 +274,58 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
         for (int i = 0; i < model.getResult().size(); i++) {
             if (model.getFilter().equalsIgnoreCase("week")) {
-                graphLabelList.add(HRPriceFormater.graphWeekFormater(model.getResult().get(i).getLabel()));
+               graphLabelList.add(HRPriceFormater.simplegraphWeekFormater(model.getResult().get(i).getcreated_at()));
             }else if (model.getFilter().equalsIgnoreCase("month")){
-                graphLabelList.add(HRPriceFormater.changeMonthFormate(model.getResult().get(i).getLabel()));
+                graphLabelList.add(HRPriceFormater.changeMonthFormate(model.getResult().get(i).getcreated_at()));
             }else {
-                graphLabelList.add(model.getResult().get(i).getLabel());
+                graphLabelList.add(model.getResult().get(i).getcreated_at());
             }
             graphAmountList.add((float) model.getResult().get(i).getAmount());
         }
+
+
+
+
+/*
+        if (model.getFilter().equalsIgnoreCase("week")) {
+            for(int i=0;i<7;i++){
+                if (model.getResult().get(i).getLabel()!=null){
+                    graphLabelList.add(HRPriceFormater.graphWeekFormater(model.getResult().get(i).getLabel()));
+                }
+                else {
+                    graphLabelList.add("");
+                }
+            }
+
+        }else if (model.getFilter().equalsIgnoreCase("month")) {
+            for (int i=0;i<12;i++){
+                if (i<model.getResult().size())
+                    graphLabelList.add(HRPriceFormater.changeMonthFormate(model.getResult().get(i).getLabel()));
+                    else
+                    graphLabelList.add("Month");
+            }
+        }else {
+            for (int i = 0; i < model.getResult().size(); i++){
+                graphLabelList.add(model.getResult().get(i).getLabel());
+            }
+        }
+
+        Log.e("yoooo",String.valueOf(graphLabelList.size()));
+
+        for (int i = 0; i < graphLabelList.size(); i++) {
+            if (i<model.getResult().size()){
+                graphAmountList.add((float) model.getResult().get(i).getAmount());
+            }
+            else {
+                graphAmountList.add((float) 0);
+            }
+
+        }
+*/
+
+
+
+
         for (int i = 0; i < graphLabelList.size(); i++) {
             entries.add(new BarEntry((float) i, graphAmountList.get(i)));
         }
@@ -369,17 +415,22 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         if (!progressDialog.isShowing() && !((Activity) context).isFinishing()) {
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         }
+        Log.e("yooooo","yooooooo111111");
 
         String url = HRUrlFactory.getBaseUrl().concat(HRAppConstants.URL_HOME);
         final JSONObject jsonObject = new JSONObject();
         try {
+            Log.e("yooooo","yooooooo2222222");
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("sales_purchases", "purchase");
             jsonObject.put("filter", type);
         } catch (JSONException e) {
+            Log.e("yooooo","yooooooo3333333");
             e.printStackTrace();
         }
-        Authentication.objectApi(context, url, this, jsonObject, HRUrlFactory.getAppHeaders(), false);
+        Log.e("yooooo","yooooooo444444");
+        Authentication.object(context,HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_HOME),this,jsonObject);
+        Log.e("yooooo","yooooooo5555555");
     }
 
     private void hitGraphApi(String sales_purchases,String type) {
@@ -405,6 +456,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
             binding.viewAveragePrice.setText("KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_average())));
             binding.viewCashSales.setText("Cash Sales KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())));
             binding.viewCashPurchase.setText("Cash Purchase KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
+            getCircularProgressChart((HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())),HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount()));
 
             List<String> l = new ArrayList<>();
             l.add("Sales");

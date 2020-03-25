@@ -110,7 +110,7 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
     @Override
     public void onErrorCallBack(String error) {
         if (!isFinishing()) progressDialog.dismiss();
-        ErrorDialog.errorDialog(context, getString(R.string.app_name), error);
+        ErrorDialog.errorDialog(context, getString(R.string.app_name), "Invalid Credentials !");
     }
 
     @Override
