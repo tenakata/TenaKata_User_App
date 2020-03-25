@@ -8,7 +8,8 @@ public class GraphModel {
     /**
      * status : 200
      * message : Graph  list !!
-     * result : [{"label":"2020-03-16 07:11:04","amount":"1000"},{"label":"2020-03-19 10:49:03","amount":"100"},{"label":"2020-03-19 12:28:54","amount":"90000"},{"label":"2020-03-19 12:37:30","amount":"90000"},{"label":"2020-03-19 12:56:33","amount":"4646"},{"label":"2020-03-20 05:55:57","amount":"100"},{"label":"2020-03-20 14:41:36","amount":"90000"},{"label":"2020-03-21 07:44:34","amount":"90000"}]
+     * filter : week
+     * result : [{"created_at ":"2020-03-24","amount":"0"},{"created_at ":"2020-03-23","amount":"0"},{"created_at ":"2020-03-22","amount":"0"},{"created_at ":"2020-03-21","amount":"0"},{"created_at":"2020-03-20","amount":"90000"},{"created_at ":"2020-03-19","amount":"0"},{"created_at ":"2020-03-18","amount":"0"}]
      */
 
     private String status;
@@ -50,26 +51,27 @@ public class GraphModel {
 
     public static class ResultBean {
         /**
-         * label : 2020-03-16 07:11:04
-         * amount : 1000
+         * created_at  : 2020-03-24
+         * amount : 0
+         * created_at : 2020-03-20
          */
 
-        private String label;
-        private double amount;
+        private String created_at;
+        private String amount;
 
-        public String getLabel() {
-            return label;
+        public String getCreated_at() {
+            return created_at;
         }
 
-        public void setLabel(String label) {
-            this.label = label;
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
         }
 
-        public double getAmount() {
+        public String getAmount() {
             return amount;
         }
 
-        public void setAmount(double amount) {
+        public void setAmount(String amount) {
             this.amount = amount;
         }
     }

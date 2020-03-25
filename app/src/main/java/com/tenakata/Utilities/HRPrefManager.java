@@ -17,6 +17,7 @@ public class HRPrefManager {
     private static final String KEY_IS_LOGGED_IN = "is_Login";
     private static final String KEY_IS_START = "is_start_new";
     private static final String KEY_USER_DETAILS = "KEY_USER_DETAILS";
+    private static final String GRAPH_DATA = "GRAPH_DATA";
 
     private Context context;
     int PRIVATE_MODE = 0;

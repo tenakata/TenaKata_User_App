@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/barchart"
             android:layout_width="0dp"
-            android:layout_height="280dp"
+            android:layout_height="260dp"
             android:background="@color/colorBlue"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,8 +28,11 @@
                 android:id="@+id/barchart1"
                 android:layout_width="0dp"
                 android:layout_height="230dp"
-                android:layout_margin="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
                 android:background="@color/colorBlue"
+                android:layout_marginBottom="@dimen/dp_30"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -253,6 +256,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_green_ractangle"
                     android:text=""
+                    app:layout_constraintBottom_toBottomOf="@+id/viewCashSales"
                     app:layout_constraintStart_toStartOf="@+id/viewActivityText"
                     app:layout_constraintTop_toBottomOf="@+id/viewActivityText" />
 
@@ -261,13 +265,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/pt_sans_regular"
                     android:text="Cash sales KES 0"
                     android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView15"
                     app:layout_constraintEnd_toEndOf="@+id/viewActivityText"
                     app:layout_constraintStart_toEndOf="@+id/textView15"
-                    app:layout_constraintTop_toTopOf="@+id/textView15" />
+                    app:layout_constraintTop_toBottomOf="@+id/viewActivityText" />
 
                 <TextView
                     android:id="@+id/textView21"
@@ -276,6 +280,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_orange_ractangle"
                     android:text=""
+                    app:layout_constraintBottom_toBottomOf="@+id/viewCashPurchase"
                     app:layout_constraintStart_toStartOf="@+id/textView15"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -284,13 +289,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/pt_sans_regular"
                     android:text="Cash Purchase KES 0"
                     android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView21"
                     app:layout_constraintEnd_toEndOf="@+id/viewCashSales"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textView21"
-                    app:layout_constraintTop_toTopOf="@+id/textView21" />
+                    app:layout_constraintTop_toBottomOf="@+id/viewCashSales" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

@@ -90,6 +90,22 @@ public class HRPriceFormater {
         return output.format(d);
     }
 
+    public static String simplegraphWeekFormater(String date) {
+        if (date==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat output = new SimpleDateFormat("EEEE", Locale.US);
+
+        Date d = null;
+        try {
+            d = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return output.format(d);
+    }
+
     public static String changeMonthFormate(String serverdate) {
         if (serverdate==null){
             return "";

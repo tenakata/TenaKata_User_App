@@ -12,12 +12,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.NetworkError;
+import com.android.volley.error.NoConnectionError;
+import com.android.volley.error.ParseError;
+import com.android.volley.error.ServerError;
+import com.android.volley.error.TimeoutError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -31,14 +42,19 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 import com.tenakata.Adapters.GraphSpinnerAdapter;
 import com.tenakata.Adapters.HomeViewPagerAdapter;
+import com.tenakata.Application.App;
 import com.tenakata.Base.BaseFragment;
+import com.tenakata.CallBacks.BaseCallBacks;
 import com.tenakata.Dialog.ErrorDialog;
 import com.tenakata.Dialog.ProgressDialog;
 import com.tenakata.Models.GraphModel;
 import com.tenakata.Models.HomeModel;
 import com.tenakata.Network.Authentication;
+import com.tenakata.Network.ResponseParser;
 import com.tenakata.R;
 import com.tenakata.Utilities.FontFamily;
 import com.tenakata.Utilities.HRAppConstants;
@@ -49,13 +65,19 @@ import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.Utilities.SnapHelperOneByOne;
 import com.tenakata.databinding.FragmentHomeBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import me.relex.circleindicator.CircleIndicator2;
+
+import static com.tenakata.Network.Authentication.print;
 
 public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.Callback {
     private Context context;
@@ -99,9 +121,10 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
         binding.radioButtonSale.setChecked(true);
         indicator = view.findViewById(R.id.indicator);
-        getCircularProgressChart();
-        hitApi("sales",type);
-        hitGraphApi("sales",type);
+
+        getCircularProgressChart("1", "1");
+        hitApi("sales", type);
+        hitGraphApi("sales", type);
         binding.viewActivity.setText("Sales Activity");
         horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerView.setLayoutManager(horizontalLayoutManager);
@@ -139,32 +162,32 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
                         if (visiblePosition == 0) {
                             binding.viewActivity.setText("Sales Activity");
-                            hitApi("sales",type);
-                            hitGraphApi("sales",type);
+                            hitApi("sales", type);
+                            hitGraphApi("sales", type);
                             binding.radioButtonSale.setChecked(true);
                             binding.radioButtonPurchase.setChecked(false);
-                           if (type!=null && !type.equals("")){
-                               if (type.equalsIgnoreCase("week")){
-                                   binding.apinner.setSelection(0);
-                               }else if (type.equalsIgnoreCase("month")){
-                                   binding.apinner.setSelection(1);
-                               }else if (type.equalsIgnoreCase("year")){
-                                   binding.apinner.setSelection(2);
-                               }
-                           }
+                            if (type != null && !type.equals("")) {
+                                if (type.equalsIgnoreCase("week")) {
+                                    binding.apinner.setSelection(0);
+                                } else if (type.equalsIgnoreCase("month")) {
+                                    binding.apinner.setSelection(1);
+                                } else if (type.equalsIgnoreCase("year")) {
+                                    binding.apinner.setSelection(2);
+                                }
+                            }
 
                         } else {
                             binding.viewActivity.setText("Purchase Activity");
-                            hitApi("purchase",type);
-                            hitGraphApi("purchase",type);
+                            hitApi("purchase", type);
+                            hitGraphApi("purchase", type);
                             binding.radioButtonSale.setChecked(false);
                             binding.radioButtonPurchase.setChecked(true);
-                            if (type!=null && !type.equals("")){
-                                if (type.equalsIgnoreCase("week")){
+                            if (type != null && !type.equals("")) {
+                                if (type.equalsIgnoreCase("week")) {
                                     binding.apinner.setSelection(0);
-                                }else if (type.equalsIgnoreCase("month")){
+                                } else if (type.equalsIgnoreCase("month")) {
                                     binding.apinner.setSelection(1);
-                                }else if (type.equalsIgnoreCase("year")){
+                                } else if (type.equalsIgnoreCase("year")) {
                                     binding.apinner.setSelection(2);
                                 }
                             }
@@ -183,9 +206,9 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         spinner();
     }
 
-    private void spinner(){
+    private void spinner() {
 
-        final String [] typeArray = {"week","month","year"};
+        final String[] typeArray = {"week", "month", "year"};
         GraphSpinnerAdapter adapter = new GraphSpinnerAdapter(context, typeArray);
         binding.apinner.setAdapter(adapter);
 
@@ -201,24 +224,24 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
                         switch (binding.apinner.getSelectedItemPosition()) {
                             case 0:
                                 type = "week";
-                                hitGraphApi("sales","week");
-                                hitApi("sales","week");
+                                hitGraphApi("sales", "week");
+                                hitApi("sales", "week");
                                 break;
                             case 1:
                                 type = "month";
-                                hitGraphApi("sales","month");
-                                hitApi("sales","month");
+                                hitGraphApi("sales", "month");
+                                hitApi("sales", "month");
                                 break;
                             case 2:
                                 type = "year";
-                                hitGraphApi("sales","year");
-                                hitApi("sales","year");
+                                hitGraphApi("sales", "year");
+                                hitApi("sales", "year");
                                 break;
                             default:
                                 break;
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -232,10 +255,10 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
     }
 
-    private void getCircularProgressChart() {
+    private void getCircularProgressChart(String cash, String credit) {
         pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(3f, 0));
-        pieEntries.add(new PieEntry(4f, 1));
+        pieEntries.add(new PieEntry(Float.parseFloat(cash), 0));
+        pieEntries.add(new PieEntry(Float.parseFloat(credit), 1));
 
         pieDataSet = new PieDataSet(pieEntries, "");
         pieData = new PieData(pieDataSet);
@@ -264,22 +287,9 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
     }
 
-    private void chartData(GraphModel model) {
-
+    private void chartData() {
         ArrayList<BarEntry> entries = new ArrayList<>();
-        if (graphLabelList.size() > 0) graphLabelList.clear();
-        if (graphAmountList.size() > 0) graphAmountList.clear();
 
-        for (int i = 0; i < model.getResult().size(); i++) {
-            if (model.getFilter().equalsIgnoreCase("week")) {
-                graphLabelList.add(HRPriceFormater.graphWeekFormater(model.getResult().get(i).getLabel()));
-            }else if (model.getFilter().equalsIgnoreCase("month")){
-                graphLabelList.add(HRPriceFormater.changeMonthFormate(model.getResult().get(i).getLabel()));
-            }else {
-                graphLabelList.add(model.getResult().get(i).getLabel());
-            }
-            graphAmountList.add((float) model.getResult().get(i).getAmount());
-        }
         for (int i = 0; i < graphLabelList.size(); i++) {
             entries.add(new BarEntry((float) i, graphAmountList.get(i)));
         }
@@ -289,6 +299,8 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set1);
         BarData data = new BarData(dataSets);
+        data.setBarWidth(0.2f);
+
 
         binding.barchart1.setData(data); // set the data and list of labels into chart
         set1.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -325,7 +337,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         binding.barchart1.setFitBars(true);
         Legend l = binding.barchart1.getLegend();
         l.setEnabled(false);
-        l.setFormSize(12f); // set the size of the legend forms/shapes
+        l.setFormSize(10f); // set the size of the legend forms/shapes
         l.setForm(Legend.LegendForm.SQUARE); // set what type of form/shape should be used
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTextSize(10f);
@@ -359,30 +371,45 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         xAxis1.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis1.setValueFormatter(formatter);
 
+        binding.barchart1.getXAxis().setLabelRotationAngle(3f);
+        binding.barchart1.getXAxis().setTextSize(8);
+        /*binding.barchart1.getXAxis().setAxisMinimum(0.1f);
+        binding.barchart1.setExtraLeftOffset(10f);*/
+
+        binding.barchart1.setVisibleXRangeMaximum(graphLabelList.size());
+        binding.barchart1.setVisibleXRangeMinimum(5);
+        binding.barchart1.moveViewToX(graphAmountList.size());
+        binding.barchart1.fitScreen();
+
 
         binding.barchart1.getAxisLeft().setTextColor(Color.WHITE); // left y-axis
         binding.barchart1.getXAxis().setTextColor(Color.WHITE);
         binding.barchart1.getLegend().setTextColor(Color.WHITE);
     }
 
-    private void hitApi(String sales_purchases,String type) {
+    private void hitApi(String sales_purchases, String type) {
         if (!progressDialog.isShowing() && !((Activity) context).isFinishing()) {
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         }
+        Log.e("yooooo", "yooooooo111111");
 
         String url = HRUrlFactory.getBaseUrl().concat(HRAppConstants.URL_HOME);
         final JSONObject jsonObject = new JSONObject();
         try {
+            Log.e("yooooo", "yooooooo2222222");
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("sales_purchases", "sales");
             jsonObject.put("filter", type);
         } catch (JSONException e) {
+            Log.e("yooooo", "yooooooo3333333");
             e.printStackTrace();
         }
-        Authentication.objectApi(context, url, this, jsonObject, HRUrlFactory.getAppHeaders(), false);
+        Log.e("yooooo", "yooooooo444444");
+        Authentication.object(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_HOME), this, jsonObject);
+        Log.e("yooooo", "yooooooo5555555");
     }
 
-    private void hitGraphApi(String sales_purchases,String type) {
+    private void hitGraphApi(String sales_purchases, String type) {
         String url = HRUrlFactory.getBaseUrl().concat(HRAppConstants.URL_GRAPH);
         final JSONObject jsonObject = new JSONObject();
         try {
@@ -392,7 +419,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Authentication.objectApi(context, url, this, jsonObject, HRUrlFactory.getAppHeaders(), false);
+        graphApi(url, jsonObject, HRUrlFactory.getAppHeaders());
     }
 
     @Override
@@ -405,6 +432,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
             binding.viewAveragePrice.setText("KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_average())));
             binding.viewCashSales.setText("Cash Sales KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())));
             binding.viewCashPurchase.setText("Cash Purchase KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
+            getCircularProgressChart((HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())), HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount()));
 
             List<String> l = new ArrayList<>();
             l.add("Sales");
@@ -422,9 +450,10 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
             }
         } else if (responseObj instanceof GraphModel) {
             GraphModel model = (GraphModel) responseObj;
-            chartData(model);
+
         }
     }
+
 
     @Override
     public void onTaskError(String errorMsg) {
@@ -446,6 +475,116 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
 
     public interface CallBackAgain {
         void onSaleClick();
+
         void onPurchaseClick();
+    }
+
+    private void graphApi(final String url,
+                          final JSONObject jsonObject,
+                          final HashMap<String, String> headers) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject resObj = new JSONObject(response.toString());
+                    if (HRUrlFactory.isModeDevelopment()) {
+                        print(url, String.valueOf(response), jsonObject != null ? jsonObject.toString() : "get type", headers.toString());
+                    }
+                    if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseOK
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseSignUp
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseUserUpdated
+                            || resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kUpdateDevice) {
+
+                        if (graphLabelList.size() > 0) graphLabelList.clear();
+                        if (graphAmountList.size() > 0) graphAmountList.clear();
+                        try {
+                            HRPrefManager.getInstance(context).setStringValue("GRAPH_DATA", response.toString());
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                Iterator<String> keys = object.keys();
+                                if (keys.hasNext()) {
+                                    String key = (String) keys.next();
+                                    String value = object.getString(key);
+                                    Log.d("==========>DDD", "-> " + value);
+
+                                    if (jsonObject.getString("filter").equalsIgnoreCase("week")) {
+                                        graphLabelList.add(HRPriceFormater.simplegraphWeekFormater(value));
+                                    } else if (jsonObject.getString("filter").equalsIgnoreCase("month")) {
+                                        graphLabelList.add(HRPriceFormater.changeMonthFormate(value));
+                                    } else {
+                                        graphLabelList.add(value);
+                                    }
+                                }
+
+                                if (object.has("amount")) {
+                                    double amount = object.getDouble("amount");
+                                    graphAmountList.add((float) amount);
+                                }
+
+                            }
+                            chartData();
+                        } catch (JsonIOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseContactExist) {
+                        onTaskError(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseForceUpdate) {
+                        onAppNeedForceUpdate(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseUpdate) {
+                        onAppNeedUpdate(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseNotAccess) {
+                        onAppNeedLogin();
+                    } else if (resObj.has(HRAppConstants.kResponseCode) &&
+                            resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseSessionExpire) {
+                        onSessionExpire(resObj.getString(HRAppConstants.kResponseMsg));
+                    } else if (resObj.getInt(HRAppConstants.kResponseCode) == HRAppConstants.kResponseSessionExpire) {
+                        onTaskError(App.getInstance().getString(R.string.txt_went_wrong));
+
+                    } else {
+                        if (resObj.has(HRAppConstants.kResponseMsg)) {
+                            onTaskError(resObj.getString(HRAppConstants.kResponseMsg));
+                        } else {
+                            onTaskError(null);
+                        }
+                    }
+                } catch (JSONException e) {
+                    onTaskError(null);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    onTaskError(App.getInstance().getString(R.string.txt_server_not_respond));
+                } else if (error instanceof AuthFailureError) {
+                    onTaskError(App.getInstance().getString(R.string.txt_went_wrong));
+                } else if (error instanceof ServerError) {
+                    onTaskError(App.getInstance().getString(R.string.text_server_error));
+                } else if (error instanceof NetworkError) {
+                    onTaskError(App.getInstance().getString(R.string.txt_connection_error));
+                } else if (error instanceof ParseError) {
+                    onTaskError(App.getInstance().getString(R.string.txt_parsing_error));
+                } else {
+                    onTaskError(App.getInstance().getString(R.string.txt_went_wrong));
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+
+        App.getInstance().getRequestQueue().getCache().clear();
+        App.getInstance().getRequestQueue().add(request);
     }
 }
