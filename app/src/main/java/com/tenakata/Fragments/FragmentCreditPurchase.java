@@ -273,7 +273,6 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
         intent.putExtra("sales_purchases","purchase");
         intent.putExtra("payment_type","credit");
         startActivity(intent);
-        Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
     }
 
     @Override

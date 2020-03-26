@@ -42,7 +42,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityViewDetails extends BaseActivity implements showPayDialog.onAmountPaid, DialogRemindPayment.ReminderCallBack {
+public class ActivityViewDetails extends BaseActivity implements
+        showPayDialog.onAmountPaid,
+        DialogRemindPayment.ReminderCallBack {
     ActivityCreditViewDetailsBinding binding;
     static String dueamount;
     static String payingamount;

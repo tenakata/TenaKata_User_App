@@ -74,12 +74,12 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
         Glide.with(context)
                 .load(list.get(position).getAttach_recepit())
                 .apply(new RequestOptions()
-                        .transform(new RoundedCorners(20)).placeholder(R.drawable.offer_sel))
+                        .transform(new RoundedCorners(20)).placeholder(R.mipmap.ic_launcher))
                 .into(holder.binding.imageView11);
         holder.binding.viewDate.setText("Captured: "+HRValidationHelper.optional(list.get(position).getDate()));
         holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(list.get(position).getAmount()))));
         holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
-       // holder.binding.viewTitle.setText(HRValidationHelper.optional(list.get(position).getItem_list()));
+
         String string=list.get(position).getItem_list();
         String []word=string.split("\\s");
         int length=word.length;
@@ -129,11 +129,8 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
                     Uri uri=Uri.parse(list.get(position).getAttach_recepit());
                      receiptpath=uri.toString();
                 }
-
-
                 callBack.onViewDetailsClick(position,list.get(position).getId(),list.get(position).getName(),
-                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list()
-                        );
+                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list());
             }
         });
 

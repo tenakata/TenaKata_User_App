@@ -41,6 +41,7 @@ public class ResponseParser {
                 case HRAppConstants.URL_LOGOUT:
                 case HRAppConstants.URL_REMIND:
                 case HRAppConstants.URL_TRAINING_RATING:
+                case HRAppConstants.URL_CREATE_MPIN:
                     return App.getInstance().getGson().fromJson(response, ModelSuccess.class);
 
                 case HRAppConstants.URL_CASH_CREDIT_SALES:

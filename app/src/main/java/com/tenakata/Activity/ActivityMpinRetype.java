@@ -20,6 +20,7 @@ import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
 import com.tenakata.Utilities.HRAppConstants;
+import com.tenakata.Utilities.HRPrefManager;
 import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.databinding.ActivityMpinRetypeBinding;
 
@@ -58,12 +59,10 @@ public class ActivityMpinRetype extends BaseActivity {
                 if (charSequence.length() == 4) {
                     String retypedpin = binding.firstPinView.getText().toString();
                     if (retypedpin.equals(pin)) {
-                        Toast.makeText(getApplicationContext(), "password matched", Toast.LENGTH_LONG).show();
                         apiSetmPin(retypedpin);
                     } else {
-                        Toast.makeText(getApplicationContext(), "password not matched", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "mPin not matched", Toast.LENGTH_LONG).show();
                     }
-
                 }
 
             }
@@ -91,7 +90,7 @@ public class ActivityMpinRetype extends BaseActivity {
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("user_id", 1);
+            jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("pin", pin);
             jsonObject.put("role", "user");
         } catch (JSONException e) {
@@ -124,16 +123,11 @@ public class ActivityMpinRetype extends BaseActivity {
 
     @Override
     public void onTaskSuccess(Object responseObj) {
-        finish();
-
         if (!isFinishing()) progressDialog.dismiss();
         if (responseObj instanceof ModelSuccess) {
-            Toast.makeText(getApplicationContext(), "password setup completed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "mPin created Successfully", Toast.LENGTH_LONG).show();
             finish();
         }
-
-
-
     }
 
     @Override

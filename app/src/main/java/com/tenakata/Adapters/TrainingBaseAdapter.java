@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import androidx.databinding.DataBindingUtil;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.tenakata.Models.TrainingListModel;
 import com.tenakata.R;
 import com.tenakata.databinding.TrainingBaseAdapetrBinding;
@@ -62,6 +65,14 @@ public class TrainingBaseAdapter extends BaseAdapter {
                 callBack.onRowClick(position,list.get(position).getUser_id());
             }
         });
+
+        Glide.with(context).load(R.drawable.placeholder)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.placeholder)
+                        .transform(new RoundedCorners(10)))
+                .into(holder.binding.ivVideo);
+
+
         return holder.view;
     }
 

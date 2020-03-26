@@ -53,6 +53,7 @@ public class ActivityTutorials extends AppCompatActivity implements View.OnClick
             case R.id.startBtn:
                 HRPrefManager.getInstance(context).setKeyIsStart(true);
                 startActivity(IntentHelper.getBioMetric(context));
+                finish();
                 break;
         }
     }

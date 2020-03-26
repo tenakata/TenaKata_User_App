@@ -694,7 +694,8 @@ public class Authentication {
     public static void apiOfLogin(Context context, final String url,
                                   final AuthenticationCallBacks callBacks, final JSONObject jsonObject,
                                   final HashMap<String, String> headers) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 print(url, String.valueOf(response), jsonObject.toString(), HRUrlFactory.getDefaultHeaders().toString());

@@ -31,7 +31,8 @@ import org.json.JSONObject;
 
 import static com.tenakata.Dialog.ProgressDialog.progressDialog;
 
-public class ActivityLogin extends AppCompatActivity implements View.OnClickListener, AuthenticationCallBacks {
+public class ActivityLogin extends AppCompatActivity implements View.OnClickListener,
+        AuthenticationCallBacks {
     private ActivityLoginBinding binding;
     private Context context;
     private String countryCode;
@@ -59,7 +60,7 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
         binding.viewLoginBtn.setOnClickListener(this);
         binding.viewForgotPassword.setOnClickListener(this);
 
-        binding.viewMobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*binding.viewMobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus){
@@ -68,10 +69,8 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
                 }else{
                     binding.viewMobile.setHint("Mobile Number");
                 }
-
             }
-        });
-
+        });*/
     }
 
     @Override
@@ -98,7 +97,7 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
             HRPrefManager.getInstance(context).setUserDetail((LoginModel) response);
             HRPrefManager.getInstance(context).setKeyIsLoggedIn(true);
             startActivity(IntentHelper.getDashboard(context));
-            finish();
+            finishAffinity();
         }
     }
 

@@ -139,9 +139,7 @@ public class ActivityTrainingDetails extends BaseActivity implements View.OnClic
             Uri videoUri1 = Uri.parse("https://www.radiantmediaplayer.com/media/bbb-360p.mp4");
             Uri videoUri = Uri.parse(model.getResult().get(0).getVideo());
             try {
-
                 videoLayout.setVideoURI(videoUri1);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

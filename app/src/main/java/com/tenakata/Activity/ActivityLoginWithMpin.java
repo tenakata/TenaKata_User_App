@@ -92,7 +92,7 @@ public class ActivityLoginWithMpin extends AppCompatActivity implements View.OnC
             HRPrefManager.getInstance(context).setUserDetail((LoginModel) response);
             HRPrefManager.getInstance(context).setKeyIsLoggedIn(true);
             startActivity(IntentHelper.getDashboard(context));
-            finish();
+            finishAffinity();
         }
     }
 

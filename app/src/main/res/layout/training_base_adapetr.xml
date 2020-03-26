@@ -2,71 +2,78 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:background="#FFFFFF"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/tv_video_title"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Video 1 (watch)"
-        android:fontFamily="@font/montserrat_regular"
-        android:textSize="14sp"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:cardElevation="@dimen/dp_4"
+        app:cardCornerRadius="@dimen/dp_5"
+        app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/tv_sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/pt_sans_bold"
-        android:text="How to improve Sale"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toEndOf="@+id/iv_video"
-        app:layout_constraintTop_toBottomOf="@+id/tv_video_title" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_read_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="Read more >>"
-        android:textColor="#c40000"
-        app:layout_constraintStart_toStartOf="@+id/tv_sub_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sub_title" />
+            <TextView
+                android:id="@+id/tv_video_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Video 1 (watch)"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_video_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_video_title"
-        app:srcCompat="@drawable/placeholder" />
+            <TextView
+                android:id="@+id/tv_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/pt_sans_bold"
+                android:text="How to improve Sale"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.059"
+                app:layout_constraintStart_toEndOf="@+id/iv_video"
+                app:layout_constraintTop_toBottomOf="@+id/tv_video_title" />
 
-    <ImageView
-        android:id="@+id/imageView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_video"
-        app:layout_constraintEnd_toEndOf="@+id/iv_video"
-        app:layout_constraintStart_toStartOf="@+id/iv_video"
-        app:layout_constraintTop_toTopOf="@+id/iv_video"
-        app:srcCompat="@drawable/video_play" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_read_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Read more >>"
+                android:textColor="#c40000"
+                app:layout_constraintStart_toStartOf="@+id/tv_sub_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_sub_title" />
+
+            <ImageView
+                android:id="@+id/iv_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_video_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_video_title"
+                app:srcCompat="@drawable/placeholder" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_video"
+                app:layout_constraintEnd_toEndOf="@+id/iv_video"
+                app:layout_constraintStart_toStartOf="@+id/iv_video"
+                app:layout_constraintTop_toTopOf="@+id/iv_video"
+                app:srcCompat="@drawable/video_play" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

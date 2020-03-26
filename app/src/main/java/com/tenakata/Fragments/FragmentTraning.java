@@ -1,5 +1,6 @@
 package com.tenakata.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.tenakata.Activity.ActivityTrainingDetails;
 import com.tenakata.Adapters.HomeSalesBaseAdapter;
 import com.tenakata.Adapters.TrainingBaseAdapter;
 import com.tenakata.Base.BaseFragment;
+import com.tenakata.Dialog.ProgressDialog;
 import com.tenakata.Models.TrainingListModel;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
@@ -39,6 +41,7 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
     private TrainingBaseAdapter adapter;
     private int currentPage = 1;
     private String per_page = "10";
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,21 +56,22 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
         super.onViewCreated(view, savedInstanceState);
 
         context = getActivity();
+        progressDialog =new ProgressDialog(context);
          hitApi();
     }
 
     private void hitApi() {
 
+        if (!((Activity)context).isFinishing() && !progressDialog.isShowing()){
+            progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
+        }
+
         final JSONObject jsonObject = new JSONObject();
         try {
-
-
-
             jsonObject.put("page", "1");
             jsonObject.put("Perpage", "10");
-            jsonObject.put("user_id", 1);
-            jsonObject.put("role", "supervisor");
-
+            jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
+            jsonObject.put("role", "user");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -79,7 +83,9 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
 
       @Override
     public void onTaskSuccess(Object responseObj) {
-        dismissLoader();
+          if (!((Activity)context).isFinishing() && progressDialog.isShowing()){
+              progressDialog.dismiss();
+          }
         if (!(responseObj instanceof TrainingListModel)) {
             return;
         }
@@ -103,11 +109,13 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
     @Override
     public void onTaskError(String errorMsg) {
         super.onTaskError(errorMsg);
+        if (!((Activity)context).isFinishing() && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 
     @Override
     public void onRowClick(int position,String user_id) {
-        Toast.makeText(getActivity(),String.valueOf(user_id),Toast.LENGTH_LONG).show();
         Intent intent=new Intent(getActivity(), ActivityTrainingDetails.class);
         intent.putExtra("id",user_id);
         startActivity(intent);

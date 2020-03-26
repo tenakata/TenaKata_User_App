@@ -273,7 +273,6 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     public void onViewDetailsClick(int position,String id,String name,String receiptpath,String amount,String list) {
 
 
-          Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
         Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id",id);
         intent.putExtra("position",String.valueOf(position));

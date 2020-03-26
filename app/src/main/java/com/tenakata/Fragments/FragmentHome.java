@@ -391,22 +391,16 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         if (!progressDialog.isShowing() && !((Activity) context).isFinishing()) {
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         }
-        Log.e("yooooo", "yooooooo111111");
-
         String url = HRUrlFactory.getBaseUrl().concat(HRAppConstants.URL_HOME);
         final JSONObject jsonObject = new JSONObject();
         try {
-            Log.e("yooooo", "yooooooo2222222");
             jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
-            jsonObject.put("sales_purchases", "sales");
+            jsonObject.put("sales_purchases", "purchase");
             jsonObject.put("filter", type);
         } catch (JSONException e) {
-            Log.e("yooooo", "yooooooo3333333");
             e.printStackTrace();
         }
-        Log.e("yooooo", "yooooooo444444");
         Authentication.object(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_HOME), this, jsonObject);
-        Log.e("yooooo", "yooooooo5555555");
     }
 
     private void hitGraphApi(String sales_purchases, String type) {
