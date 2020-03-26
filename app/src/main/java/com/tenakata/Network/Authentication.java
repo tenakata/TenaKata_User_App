@@ -1408,7 +1408,6 @@ public class Authentication {
                                         String payment_type, String sales_purchases,String date,String attach_recepit,String Url,
                                         @NonNull final BaseCallBacks callBacks,String cash_or_credit,String phone,String id_no,String name) {
 
-
         if (HRNetworkUtils.isNetworkAvailable()) {
             callBacks.showLoader();
         } else {
@@ -1482,14 +1481,11 @@ public class Authentication {
 
 
         request.addStringParam("user_id", user_id);
-        Log.e("user_id",user_id);
         request.addStringParam("amount", amount);
-        Log.e("amount",amount);
         request.addStringParam("item_list", item_list);
-        Log.e("item_list",item_list);
         request.addStringParam("payment_type", payment_type);
         Log.e("payment_type",payment_type);
-        request.addStringParam("sales_purchases", "purchase");
+        request.addStringParam("sales_purchases", sales_purchases);
         Log.e("sales_purchases",sales_purchases);
         request.addStringParam("date", date);
         Log.e("date",date);

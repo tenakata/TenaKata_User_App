@@ -91,6 +91,14 @@ public class FragmentProfile extends BaseFragment {
                     .into(binding.profileImage);
 
 
+
+            Glide.with(this)
+                    .load(path)
+                    .apply(new RequestOptions()
+                            .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
+                    .into(binding.ivProfile);
+
+
             name = binding.viewUserName.getText().toString();
             mobile = binding.tvMobile.getText().toString();
             email = binding.tvEmail.getText().toString();
@@ -150,6 +158,12 @@ public class FragmentProfile extends BaseFragment {
                             .apply(new RequestOptions()
                                     .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
                             .into(binding.profileImage);
+                    Glide.with(this)
+                            .load(profilepicpath)
+                            .apply(new RequestOptions()
+                                    .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
+                            .into(binding.ivProfile);
+
                     apiHit();
 
                 } catch (OutOfMemoryError e) {
@@ -183,17 +197,17 @@ public class FragmentProfile extends BaseFragment {
     private void editFunctionality(String name, String mobile, String email) {
 
         binding.emailEditText.setHint(email);
-        binding.mobileEditText.setHint(mobile);
+      //  binding.mobileEditText.setHint(mobile);
         binding.viewUserNameEditText.setHint(name);
         binding.view1111.setVisibility(View.VISIBLE);
         binding.view11.setVisibility(View.GONE);
         binding.view13.setVisibility(View.GONE);
         binding.view1313.setVisibility(View.VISIBLE);
         binding.emailEditText.setVisibility(View.VISIBLE);
-        binding.mobileEditText.setVisibility(View.VISIBLE);
+     //   binding.mobileEditText.setVisibility(View.VISIBLE);
         binding.viewUserNameEditText.setVisibility(View.VISIBLE);
         binding.tvEmail.setVisibility(View.GONE);
-        binding.tvMobile.setVisibility(View.GONE);
+     //   binding.tvMobile.setVisibility(View.GONE);
         binding.viewUserName.setVisibility(View.GONE);
 
         binding.button3.setVisibility(View.VISIBLE);
@@ -233,11 +247,11 @@ public class FragmentProfile extends BaseFragment {
             model.getResult().setId(HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             if (model.getResult().getImage() != null) {
                 String path = model.getResult().getImage();
-                Glide.with(this)
+               /* Glide.with(this)
                         .load(path)
                         .apply(new RequestOptions()
                                 .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
-                        .into(binding.profileImage);
+                        .into(binding.profileImage);*/
                 model.getResult().setImage(model.getResult().getImage());
             } else {
                 model.getResult().setImage(HRPrefManager.getInstance(context).getUserDetail().getResult().getImage());
@@ -261,20 +275,6 @@ public class FragmentProfile extends BaseFragment {
             model.getResult().setPhone(HRPrefManager.getInstance(context).getUserDetail().getResult().getPhone());
             model.getResult().setRole(HRPrefManager.getInstance(context).getUserDetail().getResult().getRole());
             HRPrefManager.getInstance(context).setUserDetail(model);
-
-            /*
-            //  LoginModel oldModel = new LoginModel();
-            // oldModel.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
-            oldModel.getResult().setToken(HRPrefManager.getInstance(context).getUserDetail().getResult().getToken());
-            oldModel.getResult().setCountry_code(oldModel.getResult().getCountry_code());
-            oldModel.getResult().setEmail(oldModel.getResult().getEmail());
-            oldModel.getResult().setId(oldModel.getResult().getId());
-            oldModel.getResult().setImage(oldModel.getResult().getImage());
-            oldModel.getResult().setName(oldModel.getResult().getName());
-            oldModel.getResult().setPhone(oldModel.getResult().getPhone());
-            oldModel.getResult().setRole(oldModel.getResult().getRole());
-*/
-
             callback.onChangeName();
 
             startActivity(IntentHelper.getDashboard(context));
@@ -293,7 +293,7 @@ public class FragmentProfile extends BaseFragment {
     private void onSaved() {
 
         binding.emailEditText.setHint(email);
-        binding.mobileEditText.setHint(mobile);
+        binding.tvMobile.setText(mobile);
         binding.viewUserNameEditText.setHint(name);
         binding.view1111.setVisibility(View.GONE);
         binding.view11.setVisibility(View.VISIBLE);

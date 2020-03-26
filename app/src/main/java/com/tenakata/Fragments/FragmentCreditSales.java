@@ -271,8 +271,6 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
 
     @Override
     public void onViewDetailsClick(int position,String id,String name,String receiptpath,String amount,String list) {
-
-
         Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id",id);
         intent.putExtra("position",String.valueOf(position));

@@ -111,6 +111,7 @@ public class ActivityAddDailySales extends BaseActivity {
         context = this;
 
         if (getIntent()!=null){
+          //  Toast.makeText(this,getIntent().getStringExtra("sales_purchases"),Toast.LENGTH_LONG).show();
             sales_purchases = getIntent().getStringExtra("sales_purchases");
             binding.textView2.setText(getIntent().getStringExtra("title"));
 
@@ -329,12 +330,13 @@ public class ActivityAddDailySales extends BaseActivity {
         if (paymentType.equalsIgnoreCase("cash")) {
 
             String apiUrl = HRAppConstants.URL_ADD_SALE_CASH_PURCHASE_CASH;
-        Toast.makeText(this,binding.viewName.getText().toString(),Toast.LENGTH_LONG).show();
+
+
         Authentication.multiPartRequest(HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
                     binding.identeramount.getText().toString(),
                     binding.viewItemList.getText().toString(),
                     "cash",
-                    sales_purchases,
+                    getIntent().getStringExtra("sales_purchases"),
                     binding.viewDate.getText().toString(),
                     path, apiUrl,
                     this, paymentType, "", "", binding.viewName.getText().toString());
@@ -346,7 +348,7 @@ public class ActivityAddDailySales extends BaseActivity {
                     binding.identeramount.getText().toString(),
                     binding.viewItemList.getText().toString(),
                     "credit",
-                    sales_purchases,
+                    getIntent().getStringExtra("sales_purchases"),
                     binding.viewDate.getText().toString(),
                     path,apiUrl,
                     this,paymentType,binding.viewMobile.getText().toString(),
