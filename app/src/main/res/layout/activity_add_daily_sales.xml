@@ -4,7 +4,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +49,7 @@
                     android:id="@+id/layoutadd_enteramount"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="@+id/viewDate"
                     app:layout_constraintStart_toStartOf="@+id/viewDate"
                     app:layout_constraintTop_toBottomOf="@+id/view9">
@@ -335,7 +335,7 @@
                         android:fontFamily="@font/montserrat_medium"
                         android:text="Add Daily Sale"
                         android:textColor="#FFFFFF"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.21"
                         app:layout_constraintStart_toStartOf="parent"

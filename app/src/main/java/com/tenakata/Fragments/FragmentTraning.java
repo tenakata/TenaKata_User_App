@@ -65,8 +65,8 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
 
             jsonObject.put("page", "1");
             jsonObject.put("Perpage", "10");
-            jsonObject.put("user_id", 1);
-            jsonObject.put("role", "supervisor");
+            jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
+            jsonObject.put("role", "user");
 
 
         } catch (JSONException e) {
@@ -107,7 +107,7 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
 
     @Override
     public void onRowClick(int position,String user_id) {
-        Toast.makeText(getActivity(),String.valueOf(user_id),Toast.LENGTH_LONG).show();
+       // Toast.makeText(getActivity(),String.valueOf(user_id),Toast.LENGTH_LONG).show();
         Intent intent=new Intent(getActivity(), ActivityTrainingDetails.class);
         intent.putExtra("id",user_id);
         startActivity(intent);

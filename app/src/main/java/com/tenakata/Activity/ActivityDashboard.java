@@ -342,6 +342,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
         }
     }
 
+
     public void openMenu() {
         drawerLayout.openMenu(true);
     }
@@ -358,9 +359,8 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
     public void onBackPressed() {
         if (drawerLayout != null) {
             if (isMenuOpened()) closeMenu();
-            else
-                super.onBackPressed();
-
+        } else {
+            super.onBackPressed();
         }
 
     }

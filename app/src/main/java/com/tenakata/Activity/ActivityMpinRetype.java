@@ -20,6 +20,7 @@ import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
 import com.tenakata.Utilities.HRAppConstants;
+import com.tenakata.Utilities.HRPrefManager;
 import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.databinding.ActivityMpinRetypeBinding;
 
@@ -91,7 +92,7 @@ public class ActivityMpinRetype extends BaseActivity {
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("user_id", 1);
+            jsonObject.put("user_id", HRPrefManager.getInstance(context).getUserDetail().getResult().getId());
             jsonObject.put("pin", pin);
             jsonObject.put("role", "user");
         } catch (JSONException e) {

@@ -46,20 +46,10 @@ public class ActivityCreateMpin extends AppCompatActivity  {
     }
 
     private void goTONextActivity() {
-        binding.firstPinView.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
-                {    String x=binding.firstPinView.getText().toString();
-                    Intent intent=new Intent(ActivityCreateMpin.this,ActivityMpinRetype.class);
-                    intent.putExtra("pin",x);
-                    startActivity(intent);
-                    finish();
-                    return true;
-                }
-                return false;
-            }
-        });
+        String x=binding.firstPinView.getText().toString();
+        Intent intent=new Intent(ActivityCreateMpin.this,ActivityMpinRetype.class);
+        intent.putExtra("pin",x);
+        startActivity(intent);
+        finish();
     }
 }

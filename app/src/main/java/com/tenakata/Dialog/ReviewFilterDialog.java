@@ -57,8 +57,8 @@ public class ReviewFilterDialog implements View.OnClickListener {
 
         if (filterOrSort.equals("filter")){
             selectedDay="15";
-            binding.view30.setText("15");
-            binding.view90.setText("30");
+            binding.view30.setText("15 Days");
+            binding.view90.setText("30 Days");
 
         }
 
@@ -111,14 +111,14 @@ public class ReviewFilterDialog implements View.OnClickListener {
                 case R.id.view30:
                     binding.image90.setVisibility(View.GONE);
                     binding.image30.setVisibility(View.VISIBLE);
-                    selectedDay="15";
+                    selectedDay="15 Days";
 
                     break;
 
                 case R.id.view90:
                     binding.image90.setVisibility(View.VISIBLE);
                     binding.image30.setVisibility(View.GONE);
-                    selectedDay="30";
+                    selectedDay="30 Days";
                     break;
             }
         }

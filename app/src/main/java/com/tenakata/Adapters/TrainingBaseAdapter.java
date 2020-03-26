@@ -59,7 +59,7 @@ public class TrainingBaseAdapter extends BaseAdapter {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callBack.onRowClick(position,list.get(position).getUser_id());
+                callBack.onRowClick(position,list.get(position).getId());
             }
         });
         return holder.view;
