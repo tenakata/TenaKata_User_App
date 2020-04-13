@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -437,6 +438,9 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
     @Override
     public void onTaskSuccess(Object responseObj) {
         if (!isFinishing() && progressDialog.isShowing()) progressDialog.dismiss();
+
+
+
         if (responseObj instanceof ModelSuccess) {
             HRPrefManager.getInstance(context).clearPrefs();
             HRPrefManager.getInstance(context).setKeyIsStart(true);

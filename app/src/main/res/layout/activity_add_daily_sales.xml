@@ -76,7 +76,7 @@
                     android:drawableEnd="@drawable/camera_icon"
                     android:drawableRight="@drawable/camera_icon"
                     android:fontFamily="@font/montserrat_medium"
-                    android:hint="Captured (attach receipt credit sale)"
+                    android:hint=""
                     android:paddingLeft="@dimen/dp_4"
                     android:paddingTop="@dimen/dp_10"
                     android:paddingRight="@dimen/dp_4"

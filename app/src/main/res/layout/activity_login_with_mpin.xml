@@ -42,7 +42,7 @@
         android:layout_marginTop="50dp"
         android:cursorVisible="true"
         android:gravity="center"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:itemBackground="@color/colorWhite"
         android:textColor="@color/colorBlue"
         android:textSize="18sp"

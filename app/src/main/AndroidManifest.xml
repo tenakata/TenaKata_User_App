@@ -28,12 +28,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityAddDailySales"
+            android:windowSoftInputMode="adjustPan"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityViewDetails"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityTrainingDetails"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityMpinRetype"
@@ -43,6 +47,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityOTPVerification"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ActivityForgotPassword"

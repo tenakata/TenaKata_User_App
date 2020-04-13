@@ -95,7 +95,7 @@ public class HRPriceFormater {
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        SimpleDateFormat output = new SimpleDateFormat("EEEE", Locale.US);
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM", Locale.US);
 
         Date d = null;
         try {
@@ -111,6 +111,21 @@ public class HRPriceFormater {
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", new Locale("en"));
+        SimpleDateFormat output = new SimpleDateFormat("MMM", new Locale("en"));
+        Date d = null;
+        try {
+            d = sdf.parse(serverdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return output.format(d);
+    }
+
+    public static String changeSimpleMonthFormate(String serverdate) {
+        if (serverdate==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM", new Locale("en"));
         SimpleDateFormat output = new SimpleDateFormat("MMM", new Locale("en"));
         Date d = null;
         try {

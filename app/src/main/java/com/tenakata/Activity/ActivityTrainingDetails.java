@@ -18,8 +18,10 @@ import com.tenakata.Models.TrainingViewModel;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
 import com.tenakata.Utilities.HRAppConstants;
+import com.tenakata.Utilities.HRLogger;
 import com.tenakata.Utilities.HRPrefManager;
 import com.tenakata.Utilities.HRUrlFactory;
+import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.databinding.ActivityTrainingDetailsBinding;
 
 import org.json.JSONException;
@@ -50,7 +52,10 @@ public class ActivityTrainingDetails extends BaseActivity implements View.OnClic
         binding.trainingNextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hitApiRating();
+                if (pagevalidation()){
+                    hitApiRating();
+                }
+
             }
         });
 
@@ -60,8 +65,18 @@ public class ActivityTrainingDetails extends BaseActivity implements View.OnClic
 
 
     }
+    private boolean pagevalidation() {
+
+        if(binding.ratingBar6.getRating()<.5){
+            HRLogger.showSneckbar(binding.constraintLayout,"Please Fill Rating Bar");
+            return false;
+        }
+
+        return true;
+    }
 
     private void hitApi() {
+            showLoader();
 
         final JSONObject jsonObject = new JSONObject();
         try {
@@ -78,7 +93,7 @@ public class ActivityTrainingDetails extends BaseActivity implements View.OnClic
     }
 
     private void hitApiRating() {
-
+            showLoader();
         final JSONObject jsonObject = new JSONObject();
         try {
 

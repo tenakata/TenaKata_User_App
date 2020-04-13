@@ -216,8 +216,9 @@
                     android:text="0%"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
-                    app:layout_constraintEnd_toEndOf="@+id/viewAveragePrice"
-                    app:layout_constraintStart_toStartOf="@+id/viewAveragePrice"
+                    app:layout_constraintEnd_toEndOf="@+id/view8"
+                    app:layout_constraintHorizontal_bias="0.37"
+                    app:layout_constraintStart_toStartOf="@+id/view8"
                     app:layout_constraintTop_toBottomOf="@+id/view8" />
 
                 <TextView
@@ -259,6 +260,14 @@
                     app:layout_constraintBottom_toBottomOf="@+id/viewCashSales"
                     app:layout_constraintStart_toStartOf="@+id/viewActivityText"
                     app:layout_constraintTop_toBottomOf="@+id/viewActivityText" />
+
+                <ImageView
+                    android:id="@+id/upDownLogo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/viewCashPurchase2"
+                    app:layout_constraintStart_toEndOf="@+id/viewCashPurchase2"
+                    app:layout_constraintTop_toTopOf="@+id/viewCashPurchase2" />
 
                 <TextView
                     android:id="@+id/viewCashSales"

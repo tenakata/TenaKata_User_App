@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
@@ -52,7 +53,9 @@ public class ActivityAddDailySales extends BaseActivity {
     private ActivityAddDailySalesBinding binding;
     private Uri image_uris;
     private String path = null;
+   private Intent intent;
     private String selectedDob;
+    private  String selectedDate= "";
     private int mYear, mDay, mMonth;
     private String countryCode;
     private String sales_purchases;
@@ -109,13 +112,45 @@ public class ActivityAddDailySales extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_daily_sales);
         context = this;
-
+        intent=getIntent();
         if (getIntent()!=null){
           //  Toast.makeText(this,getIntent().getStringExtra("sales_purchases"),Toast.LENGTH_LONG).show();
             sales_purchases = getIntent().getStringExtra("sales_purchases");
             binding.textView2.setText(getIntent().getStringExtra("title"));
 
         }
+
+        String sp,cs;
+        sp=getIntent().getStringExtra("sales_purchases");
+        cs=getIntent().getStringExtra("defaultradiobutton");
+
+
+        if( cs.equals("cash") && sp.equals("sales"))
+        {
+            binding.viewCapturImage.setHint("Captured (attach receipt cash sale)");
+        }
+        if( cs.equals("cash") && sp.equals("purchase"))
+        {
+            binding.viewCapturImage.setHint("Captured (attach receipt cash purchase)");
+
+        }
+        if( cs.equals("credit") && sp.equals("sales"))
+        {
+            binding.viewCapturImage.setHint("Captured (attach receipt credit sale)");
+        }
+        if( cs.equals("credit") && sp.equals("purchase"))
+        {
+            binding.viewCapturImage.setHint("Captured (attach receipt credit purchase)");
+        }
+
+
+
+
+
+
+
+
+
 
         binding.toolbarBackView.setOnClickListener(this);
         binding.viewCapturImage.setOnClickListener(this);
@@ -182,6 +217,9 @@ public class ActivityAddDailySales extends BaseActivity {
                 try {
 
                     path = result.getUri().getEncodedPath();
+                    Uri pathx = result.getOriginalUri();
+                    Log.e("aaaaa",path);
+                    Log.e("bbbb",pathx.toString());
                     binding.viewCapturImage.setText(HRValidationHelper.optional(getRealPathFromURI(result.getUri())));
 
                 } catch (OutOfMemoryError e) {
@@ -258,8 +296,9 @@ public class ActivityAddDailySales extends BaseActivity {
                             binding.tvDob.setText(DateFormat.format("dd-MM-yyyy", c.getTimeInMillis()).toString());
                         }*/
 
-                        selectedDob = DateFormat.format("yy/MM/dd", c.getTimeInMillis()).toString();
-                        binding.viewDate.setText(DateFormat.format("dd/MM/yyyy", c.getTimeInMillis()).toString());
+                      //  selectedDob = DateFormat.format("yyyy-MM-dd", c.getTimeInMillis()).toString();
+                        selectedDate = DateFormat.format("yyyy-MM-dd", c.getTimeInMillis()).toString();
+                        binding.viewDate.setText(DateFormat.format("dd-MM-yyyy", c.getTimeInMillis()).toString());
 
 
                     }
@@ -337,7 +376,8 @@ public class ActivityAddDailySales extends BaseActivity {
                     binding.viewItemList.getText().toString(),
                     "cash",
                     getIntent().getStringExtra("sales_purchases"),
-                    binding.viewDate.getText().toString(),
+                   // binding.viewDate.getText().toString(),
+                selectedDate,
                     path, apiUrl,
                     this, paymentType, "", "", binding.viewName.getText().toString());
         }else {
@@ -349,13 +389,16 @@ public class ActivityAddDailySales extends BaseActivity {
                     binding.viewItemList.getText().toString(),
                     "credit",
                     getIntent().getStringExtra("sales_purchases"),
-                    binding.viewDate.getText().toString(),
+                  selectedDate,
+                  //  binding.viewDate.getText().toString(),
                     path,apiUrl,
                     this,paymentType,binding.viewMobile.getText().toString(),
                     binding.viewIDNo.getText().toString(),
                     binding.viewName.getText().toString());
         }
     }
+
+    // "http:\/\/res.cloudinary.com\/tecorb-technologies\/image\/upload\/v1586342178\/neyblsndk2g5uhvkwwxc.jpg"
 
 
 

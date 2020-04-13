@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TenaKata app</string>
+    <string name="app_name">Business</string>
     <string name="txt_tutorial_text_1">Welcome To Tenakata\nMobile app </string>
     <string name="txt_tutorial_text_2">Amazing Payment\nExperience\njust tap and go </string>
     <string name="error_empty">This field can\'t be blank.</string>

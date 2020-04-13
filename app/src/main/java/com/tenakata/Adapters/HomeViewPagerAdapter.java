@@ -38,7 +38,7 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
     private List<String>filterBean;
     private String salePrice,purchasePrice;
     private Callback callback;
-    public HomeViewPagerAdapter(List<String> beans, Context context, String salePrice, String purchasePrice,Callback callback) {
+    public HomeViewPagerAdapter(List<String> beans, Context context, String salePrice,String purchasePrice,Callback callback) {
         this.context = context;
         this.filterBean = beans;
         this.salePrice= salePrice;
@@ -47,7 +47,7 @@ public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewPagerAdap
         this.callback=callback;
     }
 
-    public void refresh(List<String> beans,String salePrice,String purchasePrice) {
+    public void refresh(List<String> beans,String purchasePrice,String salePrice) {
         this.filterBean.clear();
         this.filterBean.addAll(beans);
         this.salePrice= salePrice;

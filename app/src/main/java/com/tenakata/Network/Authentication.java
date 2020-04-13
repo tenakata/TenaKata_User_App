@@ -1407,7 +1407,7 @@ public class Authentication {
     public static void multiPartRequest(String user_id, String amount, String item_list,
                                         String payment_type, String sales_purchases,String date,String attach_recepit,String Url,
                                         @NonNull final BaseCallBacks callBacks,String cash_or_credit,String phone,String id_no,String name) {
-
+    Log.e("xxxx",attach_recepit);
         if (HRNetworkUtils.isNetworkAvailable()) {
             callBacks.showLoader();
         } else {
@@ -1505,12 +1505,13 @@ public class Authentication {
             if (android.util.Patterns.WEB_URL.matcher(attach_recepit).matches()) {
                 request.addStringParam("attach_recepit", attach_recepit);
                 request.addStringParam("attach_recepit", attach_recepit);
-                Log.e("attatch_recipt",attach_recepit);
+                Log.e("attatch_recipttttttt",attach_recepit);
             } else {
                 request.addFile("attach_recepit", attach_recepit);
-                Log.e("attatch_recipt",attach_recepit);
+                Log.e("attatch_recipttz",attach_recepit);
             }
-            Log.i("Path", attach_recepit);
+            Log.i("Pathhhhh", attach_recepit);
+            Log.i("attachnnnn", attach_recepit);
         }
         App.getInstance().getRequestQueue().getCache().clear();
         App.getInstance().getRequestQueue().add(request);
