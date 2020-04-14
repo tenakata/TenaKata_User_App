@@ -8,8 +8,11 @@ import java.util.TimeZone;
 
 public class HRUrlFactory {
 
-    private static final String URL_DEV = "http://ec2-34-221-232-228.us-west-2.compute.amazonaws.com/";     // Development
-    private static final String URL_PROD = "http://ec2-34-221-232-228.us-west-2.compute.amazonaws.com/";   // Live
+
+
+
+    private static final String URL_DEV = "http://ec2-18-219-231-177.us-east-2.compute.amazonaws.com/";     // Development
+    private static final String URL_PROD = "http://ec2-18-219-231-177.us-east-2.compute.amazonaws.com/";   // Live
     private static final String API_VERSION = "";
 
     public static boolean isModeDevelopment() { return /*BuildConfig.DEBUG*/true; }

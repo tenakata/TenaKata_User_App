@@ -135,6 +135,7 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         linearSnapHelper.attachToRecyclerView(binding.recyclerView);
         indicator.attachToRecyclerView(binding.recyclerView, linearSnapHelper);
 
+
         binding.radioButtonSale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -454,10 +455,12 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
         }
         if (responseObj instanceof HomeModel) {
             HomeModel model = (HomeModel) responseObj;
+            String cash,credit;
+
 
             binding.viewAveragePrice.setText("KES " + HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getTotal_average())));
             binding.viewCashSales.setText("Cash "+sales_purchase+" KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())));
-            binding.viewCashPurchase.setText("Credit "+sales_purchase+" KES "+ HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
+          binding.viewCashPurchase.setText("Credit "+sales_purchase+" KES "+ HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount())));
             getCircularProgressChart((HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCash_amount())), HRPriceFormater.roundDecimalByTwoDigits(model.getResult().getCredit_amount()));
 
 
