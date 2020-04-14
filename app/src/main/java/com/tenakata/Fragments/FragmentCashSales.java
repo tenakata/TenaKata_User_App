@@ -278,12 +278,13 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
 
 
     @Override
-    public void onViewDetailsClick(int position, String id, String name, String receiptpath, String amount, String list) {
+    public void onViewDetailsClick(int position, String id, String name, String receiptpath, String amount, String list,String shopName) {
         Intent intent = new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id", id);
         intent.putExtra("position", String.valueOf(position));
         intent.putExtra("sales_purchases", "sales");
         intent.putExtra("payment_type", "cash");
+        intent.putExtra("shopname",shopName);
 
         startActivity(intent);
     }

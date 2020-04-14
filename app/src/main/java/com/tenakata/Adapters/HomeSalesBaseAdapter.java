@@ -130,7 +130,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
                      receiptpath=uri.toString();
                 }
                 callBack.onViewDetailsClick(position,list.get(position).getId(),list.get(position).getName(),
-                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list());
+                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list(),list.get(position).getName());
             }
         });
 
@@ -150,7 +150,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
     public interface RowClick {
         void onPayClick(String id,String totalAmount);
         void onRemindClick(String id,String totalAmount);
-        void onViewDetailsClick(int position,String id, String name, String receiptpath,String amount,String list);
+        void onViewDetailsClick(int position,String id, String name, String receiptpath,String amount,String list,String shopName);
     }
 
     private class ViewHolder {

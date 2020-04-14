@@ -55,6 +55,7 @@ public class LoginModel {
         private String token;
         private String image;
         private String email;
+        private String user_id;
 
         public String getId() {
             return id;
@@ -63,6 +64,17 @@ public class LoginModel {
         public void setId(String id) {
             this.id = id;
         }
+
+
+        public String getUserId() {
+            return user_id;
+        }
+
+        public void setUserId(String id) {
+            this.user_id = user_id;
+        }
+
+
 
         public String getName() {
             return name;

@@ -178,6 +178,7 @@ public class ActivityViewDetails extends BaseActivity implements
                         .into(binding.imageView11);
                 String amount = (HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(model.getResult().get(0).getAmount())));
                 binding.tvAmount.setText(amount);
+                binding.viewTitle.setText(intent.getStringExtra("shopname"));
                 binding.tvItemList.setText(model.getResult().get(0).getItem_list());
                 binding.tvCreditviewdetailsHead.setText(model.getResult().get(0).getName());
             }

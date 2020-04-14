@@ -32,6 +32,8 @@ public class ActivityForgotPassword extends AppCompatActivity implements View.On
     private ActivityForgotPasswordBinding binding;
     private ProgressDialog progressDialog;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class ActivityForgotPassword extends AppCompatActivity implements View.On
         }else if (!HRValidationHelper.isValidPassword(binding.viewPassword.getText().toString())) {
             HRLogger.showSneckbar(view, getString(R.string.txt_password_lenth_short));
             return false;
+
         } else if (HRValidationHelper.isNull(binding.viewConfirmPassword.getText().toString())) {
             HRLogger.showSneckbar(view, getString(R.string.txt_enter_confirm_password));
             return false;
