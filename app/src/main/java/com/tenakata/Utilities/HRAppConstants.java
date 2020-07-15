@@ -49,6 +49,8 @@ public interface HRAppConstants {
     String URL_TRAINING_RATING="index.php/training_rating";
     String URL_FILTER="index.php/filter";
     String URL_GRAPH="index.php/graph";
+    String URL_OTP ="index.php/otp" ;
+    String URL_CHECK_OTP="index.php/check_otp";
 }
 
 

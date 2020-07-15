@@ -39,9 +39,10 @@
 
                 <TextView
                     android:id="@+id/viewTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:singleLine="true"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="Image A000234"
                     android:textColor="@color/colorBlack"
@@ -49,7 +50,7 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView11" />
 
                 <TextView
-                    android:id="@+id/viewShopName"
+                    android:id="@+id/viewphone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
@@ -192,6 +193,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_totalitems"
                     app:layout_constraintTop_toBottomOf="@+id/tv_totalitems" />
+
+                <TextView
+                    android:id="@+id/tv_view_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView11" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

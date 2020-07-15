@@ -77,11 +77,6 @@ public class ReviewFilterDialog implements View.OnClickListener {
             binding.filterlayout.setVisibility(View.VISIBLE);
 
 
-
-
-
-
-
         }
 
         binding.view30.setOnClickListener(this);

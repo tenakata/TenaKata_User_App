@@ -6,6 +6,9 @@ import androidx.databinding.DataBindingUtil;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.tenakata.CallBacks.AuthenticationCallBacks;
 import com.tenakata.Dialog.ErrorDialog;
@@ -37,6 +40,8 @@ public class ActivityForgotPassword extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
         context = this;
         progressDialog = new ProgressDialog(context);
@@ -103,6 +108,7 @@ public class ActivityForgotPassword extends AppCompatActivity implements View.On
         if (!isFinishing()) progressDialog.dismiss();
         if (response instanceof ModelSuccess) {
             ModelSuccess modelSuccess =(ModelSuccess)response;
+            Toast.makeText(getApplicationContext(),"New Password Setup Completed",Toast.LENGTH_SHORT).show();
             finish();
         }
     }

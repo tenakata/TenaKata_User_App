@@ -8,13 +8,13 @@ public class CashSalesCreditModel {
     /**
      * status : 200
      * message : Show All list !!
-     * result : [{"id":"1","business_user_id":"1","date":"19/02/2020","amount":"10000","narration":"test","attach_book":"http://res.cloudinary.com/tecorb-technologies/image/upload/v1582092106/zeynp3dhcgnl2qruyn61.png"},{"id":"2","business_user_id":"1","date":"19/02/2020","amount":"90000","narration":"test","attach_book":"http://res.cloudinary.com/tecorb-technologies/image/upload/v1582092130/r7yhfrqldydlg7zo0b0g.png"}]
-     * total_amount : 100000
+     * result : [{"id":"106","business_user_id":"230","date":"2020-05-26","amount":10,"phone":"9865986598","country_code":"91","id_no":"hd","name":"Stocks","item_list":"dbdhd","attach_recepit":"http://res.cloudinary.com/tecorb-technologies/image/upload/v1590485843/f8a0osnhfn3cvhchyxcw.jpg","public_id":"f8a0osnhfn3cvhchyxcw","payment_type":"credit","sales_purchases":"purchase","created_at":"2020-05-26","updated_at":"2020-05-26 09:05:37","bussiness_name":"business nm"}]
+     * total_amount : 10
      */
 
     private String status;
     private String message;
-    private double total_amount;
+    private Double total_amount;
     private List<ResultBean> result;
 
     public String getStatus() {
@@ -51,30 +51,41 @@ public class CashSalesCreditModel {
 
     public static class ResultBean {
         /**
-         * id : 1
-         * business_user_id : 1
-         * date : 19/02/2020
-         * amount : 10000
-         * narration : test
-         * attach_book : http://res.cloudinary.com/tecorb-technologies/image/upload/v1582092106/zeynp3dhcgnl2qruyn61.png
+         * id : 106
+         * business_user_id : 230
+         * date : 2020-05-26
+         * amount : 10
+         * phone : 9865986598
+         * country_code : 91
+         * id_no : hd
+         * name : Stocks
+         * item_list : dbdhd
+         * attach_recepit : http://res.cloudinary.com/tecorb-technologies/image/upload/v1590485843/f8a0osnhfn3cvhchyxcw.jpg
+         * public_id : f8a0osnhfn3cvhchyxcw
+         * payment_type : credit
+         * sales_purchases : purchase
+         * created_at : 2020-05-26
+         * updated_at : 2020-05-26 09:05:37
+         * bussiness_name : business nm
          */
+
 
         private String id;
         private String business_user_id;
         private String date;
         private String amount;
-        private String narration;
-        private String attach_book;
-
+        private String phone;
+        private String country_code;
+        private String id_no;
+        private String name;
         private String item_list;
-        private String payment_type;
-        private String sales_purchases;
         private String attach_recepit;
         private String public_id;
+        private String payment_type;
+        private String sales_purchases;
+        private String created_at;
         private String updated_at;
-        private String name;
-        private String id_no;
-        private String phone;
+        private String bussiness_name;
 
         public String getId() {
             return id;
@@ -100,7 +111,7 @@ public class CashSalesCreditModel {
             this.date = date;
         }
 
-        public String getAmount() {
+        public String  getAmount() {
             return amount;
         }
 
@@ -108,20 +119,36 @@ public class CashSalesCreditModel {
             this.amount = amount;
         }
 
-        public String getNarration() {
-            return narration;
+        public String getPhone() {
+            return phone;
         }
 
-        public void setNarration(String narration) {
-            this.narration = narration;
+        public void setPhone(String phone) {
+            this.phone = phone;
         }
 
-        public String getAttach_book() {
-            return attach_book;
+        public String getCountry_code() {
+            return country_code;
         }
 
-        public void setAttach_book(String attach_book) {
-            this.attach_book = attach_book;
+        public void setCountry_code(String country_code) {
+            this.country_code = country_code;
+        }
+
+        public String getId_no() {
+            return id_no;
+        }
+
+        public void setId_no(String id_no) {
+            this.id_no = id_no;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getItem_list() {
@@ -130,22 +157,6 @@ public class CashSalesCreditModel {
 
         public void setItem_list(String item_list) {
             this.item_list = item_list;
-        }
-
-        public String getPayment_type() {
-            return payment_type;
-        }
-
-        public void setPayment_type(String payment_type) {
-            this.payment_type = payment_type;
-        }
-
-        public String getSales_purchases() {
-            return sales_purchases;
-        }
-
-        public void setSales_purchases(String sales_purchases) {
-            this.sales_purchases = sales_purchases;
         }
 
         public String getAttach_recepit() {
@@ -164,6 +175,30 @@ public class CashSalesCreditModel {
             this.public_id = public_id;
         }
 
+        public String getPayment_type() {
+            return payment_type;
+        }
+
+        public void setPayment_type(String payment_type) {
+            this.payment_type = payment_type;
+        }
+
+        public String getSales_purchases() {
+            return sales_purchases;
+        }
+
+        public void setSales_purchases(String sales_purchases) {
+            this.sales_purchases = sales_purchases;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
         public String getUpdated_at() {
             return updated_at;
         }
@@ -172,28 +207,37 @@ public class CashSalesCreditModel {
             this.updated_at = updated_at;
         }
 
-        public String getName() {
-            return name;
+        public String getBussiness_name() {
+            return bussiness_name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getId_no() {
-            return id_no;
-        }
-
-        public void setId_no(String id_no) {
-            this.id_no = id_no;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
+        public void setBussiness_name(String bussiness_name) {
+            this.bussiness_name = bussiness_name;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

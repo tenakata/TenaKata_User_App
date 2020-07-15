@@ -262,9 +262,10 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     }
 
     @Override
-    public void onRemindClick(String id, String totalAmount) {
+    public void onRemindClick(String id, String totalAmount, String name, String mobile, String date) {
 
     }
+
 
     @Override
     public void onViewDetailsClick(int position,String id, String name, String receiptpath , String amount,String list,String shopName) {
@@ -299,7 +300,6 @@ public class FragmentCreditPurchase extends BaseFragment implements OnMoreListen
     }
     @Override
     public void onTaskError(String errorMsg) {
-        super.onTaskError(errorMsg);
         dismissLoader();
     }
 }

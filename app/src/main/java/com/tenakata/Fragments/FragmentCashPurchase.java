@@ -195,7 +195,6 @@ public class FragmentCashPurchase extends BaseFragment implements OnMoreListener
 
     @Override
     public void onTaskError(String errorMsg) {
-        super.onTaskError(errorMsg);
         dismissLoader();
     }
 
@@ -271,9 +270,10 @@ public class FragmentCashPurchase extends BaseFragment implements OnMoreListener
     }
 
     @Override
-    public void onRemindClick(String id, String totalAmount) {
+    public void onRemindClick(String id, String totalAmount, String name, String mobile, String date) {
 
     }
+
 
     @Override
     public void onViewDetailsClick(int position ,String id, String name, String receiptpath , String amount,String list,String shopName) {

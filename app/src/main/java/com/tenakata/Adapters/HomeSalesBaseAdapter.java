@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -78,21 +79,32 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
                 .into(holder.binding.imageView11);
         holder.binding.viewDate.setText("Captured: "+HRValidationHelper.optional(list.get(position).getDate()));
         holder.binding.viewPrice.setText("KES "+HRValidationHelper.optional(HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(list.get(position).getAmount()))));
-        holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
+        if (list.get(position).getPayment_type().equals("credit")){
+            holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
+        }
+        if (list.get(position).getPayment_type().equals("cash") && list.get(position).getSales_purchases().equals("purchase")){
+            holder.binding.viewShopName.setText(HRValidationHelper.optional(list.get(position).getName()));
+        }
 
-        String string=list.get(position).getItem_list();
-        String []word=string.split("\\s");
-        int length=word.length;
-        int count=0;
-        StringBuffer stringBuffer=new StringBuffer();
-                for (int i=0;i<length;i++){
-                    count++;
-                    stringBuffer.append(word[i]+" ");
-                    if (count>1){
-                        break;
-                    }
-                }
-       holder.binding.viewTitle.setText(stringBuffer);
+
+if (!HRValidationHelper.isNull(list.get(position).getId_no())){
+    String string=list.get(position).getId_no();//ACTUALLY A DESCRIPTOPN
+    holder.binding.viewTitle.setText(string);
+  /*  String []word=string.split("\\s");
+    int length=word.length;
+    int count=0;
+    StringBuffer stringBuffer=new StringBuffer();
+    for (int i=0;i<length;i++){
+        count++;
+        stringBuffer.append(word[i]+" ");
+        if (count>1){
+            break;
+        }
+    }
+    holder.binding.viewTitle.setText(stringBuffer);*/
+
+}
+
 
         if (type!=null && !type.equals("") && (type.equalsIgnoreCase("cashSale")||
                 type.equalsIgnoreCase("cashPurchase"))){
@@ -109,7 +121,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
         holder.binding.viewRemindBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callBack.onRemindClick(list.get(position).getId(),list.get(position).getAmount());
+                callBack.onRemindClick(list.get(position).getId(),list.get(position).getAmount(),list.get(position).getBussiness_name(),list.get(position).getPhone(),list.get(position).getDate());
             }
         });
 
@@ -121,16 +133,15 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
         });
 
 
-        holder.binding.viewDetails.setOnClickListener(new View.OnClickListener() {
+        holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("yoooo","yoooo");
                 if (list.get(position).getAttach_recepit()!=null){
                     Uri uri=Uri.parse(list.get(position).getAttach_recepit());
                      receiptpath=uri.toString();
                 }
                 callBack.onViewDetailsClick(position,list.get(position).getId(),list.get(position).getName(),
-                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list(),list.get(position).getName());
+                        receiptpath,list.get(position).getAmount(),list.get(position).getItem_list(),list.get(position).getId_no());
             }
         });
 
@@ -149,7 +160,7 @@ public class HomeSalesBaseAdapter extends BaseAdapter {
 
     public interface RowClick {
         void onPayClick(String id,String totalAmount);
-        void onRemindClick(String id,String totalAmount);
+        void onRemindClick(String id,String totalAmount,String name,String mobile,String date);
         void onViewDetailsClick(int position,String id, String name, String receiptpath,String amount,String list,String shopName);
     }
 

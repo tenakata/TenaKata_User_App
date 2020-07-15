@@ -118,7 +118,7 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, ActivityAddDailySales.class)
-                        .putExtra("sales_purchases", "sales").putExtra("title","Add Daily Sales").putExtra("defaultradiobutton","cash"));
+                        .putExtra("sales_purchases", "sales").putExtra("title","Add Daily Cash Sales").putExtra("defaultradiobutton","cash"));
             }
         });
     }
@@ -164,7 +164,6 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
 
     @Override
     public void onTaskError(String errorMsg) {
-        super.onTaskError(errorMsg);
         dismissLoader();
     }
 
@@ -272,9 +271,10 @@ public class FragmentCashSales extends BaseFragment implements OnMoreListener,
     }
 
     @Override
-    public void onRemindClick(String id, String totalAmount) {
+    public void onRemindClick(String id, String totalAmount, String name, String mobile, String date) {
 
     }
+
 
 
     @Override

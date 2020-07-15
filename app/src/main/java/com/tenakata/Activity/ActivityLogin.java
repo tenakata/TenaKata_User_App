@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.rilixtech.Country;
 import com.rilixtech.CountryCodePicker;
@@ -15,6 +16,7 @@ import com.tenakata.CallBacks.AuthenticationCallBacks;
 import com.tenakata.Dialog.ErrorDialog;
 import com.tenakata.Dialog.ProgressDialog;
 import com.tenakata.Models.LoginModel;
+import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
 import com.tenakata.Utilities.BioMetricLoginSession;
@@ -99,11 +101,18 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
             startActivity(IntentHelper.getDashboard(context));
             finishAffinity();
         }
+        if (response instanceof ModelSuccess){
+            startActivity(IntentHelper.getOtpVerification(this));
+        }
     }
+
+
 
     @Override
     public void onSuccessCallback(boolean isSuccess) {
         if (!isFinishing()) progressDialog.dismiss();
+        Toast.makeText(this,"sdf",Toast.LENGTH_SHORT);
+
     }
 
     @Override

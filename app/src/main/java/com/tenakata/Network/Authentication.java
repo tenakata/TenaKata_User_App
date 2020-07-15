@@ -3,6 +3,7 @@ package com.tenakata.Network;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -29,6 +30,7 @@ import com.tenakata.R;
 import com.tenakata.Utilities.HRAppConstants;
 import com.tenakata.Utilities.HRNetworkUtils;
 import com.tenakata.Utilities.HRUrlFactory;
+import com.tenakata.Utilities.HRValidationHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1406,8 +1408,7 @@ public class Authentication {
 
     public static void multiPartRequest(String user_id, String amount, String item_list,
                                         String payment_type, String sales_purchases,String date,String attach_recepit,String Url,
-                                        @NonNull final BaseCallBacks callBacks,String cash_or_credit,String phone,String id_no,String name) {
-    Log.e("xxxx",attach_recepit);
+                                        @NonNull final BaseCallBacks callBacks,String cash_or_credit,String phone,String id_no,String name,String countryCode) {
         if (HRNetworkUtils.isNetworkAvailable()) {
             callBacks.showLoader();
         } else {
@@ -1481,39 +1482,53 @@ public class Authentication {
 
 
         request.addStringParam("user_id", user_id);
+        Log.e("user_id",user_id);
         request.addStringParam("amount", amount);
+        Log.e("amount",amount);
         request.addStringParam("item_list", item_list);
+        Log.e("item_list",item_list);
         request.addStringParam("payment_type", payment_type);
         Log.e("payment_type",payment_type);
         request.addStringParam("sales_purchases", sales_purchases);
         Log.e("sales_purchases",sales_purchases);
         request.addStringParam("date", date);
         Log.e("date",date);
-
-        if (cash_or_credit.equalsIgnoreCase("credit")){
+        if (HRValidationHelper.isNull(phone)){
+            request.addStringParam("phone", phone);
+            Log.e("phone","");
+        }else {
             request.addStringParam("phone", phone);
             Log.e("phone",phone);
-            request.addStringParam("id_no", id_no);
-            Log.e("id_no",id_no);
-
         }
-        request.addStringParam("name", name);
-        Log.e("name",name);
+
+
+
+
+        request.addStringParam("id_no", id_no);
+        Log.e("id_no",id_no);
+        request.addStringParam("name", name);// error in credit sale
+        Log.e("name","as");
+        if (HRValidationHelper.isNull(countryCode)){
+            request.addStringParam("country_code", "");
+        }else {
+            request.addStringParam("country_code", countryCode);
+            Log.e("country_code",countryCode);
+        }
+
 
 
         if (attach_recepit != null) {
             if (android.util.Patterns.WEB_URL.matcher(attach_recepit).matches()) {
-                request.addStringParam("attach_recepit", attach_recepit);
+               // request.addStringParam("attach_recepit", attach_recepit);
                 request.addStringParam("attach_recepit", attach_recepit);
                 Log.e("attatch_recipttttttt",attach_recepit);
             } else {
                 request.addFile("attach_recepit", attach_recepit);
-                Log.e("attatch_recipttz",attach_recepit);
+                Log.e("attatch_recepit",attach_recepit);
             }
-            Log.i("Pathhhhh", attach_recepit);
-            Log.i("attachnnnn", attach_recepit);
+
         }
-        App.getInstance().getRequestQueue().getCache().clear();
+       // App.getInstance().getRequestQueue().getCache().clear();
         App.getInstance().getRequestQueue().add(request);
     }
 
@@ -1875,7 +1890,8 @@ public class Authentication {
         SimpleMultiPartRequest request = new SimpleMultiPartRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
             public void onResponse(String response) {
-                if (HRUrlFactory.isModeDevelopment()) {
+                if (!HRUrlFactory.isModeDevelopment()) {
+
                     print(url, String.valueOf(response), "", "");
                 }
                 try {
@@ -1939,18 +1955,17 @@ public class Authentication {
             request.addStringParam("phone", phone);
             Log.e("phone",phone);
             request.addStringParam("user_id", id_no);
-        request.addStringParam("email", email);
+            request.addStringParam("email", email);
             Log.e("user_id",id_no);
-        request.addStringParam("role", role);
-
-        request.addStringParam("name", name);
-        Log.e("name",name);
+                request.addStringParam("role", "user");
+                request.addStringParam("name", name);
+                Log.e("name",name);
 
 
         if (imagepath != null) {
             if (android.util.Patterns.WEB_URL.matcher(imagepath).matches()) {
                 request.addStringParam("image", imagepath);
-                request.addStringParam("image", imagepath);
+               request.addStringParam("image", imagepath);
                 Log.e("image",imagepath);
             } else {
                 request.addFile("image", imagepath);

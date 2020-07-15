@@ -62,6 +62,7 @@ public class FragmentTraning extends BaseFragment implements TrainingBaseAdapter
 
     private void hitApi() {
 
+
         if (!((Activity)context).isFinishing() && !progressDialog.isShowing()){
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
         }

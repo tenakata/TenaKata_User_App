@@ -7,6 +7,7 @@ import com.tenakata.Models.CashSalesCreditModel;
 import com.tenakata.Models.GraphModel;
 import com.tenakata.Models.HomeModel;
 import com.tenakata.Models.LoginModel;
+import com.tenakata.Models.ModelOtp;
 import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Models.PayAmountModel;
 import com.tenakata.Models.TrainingListModel;
@@ -42,6 +43,7 @@ public class ResponseParser {
                 case HRAppConstants.URL_REMIND:
                 case HRAppConstants.URL_TRAINING_RATING:
                 case HRAppConstants.URL_CREATE_MPIN:
+                case HRAppConstants.URL_CHECK_OTP:
                     return App.getInstance().getGson().fromJson(response, ModelSuccess.class);
 
                 case HRAppConstants.URL_CASH_CREDIT_SALES:
@@ -49,6 +51,8 @@ public class ResponseParser {
                 case HRAppConstants.URL_FILTER :
                 case HRAppConstants.URL_CASH_CREDIT_Purchase:
                     return App.getInstance().getGson().fromJson(response, CashSalesCreditModel.class);
+                case HRAppConstants.URL_OTP:
+                    return App.getInstance().getGson().fromJson(response, ModelOtp.class);
 
                 case HRAppConstants.URL_PAY_AMOUNT:
                     return App.getInstance().getGson().fromJson(response, PayAmountModel.class);

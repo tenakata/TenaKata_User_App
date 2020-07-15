@@ -38,7 +38,11 @@ import com.tenakata.databinding.ActivityDashboardBinding;
 import com.tenakata.databinding.FragmentProfileBinding;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -116,7 +120,7 @@ public class FragmentProfile extends BaseFragment {
             binding.button3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    apiHit();
+                    apiHit("editProfile");
                 }
             });
 
@@ -130,16 +134,27 @@ public class FragmentProfile extends BaseFragment {
         }
     }
 
-    private void apiHit() {
+    private void apiHit(String type) {
+        if (type.equals("editProfile")){
+            if (isValidate()) {
+                Authentication.ProfilemultiPartRequest(profilepicpath,
+                        (HRAppConstants.URL_PROFILE), this,
+                        binding.mobileEditText.getText().toString(),
+                        HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
+                        binding.viewUserNameEditText.getText().toString(),
+                        binding.emailEditText.getText().toString(), "user");
+            }
 
-        if (isValidate()) {
-            Authentication.ProfilemultiPartRequest(profilepicpath,
-                    (HRAppConstants.URL_PROFILE), this,
-                    binding.mobileEditText.getText().toString(),
-                    HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
-                    binding.viewUserNameEditText.getText().toString(),
-                    binding.emailEditText.getText().toString(), "user");
         }
+        if (type.equals("getProfile"))
+
+                Authentication.ProfilemultiPartRequest(profilepicpath,
+                        (HRAppConstants.URL_PROFILE), this,
+                        binding.mobileEditText.getText().toString(),
+                        HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
+                        binding.viewUserNameEditText.getText().toString(),
+                        binding.emailEditText.getText().toString(), "user");
+
 
 
     }
@@ -150,8 +165,17 @@ public class FragmentProfile extends BaseFragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 try {
+                  /*  File compressedImageFile = Compressor.getDefault(context).compressToFile(new File(result.getUri().getPath()));
+                    Uri x=Uri.fromFile(new File(compressedImageFile.getPath()));
+                    profilepicpath=String.valueOf(x.getPath());*/
 
-                    profilepicpath = result.getUri().getEncodedPath();
+                    try {
+                        profilepicpath=   String.valueOf(new Compressor(context).compressToFile(
+                                new File(result.getUri().getPath())));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
 
                     Glide.with(this)
                             .load(profilepicpath)
@@ -164,7 +188,7 @@ public class FragmentProfile extends BaseFragment {
                                     .transform(new CircleCrop(),new RoundedCorners(30)).placeholder(R.drawable.avator_profile))
                             .into(binding.ivProfile);
 
-                    apiHit();
+                    apiHit("getProfile");
 
                 } catch (OutOfMemoryError e) {
                     e.printStackTrace();
@@ -184,9 +208,9 @@ public class FragmentProfile extends BaseFragment {
         } else if (HRValidationHelper.isNull(binding.emailEditText.getText().toString())) {
             Toast.makeText(context, "Enter Email address", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (!HRValidationHelper.isValidEmail(binding.emailEditText.getText().toString())) {
+       /* }else if (!HRValidationHelper.isValidEmail(binding.emailEditText.getText().toString())) {
             Toast.makeText(context, "Enter Valid Email address", Toast.LENGTH_SHORT).show();
-            return false;
+            return false;*/
         }else if (HRValidationHelper.isNull(binding.mobileEditText.getText().toString())) {
             Toast.makeText(context, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
             return false;

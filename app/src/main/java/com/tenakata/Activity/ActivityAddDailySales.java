@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +43,15 @@ import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.databinding.ActivityAddDailySalesBinding;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import id.zelory.compressor.Compressor;
 
 public class ActivityAddDailySales extends BaseActivity {
     private Context context;
@@ -128,19 +133,62 @@ public class ActivityAddDailySales extends BaseActivity {
         if( cs.equals("cash") && sp.equals("sales"))
         {
             binding.viewCapturImage.setHint("Captured (attach receipt cash sale)");
+            binding.radioButtonCash.setChecked(true);
+            binding.radioGroup.setVisibility(View.GONE);
+            binding.textInputLayout.setVisibility(View.GONE);
+            binding.view6.setVisibility(View.GONE);
+            binding.tvSpinnerHead.setVisibility(View.GONE);
+            binding.nameSpinner.setVisibility(View.GONE);
+            // binding.textInputLayout3.setVisibility(View.VISIBLE);
+            binding.view5.setVisibility(View.GONE);
+            binding.etCashSaleLayoout.setVisibility(View.VISIBLE);
+
         }
         if( cs.equals("cash") && sp.equals("purchase"))
         {
             binding.viewCapturImage.setHint("Captured (attach receipt cash purchase)");
+            binding.radioButtonCash.setChecked(true);
+            binding.radioGroup.setVisibility(View.GONE);
+            binding.textInputLayout.setVisibility(View.GONE);
+            binding.ccp.setVisibility(View.GONE);
+            binding.view6.setVisibility(View.VISIBLE);
+            binding.tvSpinnerHead.setVisibility(View.VISIBLE);
+            binding.nameSpinner.setVisibility(View.VISIBLE);
+            binding.etCashSaleLayoout.setVisibility(View.GONE);
+            // binding.textInputLayout3.setVisibility(View.VISIBLE);
+            binding.view5.setVisibility(View.GONE);
+            binding.etCashSaleLayoout.setVisibility(View.VISIBLE);
 
         }
         if( cs.equals("credit") && sp.equals("sales"))
         {
             binding.viewCapturImage.setHint("Captured (attach receipt credit sale)");
+            binding.radioButtonCredit.setChecked(true);
+            binding.radioGroup.setVisibility(View.GONE);
+            binding.textInputLayout.setVisibility(View.VISIBLE);
+            binding.view6.setVisibility(View.GONE);
+            binding.tvSpinnerHead.setVisibility(View.GONE);
+            binding.ccp.setVisibility(View.VISIBLE);
+            binding.nameSpinner.setVisibility(View.GONE);
+            binding.etCashSaleLayoout.setVisibility(View.GONE);
+            // binding.textInputLayout3.setVisibility(View.VISIBLE);
+            binding.view5.setVisibility(View.VISIBLE);
+            binding.etCashSaleLayoout.setVisibility(View.VISIBLE);
         }
         if( cs.equals("credit") && sp.equals("purchase"))
         {
             binding.viewCapturImage.setHint("Captured (attach receipt credit purchase)");
+            binding.radioButtonCredit.setChecked(true);
+            binding.radioGroup.setVisibility(View.GONE);
+            binding.textInputLayout.setVisibility(View.VISIBLE);
+            binding.ccp.setVisibility(View.VISIBLE);
+            binding.view6.setVisibility(View.VISIBLE);
+            binding.tvSpinnerHead.setVisibility(View.VISIBLE);
+            binding.nameSpinner.setVisibility(View.VISIBLE);
+            binding.etCashSaleLayoout.setVisibility(View.GONE);
+            // binding.textInputLayout3.setVisibility(View.VISIBLE);
+            binding.view5.setVisibility(View.VISIBLE);
+            binding.etCashSaleLayoout.setVisibility(View.VISIBLE);
         }
 
 
@@ -152,7 +200,12 @@ public class ActivityAddDailySales extends BaseActivity {
 
 
 
-        binding.toolbarBackView.setOnClickListener(this);
+        binding.imageView15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         binding.viewCapturImage.setOnClickListener(this);
         binding.viewDate.setOnClickListener(this);
         binding.viewSave.setOnClickListener(this);
@@ -165,24 +218,6 @@ public class ActivityAddDailySales extends BaseActivity {
                 countryCode = country.getPhoneCode();
             }
         });
-        if (getIntent().getStringExtra("defaultradiobutton").equals("cash")){
-            binding.radioButtonCash.setChecked(true);
-            binding.textInputLayout.setVisibility(View.GONE);
-            binding.ccp.setVisibility(View.GONE);
-            binding.textInputLayout2.setVisibility(View.GONE);
-            // binding.textInputLayout3.setVisibility(View.GONE);
-            binding.view5.setVisibility(View.GONE);
-        }
-        else
-        {
-            binding.radioButtonCredit.setChecked(true);
-            binding.textInputLayout.setVisibility(View.VISIBLE);
-            binding.ccp.setVisibility(View.VISIBLE);
-            binding.textInputLayout2.setVisibility(View.VISIBLE);
-            // binding.textInputLayout3.setVisibility(View.VISIBLE);
-            binding.view5.setVisibility(View.VISIBLE);
-
-        }
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -195,13 +230,13 @@ public class ActivityAddDailySales extends BaseActivity {
                 if (radioButton.getText()!=null && radioButton.getText().toString().equalsIgnoreCase("credit")){
                     binding.textInputLayout.setVisibility(View.VISIBLE);
                     binding.ccp.setVisibility(View.VISIBLE);
-                    binding.textInputLayout2.setVisibility(View.VISIBLE);
+                    binding.nameSpinner.setVisibility(View.VISIBLE);
                    // binding.textInputLayout3.setVisibility(View.VISIBLE);
                     binding.view5.setVisibility(View.VISIBLE);
                 }else {
                     binding.textInputLayout.setVisibility(View.GONE);
                     binding.ccp.setVisibility(View.GONE);
-                    binding.textInputLayout2.setVisibility(View.GONE);
+                    binding.nameSpinner.setVisibility(View.GONE);
                    // binding.textInputLayout3.setVisibility(View.GONE);
                     binding.view5.setVisibility(View.GONE);
                 }
@@ -216,11 +251,16 @@ public class ActivityAddDailySales extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    path = result.getUri().getEncodedPath();
-                    Uri pathx = result.getOriginalUri();
-                    Log.e("aaaaa",path);
-                    Log.e("bbbb",pathx.toString());
-                    binding.viewCapturImage.setText(HRValidationHelper.optional(getRealPathFromURI(result.getUri())));
+                   /* File compressedImageFile = Compressor.getDefault(this).compressToFile(new File(result.getUri().getEncodedPath()));
+                    Uri x=Uri.fromFile(new File(compressedImageFile.getPath()));
+                    path=String.valueOf(x.getPath());*/
+                    try {
+                        path=   String.valueOf(new Compressor(context).compressToFile(
+                                new File(result.getUri().getPath())));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    binding.viewCapturImage.setText(HRValidationHelper.optional(path));
 
                 } catch (OutOfMemoryError e) {
                     e.printStackTrace();
@@ -287,16 +327,6 @@ public class ActivityAddDailySales extends BaseActivity {
                         Calendar userAge = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                         Calendar minAdultAge = new GregorianCalendar();
                         minAdultAge.add(Calendar.YEAR, 0);
-                        /*if (minAdultAge.before(userAge)) {
-                            selectedDob = null;
-                            binding.tvDob.setText("");
-                            Toast.makeText(context, context.getString(R.string.txt_age_message), Toast.LENGTH_SHORT).show();
-                        } else {
-                            selectedDob = DateFormat.format("yyyy-MM-dd", c.getTimeInMillis()).toString();
-                            binding.tvDob.setText(DateFormat.format("dd-MM-yyyy", c.getTimeInMillis()).toString());
-                        }*/
-
-                      //  selectedDob = DateFormat.format("yyyy-MM-dd", c.getTimeInMillis()).toString();
                         selectedDate = DateFormat.format("yyyy-MM-dd", c.getTimeInMillis()).toString();
                         binding.viewDate.setText(DateFormat.format("dd-MM-yyyy", c.getTimeInMillis()).toString());
 
@@ -304,6 +334,17 @@ public class ActivityAddDailySales extends BaseActivity {
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+
+    public static String removeZero(String mobile)
+    {
+        int i = 0;
+        while (i < mobile.length() && mobile.charAt(i) == '0')
+            i++;
+        StringBuffer sb = new StringBuffer(mobile);
+        sb.replace(0, i, "");
+        return sb.toString();
     }
 
     private boolean validation(View view,String type){
@@ -316,14 +357,14 @@ public class ActivityAddDailySales extends BaseActivity {
         }else if (type.equalsIgnoreCase("credit") && HRValidationHelper.isNull(binding.viewMobile.getText().toString())){
             HRLogger.showSneckbar(view,getString(R.string.txt_enter_mobile_number));
             return false;
-        } else if (type.equalsIgnoreCase("credit") && HRValidationHelper.isNull(binding.viewIDNo.getText().toString())){
-            HRLogger.showSneckbar(view,getString(R.string.txt_enter_ID_no));
+        } else if (type.equalsIgnoreCase("credit") && HRValidationHelper.isNull(binding.nameSpinner.getSelectedItem().toString())){
+            HRLogger.showSneckbar(view,"Enter Description");
             return false;
-        } else if (type.equalsIgnoreCase("credit") && HRValidationHelper.isNull(binding.viewName.getText().toString())){
-            HRLogger.showSneckbar(view,getString(R.string.txt_enter_name));
+        }else if (HRValidationHelper.isNull(binding.viewDetaillist.getText().toString())){
+            HRLogger.showSneckbar(view,"Enter Detail List");
             return false;
-        }else if (HRValidationHelper.isNull(binding.viewItemList.getText().toString())){
-            HRLogger.showSneckbar(view,getString(R.string.txt_enter_items));
+        }else if (type.equals("cash") && HRValidationHelper.isNull(binding.etCashSaleDescription.getText().toString())){
+            HRLogger.showSneckbar(view,"Enter Description");
             return false;
         }else if (path == null){
             HRLogger.showSneckbar(view,getString(R.string.txt_click_image));
@@ -369,33 +410,55 @@ public class ActivityAddDailySales extends BaseActivity {
         if (paymentType.equalsIgnoreCase("cash")) {
 
             String apiUrl = HRAppConstants.URL_ADD_SALE_CASH_PURCHASE_CASH;
-
+            String name = getSelectedSpinnerItem();
+            String mobile=removeZero(binding.viewMobile.getText().toString());
 
         Authentication.multiPartRequest(HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
                     binding.identeramount.getText().toString(),
-                    binding.viewItemList.getText().toString(),
+                    binding.viewDetaillist.getText().toString(),
                     "cash",
                     getIntent().getStringExtra("sales_purchases"),
                    // binding.viewDate.getText().toString(),
                 selectedDate,
                     path, apiUrl,
-                    this, paymentType, "", "", binding.viewName.getText().toString());
+                    this, paymentType,mobile, binding.etCashSaleDescription.getText().toString(), name,countryCode);
+          //  Toast.makeText(context,HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),Toast.LENGTH_SHORT).show();
+
         }else {
 
             String apiUrl = HRAppConstants.URL_ADD_SALE_CREDIT_PURCHASE_CASH;
+           String name = getSelectedSpinnerItem();
+           String mobile=removeZero(binding.viewMobile.getText().toString());
 
             Authentication.multiPartRequest(HRPrefManager.getInstance(context).getUserDetail().getResult().getId(),
                     binding.identeramount.getText().toString(),
-                    binding.viewItemList.getText().toString(),
+                    binding.viewDetaillist.getText().toString(),
                     "credit",
                     getIntent().getStringExtra("sales_purchases"),
                   selectedDate,
                   //  binding.viewDate.getText().toString(),
                     path,apiUrl,
-                    this,paymentType,binding.viewMobile.getText().toString(),
-                    binding.viewIDNo.getText().toString(),
-                    binding.viewName.getText().toString());
+                    this,paymentType,mobile,binding.etCashSaleDescription.getText().toString()
+                   , name
+                    ,countryCode);
+
+
         }
+    }
+
+
+    String getSelectedSpinnerItem()
+    {
+        String result="";
+        String sp,cs;
+        sp=getIntent().getStringExtra("sales_purchases");
+        cs=getIntent().getStringExtra("defaultradiobutton");
+        if(  sp.equals("sales")){
+            result ="";
+        }else {
+            result =binding.nameSpinner.getSelectedItem().toString();
+        }
+        return  result;
     }
 
     // "http:\/\/res.cloudinary.com\/tecorb-technologies\/image\/upload\/v1586342178\/neyblsndk2g5uhvkwwxc.jpg"

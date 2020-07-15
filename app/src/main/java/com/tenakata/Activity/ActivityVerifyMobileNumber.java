@@ -1,6 +1,7 @@
 package com.tenakata.Activity;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,9 +12,12 @@ import androidx.databinding.DataBindingUtil;
 
 import com.rilixtech.Country;
 import com.rilixtech.CountryCodePicker;
+import com.tenakata.Base.BaseActivity;
 import com.tenakata.CallBacks.AuthenticationCallBacks;
+import com.tenakata.CallBacks.BaseCallBacks;
 import com.tenakata.Dialog.ErrorDialog;
 import com.tenakata.Dialog.ProgressDialog;
+import com.tenakata.Models.ModelOtp;
 import com.tenakata.Models.ModelSuccess;
 import com.tenakata.Network.Authentication;
 import com.tenakata.R;
@@ -24,14 +28,21 @@ import com.tenakata.Utilities.HRValidationHelper;
 import com.tenakata.Utilities.IntentHelper;
 import com.tenakata.databinding.ActivityMobileNumberBinding;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import static com.tenakata.Dialog.ProgressDialog.progressDialog;
 
-public class ActivityVerifyMobileNumber extends AppCompatActivity implements View.OnClickListener, AuthenticationCallBacks {
+public class ActivityVerifyMobileNumber extends BaseActivity  {
     private ActivityMobileNumberBinding binding;
     private Context context;
     private String countryCode;
+
+    @Override
+    public void onClick(int viewId, View view) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,27 +93,25 @@ public class ActivityVerifyMobileNumber extends AppCompatActivity implements Vie
     }
 
     @Override
-    public void onSuccessCallback(Object response) {
+    public void onTaskSuccess(Object responseObj) {
+        super.onTaskSuccess(responseObj);
         if (!isFinishing()) progressDialog.dismiss();
-        if (response instanceof ModelSuccess) {
-            ModelSuccess modelSuccess =(ModelSuccess)response;
+        if (responseObj instanceof ModelOtp) {
+            ModelOtp modelSuccess =(ModelOtp)responseObj;
             startActivity(IntentHelper.getOtpVerification(context)
                     .putExtra("contact",binding.viewMobile.getText().toString())
-                    .putExtra("countryCode",countryCode));
+                    .putExtra("countryCode",countryCode).putExtra("otp",modelSuccess.getOtp()));
             finish();
         }
     }
 
     @Override
-    public void onSuccessCallback(boolean isSuccess) {
+    public void onTaskError(String errorMsg) {
         if (!isFinishing()) progressDialog.dismiss();
+        ErrorDialog.errorDialog(context, getString(R.string.app_name), errorMsg);
     }
 
-    @Override
-    public void onErrorCallBack(String error) {
-        if (!isFinishing()) progressDialog.dismiss();
-        ErrorDialog.errorDialog(context, getString(R.string.app_name), error);
-    }
+
 
     @Override
     public void onInternetNotFound() {
@@ -132,7 +141,7 @@ public class ActivityVerifyMobileNumber extends AppCompatActivity implements Vie
 
         if (!isFinishing())
             progressDialog.showDialog(ProgressDialog.DIALOG_CENTERED);
-        final HashMap<String,String> params = new HashMap<>();
+        final JSONObject params=new JSONObject();
         try {
             params.put("phone", binding.viewMobile.getText().toString());
             params.put("country_code", countryCode);
@@ -140,8 +149,27 @@ public class ActivityVerifyMobileNumber extends AppCompatActivity implements Vie
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Authentication.checkUsers(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CHECK_USER),
-                this, params, HRUrlFactory.getDefaultHeaders());
+        Authentication.object(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_OTP),this,params);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
 

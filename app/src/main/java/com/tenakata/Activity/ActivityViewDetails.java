@@ -52,6 +52,7 @@ public class ActivityViewDetails extends BaseActivity implements
     Context context;
     private List<ViewDetailsModel.ResultBean> list = new ArrayList<>();
     private Intent intent;
+    ViewDetailsModel model;
 
 
     @Override
@@ -102,9 +103,15 @@ public class ActivityViewDetails extends BaseActivity implements
     }
 
     public void showRemindDialog(String id, String totalAmount) {
-        new DialogRemindPayment(context, totalAmount, this, id);
-
+        new DialogRemindPayment(context, totalAmount,model.getResult().get(0).getBussiness_name(),model.getResult().get(0).getPhone(),model.getResult().get(0).getDate(), this, id);
+      //  callBack.onRemindClick(list.get(position).getId(),list.get(position).getAmount(),list.get(position).getName(),list.get(position).getPhone(),list.get(position).getDate());
     }
+
+  /*  @Override
+    public void onRemindClick(String id,String totalAmount,String name, String phone, String Date) {
+        new DialogRemindPayment(context,totalAmount,name,phone,Date,this,id);
+
+    }*/
 
 
     public void hitRemindApi(String Id, String message) {
@@ -168,7 +175,7 @@ public class ActivityViewDetails extends BaseActivity implements
     @Override
     public void onTaskSuccess(Object responseObj) {
         if (responseObj instanceof ViewDetailsModel) {
-            ViewDetailsModel model = (ViewDetailsModel) responseObj;
+             model = (ViewDetailsModel) responseObj;
             if (model.getResult().size() > 0) {
                 String path = (model.getResult().get(0).getAttach_recepit());
                 Glide.with(this)
@@ -176,11 +183,37 @@ public class ActivityViewDetails extends BaseActivity implements
                         .apply(new RequestOptions()
                                 .transform(new RoundedCorners(20)).placeholder(R.drawable.offer_sel))
                         .into(binding.imageView11);
-                String amount = (HRPriceFormater.roundDecimalByTwoDigits(Double.parseDouble(model.getResult().get(0).getAmount())));
+                String amount = ((String.valueOf((model.getResult().get(0).getAmount()))));
                 binding.tvAmount.setText(amount);
-                binding.viewTitle.setText(intent.getStringExtra("shopname"));
                 binding.tvItemList.setText(model.getResult().get(0).getItem_list());
                 binding.tvCreditviewdetailsHead.setText(model.getResult().get(0).getName());
+                binding.viewphone.setText(model.getResult().get(0).getPhone());
+                if (HRValidationHelper.isNull(model.getResult().get(0).getName())){
+                    binding.viewTitle.setText(model.getResult().get(0).getId_no());
+                }else {
+                    binding.viewTitle.setText(model.getResult().get(0).getName());
+                }
+
+                binding.tvViewDate.setText(model.getResult().get(0).getDate());
+         //       if (intent.getStringExtra("payment_type").equals("cash")){
+
+                    if (!HRValidationHelper.isNull(model.getResult().get(0).getId_no())){
+                        String string=model.getResult().get(0).getId_no();//ACTUALLY A DESCRIPTOPN
+                        String []word=string.split("\\s");
+                        int length=word.length;
+                        int count=0;
+                        StringBuffer stringBuffer=new StringBuffer();
+                        for (int i=0;i<length;i++){
+                            count++;
+                            stringBuffer.append(word[i]+" ");
+                            if (count>1){
+                                break;
+                            }
+                        }
+                        binding.tvCreditviewdetailsHead.setText(stringBuffer);
+                    }
+          //      }
+
             }
         } else if (responseObj instanceof PayAmountModel) {
             double a = Double.parseDouble(payingamount);
@@ -197,6 +230,7 @@ public class ActivityViewDetails extends BaseActivity implements
 
     @Override
     public void onTaskError(String errorMsg) {
+
         super.onTaskError(errorMsg);
     }
 

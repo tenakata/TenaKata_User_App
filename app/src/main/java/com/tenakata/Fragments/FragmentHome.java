@@ -468,10 +468,20 @@ public class FragmentHome extends BaseFragment implements HomeViewPagerAdapter.C
             binding.viewCashPurchase2.setText(model.getPercentage()+"%");
 
             if (model.getArraow()){
-                binding.upDownLogo.setImageResource(R.drawable.greenup);
+                if (model.getPercentage().equals("0.00")){
+                    binding.upDownLogo.setImageResource(R.drawable.dasssshh);
+                }else {
+                    binding.upDownLogo.setImageResource(R.drawable.greenup);
+                }
+
             }
             else if (model.getArraow().equals(false)){
-                binding.upDownLogo.setImageResource(R.drawable.reddown);
+                if (model.getPercentage().equals("0.00")){
+                    binding.upDownLogo.setImageResource(R.drawable.dasssshh);
+                }else {
+                    binding.upDownLogo.setImageResource(R.drawable.reddown);
+                }
+
             }
             else {
                 binding.upDownLogo.setImageResource(R.drawable.eqqual);

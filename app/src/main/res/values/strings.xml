@@ -79,5 +79,13 @@
     <string name="edit">Edit</string>
     <string name="totalitems">Total Items: </string>
     <string name="total">Total</string>
+    <string-array name="description_array_dropdown">
+        <item>Stocks</item>
+        <item>Rent</item>
+        <item>Salary</item>
+        <item>Maji</item>
+        <item>Umemep</item>
+        <item>Others</item>
+    </string-array>
 </resources>
 

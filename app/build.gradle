@@ -8,8 +8,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,6 +26,25 @@ android {
         maven {
             url 'http://dl.bintray.com/amulyakhare/maven'
         }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'tenakata'
+            keyPassword 'tenakata'
+            storeFile file('/home/upasana/AAAA/TenaKataapp/app/tenakata.jks')
+            storePassword 'tenakata'
+        }
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
+    lintOptions {
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 }
 
@@ -65,6 +84,7 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
 

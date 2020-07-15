@@ -8,10 +8,15 @@ import androidx.databinding.DataBindingUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,22 +28,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.tenakata.Base.BaseActivity;
 import com.tenakata.CallBacks.AuthenticationCallBacks;
+import com.tenakata.CallBacks.BaseCallBacks;
 import com.tenakata.Dialog.ProgressDialog;
+import com.tenakata.Models.ModelOtp;
+import com.tenakata.Models.ModelSuccess;
+import com.tenakata.Network.Authentication;
 import com.tenakata.R;
+import com.tenakata.Utilities.HRAppConstants;
+import com.tenakata.Utilities.HRUrlFactory;
 import com.tenakata.Utilities.IntentHelper;
 import com.tenakata.databinding.ActivityOtpverificationBinding;
+
+import org.json.JSONObject;
+
 import java.util.concurrent.TimeUnit;
 
 import in.aabhasjindal.otptextview.OTPListener;
 
-public class ActivityOTPVerification extends AppCompatActivity implements View.OnClickListener {
+import static com.tenakata.Dialog.ProgressDialog.progressDialog;
+
+public class ActivityOTPVerification extends BaseActivity  {
 
     private ActivityOtpverificationBinding binding;
     private String verificationID;
     private Context context;
     private ProgressDialog loader;
     private String contact, countryCode;
+    String resendOtp;
 
 
     @Override
@@ -51,10 +69,17 @@ public class ActivityOTPVerification extends AppCompatActivity implements View.O
     }
 
     @Override
+    public void onClick(int viewId, View view) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_otpverification);
-
+        resendOtp=getIntent().getStringExtra("otp");
         context = this;
         binding.viewClickBack.setOnClickListener(this);
         loader = new ProgressDialog(context);
@@ -63,36 +88,86 @@ public class ActivityOTPVerification extends AppCompatActivity implements View.O
         if (getIntent()!=null){
             countryCode = getIntent().getStringExtra("countryCode");
             contact = getIntent().getStringExtra("contact");
-            if (contact!=null && !contact.equals("")) {
+           /* if (contact!=null && !contact.equals("")) {
                 sendOtp();
-            }
+            }*/
+
         }
 
 
-        binding.viewEnterCode.setOtpListener(new OTPListener() {
+        binding.firstPinView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onInteractionListener() {
-                Log.d("OTP listener", "====> ");
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (charSequence.length()==4){
+                  //  apiLoginWithmPin(charSequence.toString());
+                    showLoader();
+                   apiCheckPin(charSequence.toString());
+                }
+
             }
 
             @Override
-            public void onOTPComplete(String code) {
+            public void afterTextChanged(Editable editable) {
 
-                if (verificationID != null && code != null) {
-                    verifyCode(verificationID, code);
-                } else {
-                    Toast.makeText(context, getString(R.string.txt_went_wrong), Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
         binding.viewTapHere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { if (contact != null) {
-                    sendOtp();
+                showLoader();
+                   resendOtp();
                 }
             }
         });
+    }
+    private void resendOtp(){
+
+        final JSONObject params=new JSONObject();
+        try {
+            params.put("phone", getIntent().getStringExtra("contact"));
+            params.put("country_code", getIntent().getStringExtra("countryCode"));
+            params.put("role", "user");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Authentication.object(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_OTP),this,params);
+    }
+
+    @Override
+    public void onTaskSuccess(Object responseObj) {
+        super.onTaskSuccess(responseObj);
+        if (responseObj instanceof ModelSuccess){
+            startActivity(IntentHelper.getForgotPassword(this).putExtra("countryCode",getIntent().getStringExtra("countryCode")).putExtra("contact",getIntent().getStringExtra("contact")));
+            finish();
+        }
+        if (responseObj instanceof ModelOtp) {
+            ModelOtp modelSuccess =(ModelOtp)responseObj;
+            resendOtp =String.valueOf(modelSuccess.getOtp());
+        }
+
+    }
+
+    @Override
+    public void onTaskError(String errorMsg) {
+        super.onTaskError(errorMsg);
+        Toast.makeText(this,"Invalid Otp",Toast.LENGTH_SHORT).show();
+    }
+
+    private void apiCheckPin(String otp) {
+        final JSONObject params=new JSONObject();
+        try {
+            params.put("otp", otp);
+            params.put("role", "user");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Authentication.object(context, HRUrlFactory.generateUrlWithVersion(HRAppConstants.URL_CHECK_OTP),this,params);
     }
 
 
@@ -116,7 +191,7 @@ public class ActivityOTPVerification extends AppCompatActivity implements View.O
     }
 
 
-    private void sendOtp() {
+   /* private void sendOtp() {
 
         final int Timeout = 60;
 
@@ -155,7 +230,7 @@ public class ActivityOTPVerification extends AppCompatActivity implements View.O
                         super.onCodeAutoRetrievalTimeOut(s);
                     }
                 });
-    }
+    }*/
 
     private void verifyCode(String verificationID, String otp) {
         PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(verificationID, otp);
@@ -204,5 +279,25 @@ public class ActivityOTPVerification extends AppCompatActivity implements View.O
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

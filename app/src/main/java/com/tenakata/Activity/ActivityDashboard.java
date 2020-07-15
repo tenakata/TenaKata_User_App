@@ -65,9 +65,6 @@ import static com.tenakata.Dialog.ProgressDialog.progressDialog;
 
 public class ActivityDashboard extends BaseActivity implements AdapterView.OnItemClickListener,
         View.OnClickListener , BaseCallBacks , FragmentHome.CallBackAgain,FragmentProfile.Callback{
-
-
-
     public static String profilepicpath = null;
     private Context context;
     private ActivityDashboardBinding binding;
@@ -86,6 +83,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
         binding = DataBindingUtil.setContentView(this,R.layout.activity_dashboard);
         context = this;
         new FragmentProfile( this);
+
 
         binding.includedToolbar.viewUserName.setText("Hello "+HRValidationHelper.optional(HRPrefManager.getInstance(context).getUserDetail().getResult().getName()));
 
@@ -166,6 +164,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
                     @Override
                     public void run() {
                         loadFragment(new FragmentHome(this));
+                        binding.includedToolbar.viewUserName.setText("Hello "+HRPrefManager.getInstance(context).getUserDetail().getResult().getName());
                     }
                 }, 225);
                 break;
@@ -454,6 +453,7 @@ public class ActivityDashboard extends BaseActivity implements AdapterView.OnIte
 
     @Override
     public void onTaskError(String errorMsg) {
+        super.onTaskError(errorMsg);
         if (progressDialog!=null && progressDialog.isShowing()) progressDialog.dismiss();
     }
 

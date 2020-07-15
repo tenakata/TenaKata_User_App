@@ -264,19 +264,19 @@ public class FragmentCreditSales extends BaseFragment implements OnMoreListener,
     }
 
     @Override
-    public void onRemindClick(String id,String totalAmount) {
-        new DialogRemindPayment(context,totalAmount,this,id);
+    public void onRemindClick(String id,String totalAmount,String name, String phone, String Date) {
+        new DialogRemindPayment(context,totalAmount,name,phone,Date,this,id);
 
     }
 
     @Override
-    public void onViewDetailsClick(int position,String id,String name,String receiptpath,String amount,String list,String shopname) {
+    public void onViewDetailsClick(int position,String id,String name,String receiptpath,String amount,String list,String ClientName) {
         Intent intent=new Intent(getActivity(), ActivityViewDetails.class);
         intent.putExtra("id",id);
         intent.putExtra("position",String.valueOf(position));
         intent.putExtra("sales_purchases","sales");
         intent.putExtra("payment_type","credit");
-        intent.putExtra("shopname",shopname);
+        intent.putExtra("shopname",ClientName);
         startActivity(intent);
     }
 

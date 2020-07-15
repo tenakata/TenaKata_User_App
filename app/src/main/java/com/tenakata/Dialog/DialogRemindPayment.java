@@ -19,12 +19,19 @@ public class DialogRemindPayment implements View.OnClickListener {
 
     private Context context;
     private Dialog dialog;
+    private final String name;
+    private final String phone;
+    private final String date;
     private ReminderCallBack callBack;
     private String totalAmount;
     private String id;
+    private  String defaultMessage;
 
-    public DialogRemindPayment(Context context,String totalAmount,ReminderCallBack callBack,String Id) {
+    public DialogRemindPayment(Context context,String totalAmount,String name, String phone, String date,ReminderCallBack callBack,String Id) {
         this.context = context;
+        this.name = name;
+        this.phone = phone;
+        this.date = date;
         this.callBack = callBack;
         this.totalAmount = totalAmount;
         this.id = Id;
@@ -47,26 +54,33 @@ public class DialogRemindPayment implements View.OnClickListener {
         dialog.show();
         dialog.getWindow().setAttributes(lp);
         dialog.setCancelable(false);
-
         TextView btnCancel = dialog.findViewById(R.id.viewBtnCancel);
         TextView amountTv = dialog.findViewById(R.id.textView5);
         final TextView message = dialog.findViewById(R.id.editText3);
+       // defaultMessage="This is to remind you that you owe " +name+"\n"+phone+"\namount: "+totalAmount+" for purchases done on "+date+".\nPlease pay up. \nThank you.\nPowered by Tenakata. For Help Call 0728888863!";
+        message.setHint(String.valueOf("This is to remind you that you owe " +name+"\n"+phone+"\namount: "+totalAmount+" for purchases done on "+date+".\nPlease pay up. \nThank you.\nPowered by Tenakata. \nFor Help Call 0728888863!"));
         amountTv.setText(HRValidationHelper.optional(totalAmount));
         TextView viewBtnRemind = dialog.findViewById(R.id.viewBtnRemind);
         View view = dialog.findViewById(R.id.view2);
+
         viewBtnRemind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (HRValidationHelper.isNull(message.getText().toString())){
-                    Toast.makeText(context,"Enter message ",Toast.LENGTH_SHORT).show();
-                }else {
+
                     if (callBack!=null){
-                        callBack.onRemind(id,message.getText().toString());
-                        close();
+                        if(message.getText().toString().length()==0){
+                            callBack.onRemind(id,message.getHint().toString());
+                            close();
+                        }else {
+                            callBack.onRemind(id,message.getText().toString());
+                            close();
+                        }
+
                     }
-                }
             }
         });
+
+
         btnCancel.setOnClickListener(this);
         view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
